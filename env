@@ -1,0 +1,3 @@
+db-url = jdbc:sqlserver://localhost:1433;databaseName=book_social_local;encrypt=true;trustServerCertificate=true;columnEncryptionSetting=Enabled;
+db-user = sa
+db-key = mssq@12345

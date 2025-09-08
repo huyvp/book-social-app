@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: ${db-url}
+    username: ${db-user}
+    password: ${db-key}
+    hikari:
+      minimum-idle: 5
+      max-lifetime: 60000
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.SQLServer2016Dialect

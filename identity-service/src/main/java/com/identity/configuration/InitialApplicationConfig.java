@@ -30,7 +30,7 @@ public class InitialApplicationConfig {
     @Bean
     @ConditionalOnProperty(prefix = "spring",
             value = "datasource.driver-class-name",
-            havingValue = "org.postgresql.Driver"
+            havingValue = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
     )
     ApplicationRunner applicationRunner(UserRepo userRepo, RoleRepo roleRepo) {
         log.info("Initializing application with custom configuration.....");
