@@ -13,8 +13,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@CrossOrigin
 public class AuthController {
     IAuthService authService;
+
+    @PostMapping("/outbound")
+    public ResponseEntity<Object> outboundAuth(@RequestParam(name = "code") String code) {
+        return ResponseHandler.execute(
+                authService.outboundAuth(code)
+        );
+    }
 
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody UserLogin userLogin) {

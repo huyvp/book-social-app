@@ -1,5 +1,7 @@
 package com.identity.service.impl;
 
+import com.identity.client.GoogleClient;
+import com.identity.dto.request.ExchangeTokenReq;
 import com.identity.dto.request.UserLogin;
 import com.identity.entity.InvalidatedToken;
 import com.identity.entity.Role;
@@ -18,6 +20,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,6 +34,7 @@ import java.util.StringJoiner;
 import java.util.UUID;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthService implements IAuthService {
@@ -38,6 +42,7 @@ public class AuthService implements IAuthService {
     PasswordEncoder passwordEncoder;
     InvalidatedTokenRepo invalidatedToken;
     InvalidatedTokenRepo invalidatedTokenRepo;
+    GoogleClient googleClient;
 
     @NonFinal
     @Value("${jwt.signerKey}")
@@ -48,6 +53,17 @@ public class AuthService implements IAuthService {
     @NonFinal
     @Value("${jwt.refreshable-duration}")
     protected long REFRESH_ABLE_DURATION;
+    @NonFinal
+    @Value("${google.client-id}")
+    protected String GOOGLE_CLIENT_ID;
+    @NonFinal
+    @Value("${google.client-secret}")
+    protected String GOOGLE_CLIENT_SECRET;
+    @NonFinal
+    @Value("${google.redirect-uri}")
+    protected String REDIRECT_URI;
+    @NonFinal
+    protected final String GRANT_TYPE = "authorization_code";
 
     @Override
     public String login(UserLogin userLogin) {
@@ -106,6 +122,21 @@ public class AuthService implements IAuthService {
     public boolean introspect(String token) {
         verifyToken(token, false);
         return true;
+    }
+
+    @Override
+    public String outboundAuth(String code) {
+        var response = googleClient.exchangeToken(ExchangeTokenReq.builder()
+                .clientId(GOOGLE_CLIENT_ID)
+                .clientSecret(GOOGLE_CLIENT_SECRET)
+                .redirectUri(REDIRECT_URI)
+                .grantType(GRANT_TYPE)
+                .code(code)
+                .build()
+        );
+        log.info("TOKEN RESPONSE {}", response);
+
+        return response.getAccessToken();
     }
 
     private SignedJWT verifyToken(String token, boolean isRefresh) {

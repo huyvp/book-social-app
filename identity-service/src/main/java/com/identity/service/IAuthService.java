@@ -10,4 +10,6 @@ public interface IAuthService {
     String refreshToken(String token);
 
     boolean introspect(String token);
+
+    String outboundAuth(String code);
 }
