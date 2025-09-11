@@ -1,6 +1,8 @@
 package com.identity.service.impl;
 
-import com.identity.client.GoogleClient;
+import com.identity.client.GoogleTokenClient;
+import com.identity.client.GoogleUserInfoClient;
+import com.identity.constant.Constants;
 import com.identity.dto.request.ExchangeTokenReq;
 import com.identity.dto.request.UserLogin;
 import com.identity.entity.InvalidatedToken;
@@ -28,10 +30,7 @@ import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.Set;
-import java.util.StringJoiner;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -42,7 +41,8 @@ public class AuthService implements IAuthService {
     PasswordEncoder passwordEncoder;
     InvalidatedTokenRepo invalidatedToken;
     InvalidatedTokenRepo invalidatedTokenRepo;
-    GoogleClient googleClient;
+    GoogleTokenClient googleTokenClient;
+    GoogleUserInfoClient googleUserInfoClient;
 
     @NonFinal
     @Value("${jwt.signerKey}")
@@ -126,7 +126,7 @@ public class AuthService implements IAuthService {
 
     @Override
     public String outboundAuth(String code) {
-        var response = googleClient.exchangeToken(ExchangeTokenReq.builder()
+        var response = googleTokenClient.exchangeToken(ExchangeTokenReq.builder()
                 .clientId(GOOGLE_CLIENT_ID)
                 .clientSecret(GOOGLE_CLIENT_SECRET)
                 .redirectUri(REDIRECT_URI)
@@ -135,6 +135,22 @@ public class AuthService implements IAuthService {
                 .build()
         );
         log.info("TOKEN RESPONSE {}", response);
+
+        var userInfo = googleUserInfoClient.getUserInfo("json", response.getAccessToken());
+
+        log.info("USER INFO {}", userInfo);
+        Set<Role> roles = new HashSet<>();
+        roles.add(Role.builder().name(Constants.PreDefineRole.ROLE_USER).build());
+        var user = userRepo.findByUsernameAndActiveTrue(userInfo.getEmail()).orElseGet(
+                () -> userRepo.save(User.builder()
+                                .username(userInfo.getEmail())
+                                .password(passwordEncoder.encode("123456"))
+                                .email(userInfo.getEmail())
+                                .active(true)
+                                .roles(roles)
+                                .build()
+                )
+        );
 
         return response.getAccessToken();
     }
