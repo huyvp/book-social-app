@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import java.time.LocalDateTime;
 
 public class ResponseHandler {
+
     public static ResponseEntity<Object> execute(Object result, int... total) {
         DefaultResponse<Object> defaultResponse = DefaultResponse.builder()
                 .timestamp(LocalDateTime.now())

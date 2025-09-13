@@ -19,7 +19,11 @@ public class User {
     String id;
     @Column(name = "username", length = 50, nullable = false, unique = true)
     String username;
-    @Column(name = "password", length = 200, nullable = false)
+    @Column(name = "given_name", length = 200)
+    String givenName;
+    @Column(name = "family_name", length = 200)
+    String familyName;
+    @Column(name = "password", length = 200)
     String password;
     @Column(name = "email", length = 200, nullable = false)
     String email;
@@ -27,6 +31,8 @@ public class User {
     String address;
     @Column(name = "phone_number", length = 10)
     String phoneNumber;
+    @Column(name = "avatar", length = 300)
+    String avatar;
     @Column(name = "active", nullable = false)
     boolean active;
     @ManyToMany

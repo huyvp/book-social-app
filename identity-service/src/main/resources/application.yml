@@ -29,6 +29,7 @@ google:
   client-secret: ${client-secret}
   redirect-uri: "http://localhost:3000/authenticate"
 
-logging:
-  level:
-    org.springframework.security: debug
+#logging:
+#  level:
+#    org.springframework.web: debug
+#    org.springframework.security: info

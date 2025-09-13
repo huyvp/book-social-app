@@ -17,6 +17,7 @@ public class DefaultResponse<T> {
     private LocalDateTime timestamp;
     private int code;
     private HttpStatus status;
+    @Setter
     private String message;
     @Setter
     private Integer total;

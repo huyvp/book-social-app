@@ -1,6 +1,7 @@
 package com.identity.service.impl;
 
 import com.identity.client.ProfileClient;
+import com.identity.dto.request.PasswordCreateReq;
 import com.identity.dto.request.ProfileReq;
 import com.identity.dto.request.UserReq;
 import com.identity.dto.response.UserResponse;
@@ -22,6 +23,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.HashSet;
 import java.util.List;
@@ -88,18 +90,35 @@ public class UserService implements IUserService {
     @Override
     public UserResponse getUserById(String id) {
         return userMapper.toUserResFromUser(
-                userRepo.findByIdAndActiveTrue(id)
-                        .orElseThrow(() -> new ServiceException(ErrorCode.USER_3002))
+                userRepo.findByIdAndActiveTrue(id).orElseThrow(() -> new ServiceException(ErrorCode.USER_3002))
         );
     }
 
     @Override
     public UserResponse getMyInfo() {
-        SecurityContext securityContextHolder = SecurityContextHolder.getContext();
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        SecurityContext context = SecurityContextHolder.getContext();
+        String username = context.getAuthentication().getName();
 
         User user = userRepo.findByUsernameAndActiveTrue(username)
                 .orElseThrow(() -> new ServiceException(ErrorCode.USER_3002));
-        return userMapper.toUserResFromUser(user);
+        var userResponse = userMapper.toUserResFromUser(user);
+        userResponse.setNoPassword(!StringUtils.hasText(user.getPassword()));
+
+        return userResponse;
+    }
+
+    @Override
+    public void createPassword(PasswordCreateReq req) {
+        var context = SecurityContextHolder.getContext();
+        String username = context.getAuthentication().getName();
+
+        var user = userRepo.findByUsernameAndActiveTrue(username).orElseThrow(
+                () -> new ServiceException(ErrorCode.USER_3002)
+        );
+        if (StringUtils.hasText(user.getPassword())) throw new ServiceException(ErrorCode.USER_3003);
+
+        user.setPassword(passwordEncoder.encode(req.getPassword()));
+
+        userRepo.save(user);
     }
 }

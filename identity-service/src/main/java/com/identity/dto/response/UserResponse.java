@@ -15,9 +15,13 @@ import java.util.Set;
 public class UserResponse {
     String id;
     String username;
-    String password;
+    String givenName;
+    String familyName;
     String email;
+    String avatar;
     String phoneNumber;
     String address;
+    Boolean noPassword;
+    String role;
     Set<String> roles;
 }

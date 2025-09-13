@@ -1,9 +1,11 @@
 package com.identity.controller;
 
+import com.identity.dto.request.PasswordCreateReq;
 import com.identity.dto.request.UserReq;
 import com.identity.dto.response.UserResponse;
 import com.identity.handler.ResponseHandler;
 import com.identity.service.IUserService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -18,6 +20,7 @@ import java.util.List;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@CrossOrigin
 public class UserController {
     IUserService userService;
 
@@ -63,5 +66,11 @@ public class UserController {
         return ResponseHandler.execute(
                 userService.getMyInfo()
         );
+    }
+
+    @PostMapping("/create-password")
+    public ResponseEntity<Object> createCreatePassword(@Valid @RequestBody PasswordCreateReq req) {
+        userService.createPassword(req);
+        return ResponseHandler.execute("Create password successful!");
     }
 }

@@ -139,20 +139,24 @@ public class AuthService implements IAuthService {
         var userInfo = googleUserInfoClient.getUserInfo("json", response.getAccessToken());
 
         log.info("USER INFO {}", userInfo);
+
         Set<Role> roles = new HashSet<>();
         roles.add(Role.builder().name(Constants.PreDefineRole.ROLE_USER).build());
+
         var user = userRepo.findByUsernameAndActiveTrue(userInfo.getEmail()).orElseGet(
                 () -> userRepo.save(User.builder()
-                                .username(userInfo.getEmail())
-                                .password(passwordEncoder.encode("123456"))
-                                .email(userInfo.getEmail())
-                                .active(true)
-                                .roles(roles)
-                                .build()
+                        .username(userInfo.getEmail())
+                        .givenName(userInfo.getGivenName())
+                        .familyName(userInfo.getFamilyName())
+                        .email(userInfo.getEmail())
+                        .avatar(userInfo.getPicture())
+                        .active(true)
+                        .roles(roles)
+                        .build()
                 )
         );
 
-        return response.getAccessToken();
+        return generateToken(user);
     }
 
     private SignedJWT verifyToken(String token, boolean isRefresh) {
