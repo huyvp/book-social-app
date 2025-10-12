@@ -9,6 +9,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserProfileReq {
     String userId;
+    String givenName;
+    String familyName;
     String email;
     String phoneNumber;
     String address;

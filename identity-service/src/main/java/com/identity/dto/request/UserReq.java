@@ -13,6 +13,8 @@ import lombok.experimental.FieldDefaults;
 public class UserReq {
     String username;
     String password;
+    String firstName;
+    String lastName;
     String email;
     String phoneNumber;
     String address;

@@ -1,5 +1,7 @@
 package com.gateway.filter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gateway.dto.response.DefaultResponse;
 import com.gateway.service.IdentityService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -10,8 +12,10 @@ import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
@@ -22,6 +26,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthenticationFilter implements Ordered, GlobalFilter {
+
+    final ObjectMapper objectMapper;
     IdentityService identityService;
 
     @Override
@@ -30,21 +36,27 @@ public class AuthenticationFilter implements Ordered, GlobalFilter {
         log.info("[{}] Start authentication filter request", requestId);
         String path = exchange.getRequest().getPath().toString();
         String method = exchange.getRequest().getMethod().toString();
+        // Get token from header
         List<String> authHeader = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION);
 
         log.info("[{}] Method: {} - Path: {}", requestId, method, path);
         log.info("[{}] Headers: {}", requestId, authHeader);
 
-        /*if (CollectionUtils.isEmpty(authHeader))
+        if (CollectionUtils.isEmpty(authHeader)) {
             return unAuthentication(exchange.getResponse());
-        String token = authHeader.get(0);
-        log.info("Token authorization: {}", token);
-        identityService.introspect(token).subscribe(
-                res -> log.info("Result: {}", res.getResult())
-        );*/
+        }
+        String token = authHeader.get(0).replace("Bearer ", "");
+        log.info("[{}] Token authorization: {}", requestId, token);
 
-        log.info("[{}] End authentication filter request \n", requestId);
-        return chain.filter(exchange);
+        // Verify token - Delegate identity service
+        return identityService.introspect(token).flatMap(res -> {
+                    if (!res.getResult()) return chain.filter(exchange);
+                    else return unAuthentication(exchange.getResponse());
+                }
+        ).onErrorResume(
+                throwable -> unAuthentication(exchange.getResponse())
+        );
+
     }
 
     @Override
@@ -53,10 +65,24 @@ public class AuthenticationFilter implements Ordered, GlobalFilter {
     }
 
     Mono<Void> unAuthentication(ServerHttpResponse response) {
-        String msg = "UnAuthentication";
+        DefaultResponse<?> unAuthResponse = DefaultResponse.builder()
+                .status(HttpStatus.UNAUTHORIZED)
+                .code(10401)
+                .message("Unauthorized")
+                .build();
+        String responseStr = "";
+
+        try {
+            responseStr = objectMapper.writeValueAsString(unAuthResponse);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
         response.setStatusCode(HttpStatus.UNAUTHORIZED);
+        response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+
         return response.writeWith(
-                Mono.just(response.bufferFactory().wrap(msg.getBytes()))
+                Mono.just(response.bufferFactory().wrap(responseStr.getBytes()))
         );
     }
 }

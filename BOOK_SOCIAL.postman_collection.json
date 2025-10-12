@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "240ed7e8-f930-435c-b20f-ffb9dc75d8b4",
+		"_postman_id": "816b4d66-7c5e-473e-8d0f-281ca59cbd33",
 		"name": "BOOK_SOCIAL",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24418910"
 	},
 	"item": [
 		{
@@ -21,14 +22,52 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"username\": \"Johnathan\",\r\n    \"password\": \"password\",\r\n    \"phoneNumber\": \"01234567\",\r\n    \"address\": \"New address of test user\",\r\n    \"email\": \"nvh1892k@gmail.com\",\r\n    \"city\": \"Hanoi\"\r\n}",
+									"raw": "{\r\n    \"username\": \"Johnathan5\",\r\n    \"password\": \"password\",\r\n    \"firstName\": \"Johnathan\",\r\n    \"lastName\": \"Tah\",\r\n    \"phoneNumber\": \"01234567\",\r\n    \"address\": \"New address of test user\",\r\n    \"email\": \"nvh1892k@gmail.com\",\r\n    \"city\": \"Hanoi\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
 										}
 									}
 								},
-								"url": "{{URL.IDENTITY}}/users"
+								"url": {
+									"raw": "{{URL.IDENTITY}}/users",
+									"host": [
+										"{{URL.IDENTITY}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "api/v1/users/create-password",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"password\": \"password\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL.IDENTITY}}/users/create-password",
+									"host": [
+										"{{URL.IDENTITY}}"
+									],
+									"path": [
+										"users",
+										"create-password"
+									]
+								}
 							},
 							"response": []
 						},
@@ -46,7 +85,16 @@
 										}
 									}
 								},
-								"url": "{{URL.IDENTITY}}/users/a0f325dc-4570-475a-8012-93ce77bbf914"
+								"url": {
+									"raw": "{{URL.IDENTITY}}/users/a0f325dc-4570-475a-8012-93ce77bbf914",
+									"host": [
+										"{{URL.IDENTITY}}"
+									],
+									"path": [
+										"users",
+										"a0f325dc-4570-475a-8012-93ce77bbf914"
+									]
+								}
 							},
 							"response": []
 						},
@@ -82,7 +130,16 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": "{{URL.IDENTITY}}/users/890f93f6-581e-4145-bcec-4f4ed9a60676"
+								"url": {
+									"raw": "{{URL.IDENTITY}}/users/d64479f3-401d-4a95-b9b2-e18157d302ea",
+									"host": [
+										"{{URL.IDENTITY}}"
+									],
+									"path": [
+										"users",
+										"d64479f3-401d-4a95-b9b2-e18157d302ea"
+									]
+								}
 							},
 							"response": []
 						},
@@ -98,7 +155,16 @@
 									"mode": "formdata",
 									"formdata": []
 								},
-								"url": "{{URL.IDENTITY}}/users/myInfo"
+								"url": {
+									"raw": "{{URL.IDENTITY}}/users/myInfo",
+									"host": [
+										"{{URL.IDENTITY}}"
+									],
+									"path": [
+										"users",
+										"myInfo"
+									]
+								}
 							},
 							"response": []
 						},
@@ -107,7 +173,16 @@
 							"request": {
 								"method": "DELETE",
 								"header": [],
-								"url": "{{URL.IDENTITY}}/users/72e5cbff-8681-4c76-a676-66405b543b86"
+								"url": {
+									"raw": "{{URL.IDENTITY}}/users/b17aa5f4-e1b4-45b0-be87-7e78b1dcb55f",
+									"host": [
+										"{{URL.IDENTITY}}"
+									],
+									"path": [
+										"users",
+										"b17aa5f4-e1b4-45b0-be87-7e78b1dcb55f"
+									]
+								}
 							},
 							"response": []
 						}
@@ -130,7 +205,15 @@
 										}
 									}
 								},
-								"url": "{{URL.IDENTITY}}/roles"
+								"url": {
+									"raw": "{{URL.IDENTITY}}/roles",
+									"host": [
+										"{{URL.IDENTITY}}"
+									],
+									"path": [
+										"roles"
+									]
+								}
 							},
 							"response": []
 						},
@@ -151,7 +234,16 @@
 										}
 									}
 								},
-								"url": "{{URL.IDENTITY}}/roles/ADMIN"
+								"url": {
+									"raw": "{{URL.IDENTITY}}/roles/ADMIN",
+									"host": [
+										"{{URL.IDENTITY}}"
+									],
+									"path": [
+										"roles",
+										"ADMIN"
+									]
+								}
 							},
 							"response": []
 						},
@@ -160,7 +252,15 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": "{{URL.IDENTITY}}/roles"
+								"url": {
+									"raw": "{{URL.IDENTITY}}/roles",
+									"host": [
+										"{{URL.IDENTITY}}"
+									],
+									"path": [
+										"roles"
+									]
+								}
 							},
 							"response": []
 						},
@@ -169,7 +269,16 @@
 							"request": {
 								"method": "DELETE",
 								"header": [],
-								"url": "{{URL.IDENTITY}}/roles/STAFF"
+								"url": {
+									"raw": "{{URL.IDENTITY}}/roles/STAFF",
+									"host": [
+										"{{URL.IDENTITY}}"
+									],
+									"path": [
+										"roles",
+										"STAFF"
+									]
+								}
 							},
 							"response": []
 						}
@@ -192,7 +301,15 @@
 										}
 									}
 								},
-								"url": "{{URL.IDENTITY}}/permissions"
+								"url": {
+									"raw": "{{URL.IDENTITY}}/permissions",
+									"host": [
+										"{{URL.IDENTITY}}"
+									],
+									"path": [
+										"permissions"
+									]
+								}
 							},
 							"response": []
 						},
@@ -201,7 +318,15 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": "{{URL.IDENTITY}}/permissions"
+								"url": {
+									"raw": "{{URL.IDENTITY}}/permissions",
+									"host": [
+										"{{URL.IDENTITY}}"
+									],
+									"path": [
+										"permissions"
+									]
+								}
 							},
 							"response": []
 						},
@@ -210,7 +335,16 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": "{{URL.IDENTITY}}/permissions/MODIFY_DATA"
+								"url": {
+									"raw": "{{URL.IDENTITY}}/permissions/MODIFY_DATA",
+									"host": [
+										"{{URL.IDENTITY}}"
+									],
+									"path": [
+										"permissions",
+										"MODIFY_DATA"
+									]
+								}
 							},
 							"response": []
 						},
@@ -219,7 +353,16 @@
 							"request": {
 								"method": "DELETE",
 								"header": [],
-								"url": "{{URL.IDENTITY}}/permissions/MODIFY_DATA"
+								"url": {
+									"raw": "{{URL.IDENTITY}}/permissions/MODIFY_DATA",
+									"host": [
+										"{{URL.IDENTITY}}"
+									],
+									"path": [
+										"permissions",
+										"MODIFY_DATA"
+									]
+								}
 							},
 							"response": []
 						}
@@ -240,7 +383,8 @@
 											"    pm.collectionVariables.set(\"token\", token.result);\r",
 											"});"
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
@@ -252,14 +396,23 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"username\": \"Johnathan tah\",\r\n    \"password\": \"password\"\r\n}",
+									"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"admin\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
 										}
 									}
 								},
-								"url": "{{URL.IDENTITY}}/auth/login"
+								"url": {
+									"raw": "{{URL.IDENTITY}}/auth/login",
+									"host": [
+										"{{URL.IDENTITY}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
 							},
 							"response": []
 						},
@@ -292,7 +445,16 @@
 										}
 									]
 								},
-								"url": "{{URL.IDENTITY}}/auth/logout"
+								"url": {
+									"raw": "{{URL.IDENTITY}}/auth/logout",
+									"host": [
+										"{{URL.IDENTITY}}"
+									],
+									"path": [
+										"auth",
+										"logout"
+									]
+								}
 							},
 							"response": []
 						},
@@ -328,7 +490,16 @@
 										}
 									]
 								},
-								"url": "{{URL.IDENTITY}}/auth/refresh"
+								"url": {
+									"raw": "{{URL.IDENTITY}}/auth/refresh",
+									"host": [
+										"{{URL.IDENTITY}}"
+									],
+									"path": [
+										"auth",
+										"refresh"
+									]
+								}
 							},
 							"response": []
 						},
@@ -350,7 +521,58 @@
 										}
 									]
 								},
-								"url": "{{URL.IDENTITY}}/auth/introspect"
+								"url": {
+									"raw": "{{URL.IDENTITY}}/auth/introspect",
+									"host": [
+										"{{URL.IDENTITY}}"
+									],
+									"path": [
+										"auth",
+										"introspect"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "api/v1/auth/outbound",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Set token to collection variable\", function() {\r",
+											"    var token = pm.response.json();\r",
+											"    pm.collectionVariables.set(\"token\", token.result);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{URL.IDENTITY}}/auth/outbound?code=4%2F0AVMBsJjh-ZMd2PfjTmpCi-gUFi5GP5QiRBVVZ72hocZJEukJnfmpapxJKBm3areZYcn7tw",
+									"host": [
+										"{{URL.IDENTITY}}"
+									],
+									"path": [
+										"auth",
+										"outbound"
+									],
+									"query": [
+										{
+											"key": "code",
+											"value": "4%2F0AVMBsJjh-ZMd2PfjTmpCi-gUFi5GP5QiRBVVZ72hocZJEukJnfmpapxJKBm3areZYcn7tw"
+										}
+									]
+								}
 							},
 							"response": []
 						}
@@ -381,7 +603,15 @@
 										}
 									}
 								},
-								"url": "{{URL.PROFILE}}/users"
+								"url": {
+									"raw": "{{URL.PROFILE}}/users",
+									"host": [
+										"{{URL.PROFILE}}"
+									],
+									"path": [
+										"users"
+									]
+								}
 							},
 							"response": []
 						},
@@ -390,7 +620,16 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": "{{URL.PROFILE}}/users/546cfaa7-dd8e-437b-adfb-0215fc57d403"
+								"url": {
+									"raw": "{{URL.PROFILE}}/users/546cfaa7-dd8e-437b-adfb-0215fc57d403",
+									"host": [
+										"{{URL.PROFILE}}"
+									],
+									"path": [
+										"users",
+										"546cfaa7-dd8e-437b-adfb-0215fc57d403"
+									]
+								}
 							},
 							"response": []
 						}
@@ -401,15 +640,20 @@
 	],
 	"auth": {
 		"type": "bearer",
-		"bearer": {
-			"token": "{{token}}"
-		}
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
 	},
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
 				"type": "text/javascript",
+				"requests": {},
 				"exec": [
 					""
 				]
@@ -419,6 +663,7 @@
 			"listen": "test",
 			"script": {
 				"type": "text/javascript",
+				"requests": {},
 				"exec": [
 					""
 				]
@@ -429,27 +674,28 @@
 		{
 			"key": "URL.IDENTITY",
 			"value": "http://localhost:9001/identity",
-			"type": "string"
-		},
-		{
-			"key": "URL.IDENTITY",
-			"value": "http://localhost:9000/api/v1/identity",
-			"type": "string",
-			"disabled": true
-		},
-		{
-			"key": "URL.PROFILE",
-			"value": "",
-			"type": "string",
 			"disabled": true
 		},
 		{
 			"key": "URL.PROFILE",
 			"value": "http://localhost:9000/api/v1/profile",
-			"type": "string"
+			"disabled": true
+		},
+		{
+			"key": "URL.IDENTITY",
+			"value": "http://localhost:9000/api/v1/identity",
+			"description": "api gateway"
+		},
+		{
+			"key": "URL.PROFILE",
+			"value": "http://localhost:9000/api/v1/profile",
+			"description": "api gateway"
 		},
 		{
 			"key": "token",
+			"value": ""
+		},
+		{
 			"value": ""
 		}
 	]

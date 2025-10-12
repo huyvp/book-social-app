@@ -8,6 +8,6 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AuthReq {
+public class AuthRequest {
     String token;
 }

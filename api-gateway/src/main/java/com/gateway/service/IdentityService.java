@@ -1,8 +1,8 @@
 package com.gateway.service;
 
 import com.gateway.client.IdentityClient;
-import com.gateway.dto.request.AuthReq;
-import com.gateway.dto.response.DefaultResp;
+import com.gateway.dto.request.AuthRequest;
+import com.gateway.dto.response.DefaultResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -13,13 +13,10 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class IdentityService {
+
     IdentityClient identityClient;
 
-    public Mono<DefaultResp<Object>> introspect(String token) {
-        return identityClient.introspect(
-                AuthReq.builder()
-                        .token(token)
-                        .build()
-        );
+    public Mono<DefaultResponse<Boolean>> introspect(String token) {
+        return identityClient.introspect(token);
     }
 }

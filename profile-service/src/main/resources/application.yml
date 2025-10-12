@@ -5,9 +5,9 @@ spring:
       uri: neo4j://localhost:7687
       authentication:
         username: neo4j
-        password: neo4j123456
+        password: 12345678
 
 server:
   port: 9002
   servlet:
-    context-path: /profile/
+    context-path: /profile

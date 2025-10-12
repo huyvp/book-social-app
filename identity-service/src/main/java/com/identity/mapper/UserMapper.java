@@ -11,6 +11,9 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
+
+    @Mapping(source = "firstName", target = "givenName")
+    @Mapping(source = "lastName", target = "familyName")
     User toUserFromUserReq(UserReq userReq);
 
     @Mapping(source = "roles", target = "roles", qualifiedByName = "mapRoleToString")

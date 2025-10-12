@@ -12,9 +12,9 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class DefaultResp<T> {
+public class DefaultResponse<T> {
     @JsonFormat(pattern = "HH:mm:ss yyyy-MM-dd", timezone = "Asia/Bangkok")
-    private LocalDateTime timestamp;
+    private String timestamp;
     private int code;
     private HttpStatus status;
     private String message;

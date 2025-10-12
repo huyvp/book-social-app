@@ -9,6 +9,8 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/users")
 @RequiredArgsConstructor
@@ -28,4 +30,8 @@ public class UserProfileController {
         return userProfileService.getProfile(id);
     }
 
+    @GetMapping
+    List<UserProfileResponse> getUserProfiles() {
+        return userProfileService.getUserProfiles();
+    }
 }

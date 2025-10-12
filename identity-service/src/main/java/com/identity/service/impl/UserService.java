@@ -57,8 +57,8 @@ public class UserService implements IUserService {
         User savedUser = userRepo.save(user);
         ProfileReq profileReq = profileMapper.toProfileReq(userReq);
         profileReq.setUserId(savedUser.getId());
-//        profileClient.createProfile(profileReq);
 
+        profileClient.createProfile(profileReq);
         return userMapper.toUserResFromUser(savedUser);
     }
 
