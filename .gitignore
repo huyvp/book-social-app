@@ -6,3 +6,4 @@ applicationinsights.log
 /src/.env
 /identity-service/.idea
 /api-gateway/.idea
+.DS_Store

@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
