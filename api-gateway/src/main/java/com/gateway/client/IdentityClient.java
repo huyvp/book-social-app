@@ -1,10 +1,8 @@
 package com.gateway.client;
 
-import com.gateway.dto.request.AuthRequest;
 import com.gateway.dto.response.DefaultResponse;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.service.annotation.PostExchange;
 import reactor.core.publisher.Mono;

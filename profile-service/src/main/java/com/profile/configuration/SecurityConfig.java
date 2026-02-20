@@ -24,15 +24,15 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     private final JwtDecoderCustom jwtDecoderCustom;
 
+    private static final String[] PUBLIC_ENDPOINTS = {
+            "/users"
+    };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeHttpRequests(req -> req
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/users/registration").permitAll()
-                        .requestMatchers("/roles/**").hasRole("ADMIN")
-                        .requestMatchers("/permissions/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
                         .anyRequest().authenticated()
                 );
 
