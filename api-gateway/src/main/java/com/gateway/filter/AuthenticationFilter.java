@@ -36,7 +36,9 @@ public class AuthenticationFilter implements Ordered, GlobalFilter {
     IdentityService identityService;
 
     @NonFinal
-    private String[] publicEndpoints = {"/identity/auth/login"};
+    private String[] publicEndpoints = {
+            "/identity/auth/.*", "/identity/users/registration"
+    };
 
     @NonFinal
     @Value("${service.api-prefix}")
@@ -67,7 +69,7 @@ public class AuthenticationFilter implements Ordered, GlobalFilter {
 
         // Verify token - Delegate identity service
         return identityService.introspect(token).flatMap(res -> {
-                    if (!res.getResult()) return chain.filter(exchange);
+                    if (res.getResult()) return chain.filter(exchange);
                     else return unAuthentication(exchange.getResponse());
                 }
         ).onErrorResume(
@@ -94,7 +96,7 @@ public class AuthenticationFilter implements Ordered, GlobalFilter {
                 .code(10401)
                 .message("Unauthorized")
                 .build();
-        String responseStr = "";
+        String responseStr;
 
         try {
             responseStr = objectMapper.writeValueAsString(unAuthResponse);

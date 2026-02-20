@@ -24,7 +24,7 @@ import java.util.List;
 public class UserController {
     IUserService userService;
 
-    @PostMapping
+    @PostMapping("/registration")
     public ResponseEntity<Object> createUser(@RequestBody UserReq userReq) {
         return ResponseHandler.execute(
                 userService.createUser(userReq)

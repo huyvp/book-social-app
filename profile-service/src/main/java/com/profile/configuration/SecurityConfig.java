@@ -1,8 +1,8 @@
-package com.identity.configuration;
+package com.profile.configuration;
 
-import com.identity.security.JwtAccessDeniedHandler;
-import com.identity.security.JwtAuthenticationEntrypoint;
-import com.identity.security.JwtDecoderCustom;
+import com.profile.security.JwtAccessDeniedHandler;
+import com.profile.security.JwtAuthenticationEntrypoint;
+import com.profile.security.JwtDecoderCustom;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;

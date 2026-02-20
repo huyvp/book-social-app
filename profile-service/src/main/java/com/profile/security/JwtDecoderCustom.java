@@ -1,16 +1,13 @@
-package com.identity.security;
+package com.profile.security;
 
-import com.identity.service.IAuthService;
+
 import com.nimbusds.jwt.SignedJWT;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.NonFinal;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtException;
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
@@ -19,13 +16,6 @@ import java.text.ParseException;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class JwtDecoderCustom implements JwtDecoder {
-    IAuthService authService;
-
-    @NonFinal
-    @Value("${jwt.signerKey}")
-    private String signerKey;
-    @NonFinal
-    private NimbusJwtDecoder nimbusJwtDecoder = null;
 
 
     @Override
