@@ -13,11 +13,8 @@ export default function Home() {
     try {
       const response = await getMyInfo();
       const data = response.data;
-
-      console.log(data);
-
       setUserDetails(data.result);
-    } catch (error) {}
+    } catch (error) { }
   };
 
   useEffect(() => {

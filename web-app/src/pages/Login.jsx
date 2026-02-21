@@ -47,8 +47,7 @@ export default function Login() {
     event.preventDefault();
 
     try {
-      const response = await logIn(username, password);
-      console.log("Response body:", response.data);
+      await logIn(username, password);
       navigate("/");
     } catch (error) {
       const errorResponse = error.response.data;

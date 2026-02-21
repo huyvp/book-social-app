@@ -7,8 +7,7 @@ export const logIn = async (username, password) => {
     username: username,
     password: password,
   });
-  console.log(response);
-  setToken(response?.result);
+  setToken(response.data?.result);
 
   return response;
 };
