@@ -25,16 +25,9 @@ public enum ErrorCode {
     USER_3001(3001, HttpStatus.BAD_REQUEST, "User existed"),
     USER_3002(3002, HttpStatus.NOT_FOUND, "User not found"),
     USER_3003(3002, HttpStatus.NOT_FOUND, "Password existed. Can't create new."),
-    // ----------------------------------
-    // Related to ROLE
-    // ----------------------------------
-    ROLE_3001(3001, HttpStatus.BAD_REQUEST, "Role existed"),
-    ROLE_3002(3002, HttpStatus.NOT_FOUND, "Role not found"),
-    // ----------------------------------
-    // Related to PERMISSION
-    // ----------------------------------
-    PERMISSION_3001(3001, HttpStatus.BAD_REQUEST, "Permission existed"),
-    PERMISSION_3002(3002, HttpStatus.NOT_FOUND, "Permission not found");
+
+    CANNOT_SEND_EMAIL(4000, HttpStatus.BAD_REQUEST, "Cannot send email"),;
+
 
     private int code;
     private HttpStatus httpStatus;

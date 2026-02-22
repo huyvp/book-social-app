@@ -25,7 +25,9 @@ public class SecurityConfig {
 
     private final JwtDecoderCustom jwtDecoderCustom;
 
-    private static final String[] PUBLIC_ENDPOINTS = {"/users"};
+    private static final String[] PUBLIC_ENDPOINTS = {
+            "/email/send"
+    };
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {

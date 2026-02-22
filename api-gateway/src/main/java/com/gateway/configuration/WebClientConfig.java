@@ -1,4 +1,4 @@
-package com.gateway.config;
+package com.gateway.configuration;
 
 import com.gateway.client.IdentityClient;
 import org.springframework.context.annotation.Bean;
