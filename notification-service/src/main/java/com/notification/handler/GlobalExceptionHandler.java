@@ -21,6 +21,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     ResponseEntity<Object> handleRestException(Exception e) {
+        log.error(e.getMessage(), e);
         DefaultResponse<Object> response = DefaultResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .code(ErrorCode.UNCATEGORIZED.getCode())

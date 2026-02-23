@@ -52,8 +52,10 @@ public class AuthenticationFilter implements Ordered, GlobalFilter {
         String requestId = exchange.getRequest().getId();
         log.info("[{}] Start authentication filter request", requestId);
 
-        if (isPublicEndpoint(exchange.getRequest()))
+        if (isPublicEndpoint(exchange.getRequest())) {
+            log.info("[{}] is public request without token", requestId);
             return chain.filter(exchange);
+        }
 
         String path = exchange.getRequest().getPath().toString();
         String method = exchange.getRequest().getMethod().toString();

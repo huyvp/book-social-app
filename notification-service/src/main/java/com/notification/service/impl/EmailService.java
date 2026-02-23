@@ -28,6 +28,8 @@ public class EmailService implements IEmailService {
 
     @Override
     public EmailResponse sendEmail(SendEmailRequest request) {
+        log.info("email:send - start processing");
+        log.info("email:send - to: {}", request.getTo());
         EmailRequest emailRequest = EmailRequest.builder()
                 .subject(request.getSubject())
                 .htmlContent(request.getHtmlContent())
@@ -39,10 +41,15 @@ public class EmailService implements IEmailService {
                 )
                 .build();
 
+        EmailResponse response;
         try {
-            return mailEventClient.sendEmail(apiKey, emailRequest);
+            response = mailEventClient.sendEmail(apiKey, emailRequest);
+            log.info("email:send - send email successful");
         } catch (FeignException e) {
+            log.info("email:send - send email failed");
             throw new ServiceException(ErrorCode.CANNOT_SEND_EMAIL);
         }
+        log.info("email:send - end processing");
+        return response;
     }
 }

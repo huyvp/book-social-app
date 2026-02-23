@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -17,7 +18,7 @@ public class EmailController {
     IEmailService emailService;
 
     @PostMapping(path = "/email/send")
-    public ResponseEntity<Object> sendMail(SendEmailRequest request) {
+    public ResponseEntity<Object> sendMail(@RequestBody SendEmailRequest request) {
         return ResponseHandler.execute(
                 emailService.sendEmail(request)
         );
