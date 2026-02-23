@@ -26,9 +26,4 @@ public class EmailController {
                 emailService.sendEmail(request)
         );
     }
-
-    @KafkaListener(topics = "onboard-user")
-    public void listen(String message) {
-        log.info("Received request {}", message);
-    }
 }

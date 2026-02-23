@@ -1,5 +1,6 @@
 package com.identity.service.impl;
 
+import com.event.dto.NotificationEvent;
 import com.identity.client.ProfileClient;
 import com.identity.dto.request.PasswordCreateReq;
 import com.identity.dto.request.ProfileReq;
@@ -42,7 +43,7 @@ public class UserService implements IUserService {
     PasswordEncoder passwordEncoder;
     ProfileClient profileClient;
     ProfileMapper profileMapper;
-    KafkaTemplate<String, String> kafkaTemplate;
+    KafkaTemplate<String, Object> kafkaTemplate;
 
     @Override
     public UserResponse createUser(UserReq userReq) {
@@ -61,7 +62,14 @@ public class UserService implements IUserService {
         profileReq.setUserId(savedUser.getId());
 
         profileClient.createProfile(profileReq);
-        kafkaTemplate.send("onboard-user", "Welcome our new member " + userReq.getUsername());
+
+        NotificationEvent notificationEvent = NotificationEvent.builder()
+                .channel("EMAIL")
+                .subject("Welcome to our service")
+                .body("Hello "+ user.getUsername())
+                .recipient(user.getEmail())
+                .build();
+        kafkaTemplate.send("notification-delivery", notificationEvent);
 
         return userMapper.toUserResFromUser(savedUser);
     }
