@@ -8,3 +8,17 @@ spring:
   data:
     mongodb:
       uri: mongodb://admin:admin@localhost:27017/notification-service?authSource=admin
+  kafka:
+    bootstrap-servers: localhost:9094
+    consumer:
+      group-id: notification-group
+      auto-offset-reset: earliest  # Đọc từ các message cũ nhất.
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+
+notification:
+  email:
+    brevo-url: ${brevo-url}
+    brevo-api-key: ${brevo-api-key}

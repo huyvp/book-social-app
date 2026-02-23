@@ -12,7 +12,9 @@ import feign.FeignException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +26,10 @@ import java.util.List;
 public class EmailService implements IEmailService {
 
     MailEventClient mailEventClient;
-    String apiKey = "xxx";
+
+    @Value("${notification.email.brevo-api-key}")
+    @NonFinal
+    String apiKey;
 
     @Override
     public EmailResponse sendEmail(SendEmailRequest request) {

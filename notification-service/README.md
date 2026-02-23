@@ -1,3 +1,9 @@
+## Prerequisites
+
+### Mongodb
+Install Mongodb from Docker Hub:
+`docker run -d --name mongodb -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=admin mongo:latest`
+
 # Notification Microservice Architecture
 
 ```mermaid
@@ -24,3 +30,4 @@ flowchart LR
     NS --> PNS
     NS --> ES
     NS --> SMS
+```

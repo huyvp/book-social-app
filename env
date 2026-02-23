@@ -3,3 +3,5 @@ db-user = sa
 db-key = mssq@12345
 client-id =
 client-secret =
+brevo-url = https://api.brevo.com
+brevo-api-key =

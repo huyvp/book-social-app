@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,6 +42,7 @@ public class UserService implements IUserService {
     PasswordEncoder passwordEncoder;
     ProfileClient profileClient;
     ProfileMapper profileMapper;
+    KafkaTemplate<String, String> kafkaTemplate;
 
     @Override
     public UserResponse createUser(UserReq userReq) {
@@ -59,6 +61,8 @@ public class UserService implements IUserService {
         profileReq.setUserId(savedUser.getId());
 
         profileClient.createProfile(profileReq);
+        kafkaTemplate.send("onboard-user", "Welcome our new member " + userReq.getUsername());
+
         return userMapper.toUserResFromUser(savedUser);
     }
 
