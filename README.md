@@ -120,6 +120,8 @@ It includes an API Gateway for centralized routing, an Identity Service for auth
 /api-gateway
 /identity-service
 /profile-service
+/notification-service
+/web-app
 /shared-libs
 docker-compose.yml
 README.md
