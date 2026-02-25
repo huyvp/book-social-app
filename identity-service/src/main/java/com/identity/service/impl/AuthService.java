@@ -183,7 +183,7 @@ public class AuthService implements IAuthService {
     public String generateToken(User user) {
         JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS256);
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
-                .subject(user.getUsername())
+                .subject(user.getId())
                 .issuer("nvh189")
                 .issueTime(new Date())
                 .claim("scope", scopeBuilder(user.getRoles()))
