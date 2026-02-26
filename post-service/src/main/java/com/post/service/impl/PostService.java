@@ -7,6 +7,7 @@ import com.post.entity.Post;
 import com.post.mapper.PostMapper;
 import com.post.repository.PostRepository;
 import com.post.service.IPostService;
+import com.post.utils.DateFormater;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -27,6 +28,7 @@ public class PostService implements IPostService {
 
     PostRepository postRepository;
     PostMapper postMapper;
+    DateFormater dateFormater = new DateFormater();
 
     @Override
     public PostResponse createPost(PostRequest postRequest) {
@@ -49,13 +51,17 @@ public class PostService implements IPostService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName();
 
-        PageRequest pageRequest =PageRequest.of(
+        PageRequest pageRequest = PageRequest.of(
                 page, limit, Sort.by("createDate").ascending()
         );
 
         Page<Post> pageData = postRepository.findAllByUserId(userId, pageRequest);
 
-        List<PostResponse> listData =  pageData.stream().map(postMapper::toPostResponse).toList();
+        List<PostResponse> listData = pageData.stream().map(post -> {
+            var postResponse = postMapper.toPostResponse(post);
+            postResponse.setCreated(dateFormater.format(post.getCreatedDate()));
+            return postResponse;
+        }).toList();
 
         return PageResponse.<List<PostResponse>>builder()
                 .totalPage(pageData.getTotalPages())
