@@ -1,6 +1,7 @@
 package com.post.service.impl;
 
 import com.post.dto.request.PostRequest;
+import com.post.dto.response.PageResponse;
 import com.post.dto.response.PostResponse;
 import com.post.entity.Post;
 import com.post.mapper.PostMapper;
@@ -9,6 +10,9 @@ import com.post.service.IPostService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -30,7 +34,7 @@ public class PostService implements IPostService {
         var userId = authentication.getName();
 
         Post post = Post.builder()
-                .id(userId)
+                .userId(userId)
                 .content(postRequest.getContent())
                 .createdDate(Instant.now())
                 .modifiedDate(Instant.now())
@@ -41,12 +45,22 @@ public class PostService implements IPostService {
     }
 
     @Override
-    public List<PostResponse> getMyPosts() {
+    public PageResponse<List<PostResponse>> getMyPosts(Integer page, Integer limit) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        var userId = authentication.getName();
+        String userId = authentication.getName();
 
-        return postRepository.findAllByUserId(userId).stream().map(
-                postMapper::toPostResponse
-        ).toList();
+        PageRequest pageRequest =PageRequest.of(
+                page, limit, Sort.by("createDate").ascending()
+        );
+
+        Page<Post> pageData = postRepository.findAllByUserId(userId, pageRequest);
+
+        List<PostResponse> listData =  pageData.stream().map(postMapper::toPostResponse).toList();
+
+        return PageResponse.<List<PostResponse>>builder()
+                .totalPage(pageData.getTotalPages())
+                .total(pageData.getTotalElements())
+                .data(listData)
+                .build();
     }
 }
