@@ -9,8 +9,12 @@ import java.util.List;
 public interface IUserProfileService {
     UserProfileResponse createProfile(UserProfileReq request);
 
-    UserProfileResponse getProfile(String id);
+    UserProfileResponse getProfile(String profileId);
+
+    UserProfileResponse getProfileByUserId(String userId);
 
     @PreAuthorize("hasRole('ADMIN')")
     List<UserProfileResponse> getUserProfiles();
+
+    UserProfileResponse getMyProfile();
 }

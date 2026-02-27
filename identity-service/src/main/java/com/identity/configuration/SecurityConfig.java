@@ -37,10 +37,9 @@ public class SecurityConfig {
                 );
 
         httpSecurity.oauth2ResourceServer(oauth2 -> oauth2
-                .jwt(
-                        jwtConfigurer -> jwtConfigurer
-                                .decoder(jwtDecoderCustom)
-                                .jwtAuthenticationConverter(jwtAuthenticationConverter())
+                .jwt(jwtConfigurer -> jwtConfigurer
+                        .decoder(jwtDecoderCustom)
+                        .jwtAuthenticationConverter(jwtAuthenticationConverter())
                 )
                 .authenticationEntryPoint(new JwtAuthenticationEntrypoint())
                 .accessDeniedHandler(new JwtAccessDeniedHandler())

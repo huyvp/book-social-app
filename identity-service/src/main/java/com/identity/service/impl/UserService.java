@@ -60,13 +60,14 @@ public class UserService implements IUserService {
         User savedUser = userRepo.save(user);
         ProfileReq profileReq = profileMapper.toProfileReq(userReq);
         profileReq.setUserId(savedUser.getId());
+        profileReq.setUsername(savedUser.getUsername());
 
         profileClient.createProfile(profileReq);
 
         NotificationEvent notificationEvent = NotificationEvent.builder()
                 .channel("EMAIL")
                 .subject("Welcome to our service")
-                .body("Hello "+ user.getUsername())
+                .body("Hello " + user.getUsername())
                 .recipient(user.getEmail())
                 .build();
         kafkaTemplate.send("notification-delivery", notificationEvent);

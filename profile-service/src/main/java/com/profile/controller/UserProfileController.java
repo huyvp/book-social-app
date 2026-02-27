@@ -1,13 +1,16 @@
 package com.profile.controller;
 
-import com.profile.dto.request.UserProfileReq;
 import com.profile.dto.response.UserProfileResponse;
+import com.profile.handler.ResponseHandler;
 import com.profile.service.IUserProfileService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -15,19 +18,21 @@ import java.util.List;
 @RequestMapping(value = "/users")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@Slf4j
 public class UserProfileController {
     IUserProfileService userProfileService;
 
-    @PostMapping
-    UserProfileResponse createUserProfile(@RequestBody UserProfileReq userProfileReq) {
-        log.info("Creating user profile : {}", userProfileReq);
-        return userProfileService.createProfile(userProfileReq);
+    @GetMapping("/{profileId}")
+    ResponseEntity<Object> getUserProfile(@PathVariable("profileId") String profileId) {
+        return ResponseHandler.execute(
+                userProfileService.getProfile(profileId)
+        );
     }
 
-    @GetMapping("/{id}")
-    UserProfileResponse getUserProfile(@PathVariable("id") String id) {
-        return userProfileService.getProfile(id);
+    @GetMapping("/my-profile")
+    ResponseEntity<Object> getMyProfile() {
+        return ResponseHandler.execute(
+                userProfileService.getMyProfile()
+        );
     }
 
     @GetMapping

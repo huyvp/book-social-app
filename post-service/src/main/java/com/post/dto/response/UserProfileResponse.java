@@ -1,4 +1,4 @@
-package com.profile.dto.response;
+package com.post.dto.response;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

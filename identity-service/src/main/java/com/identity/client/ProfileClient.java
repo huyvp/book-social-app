@@ -13,6 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
         configuration = {AuthenticationInterceptor.class}
 )
 public interface ProfileClient {
-    @PostMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/internal/users", produces = MediaType.APPLICATION_JSON_VALUE)
     ProfileResponse createProfile(ProfileReq profileReq);
 }
