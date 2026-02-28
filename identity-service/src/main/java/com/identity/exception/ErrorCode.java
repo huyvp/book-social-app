@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum ErrorCode {
     UNCATEGORIZED(5000, HttpStatus.INTERNAL_SERVER_ERROR, "Uncategorized exception"),
+    SERVICE_ERROR(5001, HttpStatus.INTERNAL_SERVER_ERROR, "Internal Service error."),
     // ----------------------------------
     // Related to AUTH
     // ----------------------------------
@@ -24,6 +25,7 @@ public enum ErrorCode {
     USER_3001(3001, HttpStatus.BAD_REQUEST, "User existed"),
     USER_3002(3002, HttpStatus.NOT_FOUND, "User not found"),
     USER_3003(3002, HttpStatus.NOT_FOUND, "Password existed. Can't create new."),
+    USER_CREATE_FAILED(3004, HttpStatus.UNAUTHORIZED, "Can not create new user."),
     // ----------------------------------
     // Related to ROLE
     // ----------------------------------

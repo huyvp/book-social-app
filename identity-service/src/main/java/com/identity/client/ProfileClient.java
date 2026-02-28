@@ -2,7 +2,8 @@ package com.identity.client;
 
 import com.identity.configuration.AuthenticationInterceptor;
 import com.identity.dto.request.ProfileReq;
-import com.identity.dto.response.ProfileResponse;
+import com.identity.dto.response.DefaultResponse;
+import com.identity.dto.response.UserProfileResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
         configuration = {AuthenticationInterceptor.class}
 )
 public interface ProfileClient {
-    @PostMapping(value = "/internal/users", produces = MediaType.APPLICATION_JSON_VALUE)
-    ProfileResponse createProfile(ProfileReq profileReq);
+    @PostMapping(
+            value = "/internal/users",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    DefaultResponse<UserProfileResponse> createProfile(ProfileReq profileReq);
 }

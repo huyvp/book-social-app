@@ -1,18 +1,17 @@
 package com.identity.dto.response;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Getter
-@Setter
+@Data
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProfileResponse {
+public class UserProfileResponse {
     String id;
     String userId;
+    String username;
     String email;
     String phoneNumber;
     String address;

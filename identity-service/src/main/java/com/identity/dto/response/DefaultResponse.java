@@ -12,6 +12,8 @@ import static com.identity.constant.Constants.Pattern.TIME;
 @Getter
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@NoArgsConstructor
+@AllArgsConstructor
 public class DefaultResponse<T> {
     @JsonFormat(pattern = TIME, timezone = "Asia/Bangkok")
     private LocalDateTime timestamp;

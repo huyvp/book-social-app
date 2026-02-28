@@ -15,6 +15,7 @@ import com.identity.mapper.UserMapper;
 import com.identity.repo.RoleRepo;
 import com.identity.repo.UserRepo;
 import com.identity.service.IUserService;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -46,6 +47,7 @@ public class UserService implements IUserService {
     KafkaTemplate<String, Object> kafkaTemplate;
 
     @Override
+    @Transactional(rollbackOn = Exception.class)
     public UserResponse createUser(UserReq userReq) {
         if (userRepo.findByUsernameAndActiveTrue(userReq.getUsername()).isPresent())
             throw new ServiceException(ErrorCode.USER_3001);
@@ -62,16 +64,21 @@ public class UserService implements IUserService {
         profileReq.setUserId(savedUser.getId());
         profileReq.setUsername(savedUser.getUsername());
 
-        profileClient.createProfile(profileReq);
+        try {
+            profileClient.createProfile(profileReq);
 
-        NotificationEvent notificationEvent = NotificationEvent.builder()
-                .channel("EMAIL")
-                .subject("Welcome to our service")
-                .body("Hello " + user.getUsername())
-                .recipient(user.getEmail())
-                .build();
-        kafkaTemplate.send("notification-delivery", notificationEvent);
+            NotificationEvent notificationEvent = NotificationEvent.builder()
+                    .channel("EMAIL")
+                    .subject("Welcome to our service")
+                    .body("Hello " + user.getUsername())
+                    .recipient(user.getEmail())
+                    .build();
+            kafkaTemplate.send("notification-delivery", notificationEvent);
 
+        } catch (Exception e) {
+            log.error("user:creation - Failed - {}", e.getMessage());
+            throw new ServiceException(ErrorCode.USER_CREATE_FAILED);
+        }
         return userMapper.toUserResFromUser(savedUser);
     }
 

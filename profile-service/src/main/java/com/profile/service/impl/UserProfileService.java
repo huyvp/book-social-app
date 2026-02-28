@@ -32,6 +32,7 @@ public class UserProfileService implements IUserProfileService {
     public UserProfileResponse createProfile(UserProfileReq request) {
         UserProfile userProfile = userProfileMapper.toUserProfile(request);
         userProfile = userProfileRepo.save(userProfile);
+        log.info("profile:internal:createUserProfile - success");
         return userProfileMapper.toUserProfileRes(userProfile);
     }
 
