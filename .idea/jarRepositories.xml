@@ -2,29 +2,9 @@
 <project version="4">
   <component name="RemoteRepositoriesConfiguration">
     <remote-repository>
-      <option name="id" value="anyframe" />
-      <option name="name" value="anyframe" />
-      <option name="url" value="http://nexus.sdsdev.co.kr:8081/repository/anyframe-public/" />
-    </remote-repository>
-    <remote-repository>
       <option name="id" value="central" />
       <option name="name" value="Central Repository" />
       <option name="url" value="https://repo.maven.apache.org/maven2" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="lego" />
-      <option name="name" value="lego" />
-      <option name="url" value="http://nexus.sdsdev.co.kr:8081/repository/lego/" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="central" />
-      <option name="name" value="Central Repository" />
-      <option name="url" value="http://70.121.224.52:8081/repository/maven-public/" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="public" />
-      <option name="name" value="public" />
-      <option name="url" value="http://nexus.sdsdev.co.kr:8081/repository/maven-public/" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="central" />
