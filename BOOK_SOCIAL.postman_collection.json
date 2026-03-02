@@ -1,702 +1,977 @@
 {
-	"info": {
-		"_postman_id": "816b4d66-7c5e-473e-8d0f-281ca59cbd33",
-		"name": "BOOK_SOCIAL",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "24418910"
-	},
-	"item": [
-		{
-			"name": "identity",
-			"item": [
-				{
-					"name": "user",
-					"item": [
-						{
-							"name": "api/v1/users",
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"username\": \"Johnathan5\",\r\n    \"password\": \"password\",\r\n    \"firstName\": \"Johnathan\",\r\n    \"lastName\": \"Tah\",\r\n    \"phoneNumber\": \"01234567\",\r\n    \"address\": \"New address of test user\",\r\n    \"email\": \"nvh1892k@gmail.com\",\r\n    \"city\": \"Hanoi\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{URL.IDENTITY}}/users",
-									"host": [
-										"{{URL.IDENTITY}}"
-									],
-									"path": [
-										"users"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "api/v1/users/create-password",
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"password\": \"password\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{URL.IDENTITY}}/users/create-password",
-									"host": [
-										"{{URL.IDENTITY}}"
-									],
-									"path": [
-										"users",
-										"create-password"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "api/v1/users",
-							"request": {
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"username\": \"John witch\",\r\n    \"password\": \"pass\",\r\n    \"phoneNumber\": \"01234567\",\r\n    \"address\": \"address of test user\",\r\n    \"email\": \"nvh1892k@gmail.com\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{URL.IDENTITY}}/users/a0f325dc-4570-475a-8012-93ce77bbf914",
-									"host": [
-										"{{URL.IDENTITY}}"
-									],
-									"path": [
-										"users",
-										"a0f325dc-4570-475a-8012-93ce77bbf914"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "api/v1/users",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{URL.IDENTITY}}/users?page=0&limit=5",
-									"host": [
-										"{{URL.IDENTITY}}"
-									],
-									"path": [
-										"users"
-									],
-									"query": [
-										{
-											"key": "page",
-											"value": "0"
-										},
-										{
-											"key": "limit",
-											"value": "5"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "api/v1/users/{id}",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{URL.IDENTITY}}/users/d64479f3-401d-4a95-b9b2-e18157d302ea",
-									"host": [
-										"{{URL.IDENTITY}}"
-									],
-									"path": [
-										"users",
-										"d64479f3-401d-4a95-b9b2-e18157d302ea"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "api/v1/users/myInfo",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "formdata",
-									"formdata": []
-								},
-								"url": {
-									"raw": "{{URL.IDENTITY}}/users/myInfo",
-									"host": [
-										"{{URL.IDENTITY}}"
-									],
-									"path": [
-										"users",
-										"myInfo"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "api/v1/users/{id}",
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{URL.IDENTITY}}/users/b17aa5f4-e1b4-45b0-be87-7e78b1dcb55f",
-									"host": [
-										"{{URL.IDENTITY}}"
-									],
-									"path": [
-										"users",
-										"b17aa5f4-e1b4-45b0-be87-7e78b1dcb55f"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "role",
-					"item": [
-						{
-							"name": "api/v1/roles",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"name\": \"USER\",\r\n    \"description\": \"Admin role\",\r\n    \"permissions\": [\r\n        \"DELETE_DATA\",\r\n        \"WRITE_DATA\",\r\n        \"CREATE_DATA\"\r\n    ]\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{URL.IDENTITY}}/roles",
-									"host": [
-										"{{URL.IDENTITY}}"
-									],
-									"path": [
-										"roles"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "api/v1/roles/{role}",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{URL.IDENTITY}}/roles/ADMIN",
-									"host": [
-										"{{URL.IDENTITY}}"
-									],
-									"path": [
-										"roles",
-										"ADMIN"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "api/v1/roles",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{URL.IDENTITY}}/roles",
-									"host": [
-										"{{URL.IDENTITY}}"
-									],
-									"path": [
-										"roles"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "api/v1/roles/{name}",
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{URL.IDENTITY}}/roles/STAFF",
-									"host": [
-										"{{URL.IDENTITY}}"
-									],
-									"path": [
-										"roles",
-										"STAFF"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "permission",
-					"item": [
-						{
-							"name": "api/v1/permissions",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"name\": \"WRITE_DATA\",\r\n    \"description\": \"Staff can modify data\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{URL.IDENTITY}}/permissions",
-									"host": [
-										"{{URL.IDENTITY}}"
-									],
-									"path": [
-										"permissions"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "api/v1/permissions",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{URL.IDENTITY}}/permissions",
-									"host": [
-										"{{URL.IDENTITY}}"
-									],
-									"path": [
-										"permissions"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "api/v1/permissions/{name}",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{URL.IDENTITY}}/permissions/MODIFY_DATA",
-									"host": [
-										"{{URL.IDENTITY}}"
-									],
-									"path": [
-										"permissions",
-										"MODIFY_DATA"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "api/v1/permissions/{name}",
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{URL.IDENTITY}}/permissions/MODIFY_DATA",
-									"host": [
-										"{{URL.IDENTITY}}"
-									],
-									"path": [
-										"permissions",
-										"MODIFY_DATA"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "auth",
-					"item": [
-						{
-							"name": "api/v1/auth/login",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Set token to collection variable\", function() {\r",
-											"    var token = pm.response.json();\r",
-											"    pm.collectionVariables.set(\"token\", token.result);\r",
-											"});"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"admin\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{URL.IDENTITY}}/auth/login",
-									"host": [
-										"{{URL.IDENTITY}}"
-									],
-									"path": [
-										"auth",
-										"login"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "api/v1/auth/logout",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "default"
-										}
-									]
-								},
-								"url": {
-									"raw": "{{URL.IDENTITY}}/auth/logout",
-									"host": [
-										"{{URL.IDENTITY}}"
-									],
-									"path": [
-										"auth",
-										"logout"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "api/v1/auth/refresh",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Set token to collection variable\", function() {\r",
-											"    var token = pm.response.json();\r",
-											"    pm.collectionVariables.set(\"token\", token.result);\r",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "default"
-										}
-									]
-								},
-								"url": {
-									"raw": "{{URL.IDENTITY}}/auth/refresh",
-									"host": [
-										"{{URL.IDENTITY}}"
-									],
-									"path": [
-										"auth",
-										"refresh"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "api/v1/auth/introspect",
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "default"
-										}
-									]
-								},
-								"url": {
-									"raw": "{{URL.IDENTITY}}/auth/introspect",
-									"host": [
-										"{{URL.IDENTITY}}"
-									],
-									"path": [
-										"auth",
-										"introspect"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "api/v1/auth/outbound",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Set token to collection variable\", function() {\r",
-											"    var token = pm.response.json();\r",
-											"    pm.collectionVariables.set(\"token\", token.result);\r",
-											"});"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [],
-								"url": {
-									"raw": "{{URL.IDENTITY}}/auth/outbound?code=4%2F0AVMBsJjh-ZMd2PfjTmpCi-gUFi5GP5QiRBVVZ72hocZJEukJnfmpapxJKBm3areZYcn7tw",
-									"host": [
-										"{{URL.IDENTITY}}"
-									],
-									"path": [
-										"auth",
-										"outbound"
-									],
-									"query": [
-										{
-											"key": "code",
-											"value": "4%2F0AVMBsJjh-ZMd2PfjTmpCi-gUFi5GP5QiRBVVZ72hocZJEukJnfmpapxJKBm3areZYcn7tw"
-										}
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				}
-			]
-		},
-		{
-			"name": "profile",
-			"item": [
-				{
-					"name": "user",
-					"item": [
-						{
-							"name": "api/v1/users",
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"phoneNumber\": \"01234567889\",\r\n    \"address\": \"address of test user\",\r\n    \"email\": \"nvh1892kw@gmail.com\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{URL.PROFILE}}/users",
-									"host": [
-										"{{URL.PROFILE}}"
-									],
-									"path": [
-										"users"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "api/v1/users/{id}",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{URL.PROFILE}}/users/546cfaa7-dd8e-437b-adfb-0215fc57d403",
-									"host": [
-										"{{URL.PROFILE}}"
-									],
-									"path": [
-										"users",
-										"546cfaa7-dd8e-437b-adfb-0215fc57d403"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				}
-			]
-		}
-	],
-	"auth": {
-		"type": "bearer",
-		"bearer": [
-			{
-				"key": "token",
-				"value": "{{token}}",
-				"type": "string"
-			}
-		]
-	},
-	"event": [
-		{
-			"listen": "prerequest",
-			"script": {
-				"type": "text/javascript",
-				"requests": {},
-				"exec": [
-					""
-				]
-			}
-		},
-		{
-			"listen": "test",
-			"script": {
-				"type": "text/javascript",
-				"requests": {},
-				"exec": [
-					""
-				]
-			}
-		}
-	],
-	"variable": [
-		{
-			"key": "URL.IDENTITY",
-			"value": "http://localhost:9001/identity",
-			"disabled": true
-		},
-		{
-			"key": "URL.PROFILE",
-			"value": "http://localhost:9000/api/v1/profile",
-			"disabled": true
-		},
-		{
-			"key": "URL.IDENTITY",
-			"value": "http://localhost:9000/api/v1/identity",
-			"description": "api gateway"
-		},
-		{
-			"key": "URL.PROFILE",
-			"value": "http://localhost:9000/api/v1/profile",
-			"description": "api gateway"
-		},
-		{
-			"key": "token",
-			"value": ""
-		},
-		{
-			"value": ""
-		}
-	]
+  "info": {
+    "_postman_id": "816b4d66-7c5e-473e-8d0f-281ca59cbd33",
+    "name": "BOOK_SOCIAL",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "24418910"
+  },
+  "item": [
+    {
+      "name": "identity",
+      "item": [
+        {
+          "name": "user",
+          "item": [
+            {
+              "name": "identity/users/registration",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"username\": \"Johnathan007\",\r\n    \"password\": \"password\",\r\n    \"firstName\": \"Johnathan\",\r\n    \"lastName\": \"Tah\",\r\n    \"phoneNumber\": \"01234567\",\r\n    \"address\": \"New address of test user\",\r\n    \"email\": \"nvh1892k@yopmail.com\",\r\n    \"city\": \"Hanoi\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{URL.IDENTITY}}/users/registration",
+                  "host": [
+                    "{{URL.IDENTITY}}"
+                  ],
+                  "path": [
+                    "users",
+                    "registration"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "identity/users/create-password",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"password\": \"password\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{URL.IDENTITY}}/users/create-password",
+                  "host": [
+                    "{{URL.IDENTITY}}"
+                  ],
+                  "path": [
+                    "users",
+                    "create-password"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "identity/users",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"username\": \"John witch\",\r\n    \"password\": \"pass\",\r\n    \"phoneNumber\": \"01234567\",\r\n    \"address\": \"address of test user\",\r\n    \"email\": \"nvh1892k@gmail.com\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{URL.IDENTITY}}/users/a0f325dc-4570-475a-8012-93ce77bbf914",
+                  "host": [
+                    "{{URL.IDENTITY}}"
+                  ],
+                  "path": [
+                    "users",
+                    "a0f325dc-4570-475a-8012-93ce77bbf914"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "identity/users",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{URL.IDENTITY}}/users?page=0&limit=5",
+                  "host": [
+                    "{{URL.IDENTITY}}"
+                  ],
+                  "path": [
+                    "users"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "5"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "identity/users/{id}",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{URL.IDENTITY}}/users/d64479f3-401d-4a95-b9b2-e18157d302ea",
+                  "host": [
+                    "{{URL.IDENTITY}}"
+                  ],
+                  "path": [
+                    "users",
+                    "d64479f3-401d-4a95-b9b2-e18157d302ea"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "identity/users/myInfo",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": []
+                },
+                "url": {
+                  "raw": "{{URL.IDENTITY}}/users/myInfo",
+                  "host": [
+                    "{{URL.IDENTITY}}"
+                  ],
+                  "path": [
+                    "users",
+                    "myInfo"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "identity/users/{id}",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{URL.IDENTITY}}/users/b17aa5f4-e1b4-45b0-be87-7e78b1dcb55f",
+                  "host": [
+                    "{{URL.IDENTITY}}"
+                  ],
+                  "path": [
+                    "users",
+                    "b17aa5f4-e1b4-45b0-be87-7e78b1dcb55f"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "role",
+          "item": [
+            {
+              "name": "identity/roles",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"USER\",\r\n    \"description\": \"Admin role\",\r\n    \"permissions\": [\r\n        \"DELETE_DATA\",\r\n        \"WRITE_DATA\",\r\n        \"CREATE_DATA\"\r\n    ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{URL.IDENTITY}}/roles",
+                  "host": [
+                    "{{URL.IDENTITY}}"
+                  ],
+                  "path": [
+                    "roles"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "identity/roles/{roleName}",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{URL.IDENTITY}}/roles/ADMIN",
+                  "host": [
+                    "{{URL.IDENTITY}}"
+                  ],
+                  "path": [
+                    "roles",
+                    "ADMIN"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "identity/roles",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{URL.IDENTITY}}/roles",
+                  "host": [
+                    "{{URL.IDENTITY}}"
+                  ],
+                  "path": [
+                    "roles"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "identity/roles/{roleName}",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{URL.IDENTITY}}/roles/STAFF",
+                  "host": [
+                    "{{URL.IDENTITY}}"
+                  ],
+                  "path": [
+                    "roles",
+                    "STAFF"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "permission",
+          "item": [
+            {
+              "name": "identity/permissions",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"WRITE_DATA\",\r\n    \"description\": \"Staff can modify data\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{URL.IDENTITY}}/permissions",
+                  "host": [
+                    "{{URL.IDENTITY}}"
+                  ],
+                  "path": [
+                    "permissions"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "identity/permissions",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{URL.IDENTITY}}/permissions",
+                  "host": [
+                    "{{URL.IDENTITY}}"
+                  ],
+                  "path": [
+                    "permissions"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "identity/permissions/{name}",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{URL.IDENTITY}}/permissions/MODIFY_DATA",
+                  "host": [
+                    "{{URL.IDENTITY}}"
+                  ],
+                  "path": [
+                    "permissions",
+                    "MODIFY_DATA"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "identity/permissions/{name}",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{URL.IDENTITY}}/permissions/MODIFY_DATA",
+                  "host": [
+                    "{{URL.IDENTITY}}"
+                  ],
+                  "path": [
+                    "permissions",
+                    "MODIFY_DATA"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "auth",
+          "item": [
+            {
+              "name": "identity/auth/login",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Set token to collection variable\", function() {\r",
+                      "    var token = pm.response.json();\r",
+                      "    pm.collectionVariables.set(\"token\", token.result);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"username\": \"Johnathan000\",\r\n    \"password\": \"password\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{URL.IDENTITY}}/auth/login",
+                  "host": [
+                    "{{URL.IDENTITY}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "identity/auth/logout",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "default"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{URL.IDENTITY}}/auth/logout",
+                  "host": [
+                    "{{URL.IDENTITY}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "logout"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "identity/auth/refresh",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Set token to collection variable\", function() {\r",
+                      "    var token = pm.response.json();\r",
+                      "    pm.collectionVariables.set(\"token\", token.result);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "default"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{URL.IDENTITY}}/auth/refresh",
+                  "host": [
+                    "{{URL.IDENTITY}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "refresh"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "identity/auth/introspect",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}",
+                      "type": "default"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{URL.IDENTITY}}/auth/introspect",
+                  "host": [
+                    "{{URL.IDENTITY}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "introspect"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "identity/auth/outbound",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Set token to collection variable\", function() {\r",
+                      "    var token = pm.response.json();\r",
+                      "    pm.collectionVariables.set(\"token\", token.result);\r",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{URL.IDENTITY}}/auth/outbound?code=4%2F0AVMBsJjh-ZMd2PfjTmpCi-gUFi5GP5QiRBVVZ72hocZJEukJnfmpapxJKBm3areZYcn7tw",
+                  "host": [
+                    "{{URL.IDENTITY}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "outbound"
+                  ],
+                  "query": [
+                    {
+                      "key": "code",
+                      "value": "4%2F0AVMBsJjh-ZMd2PfjTmpCi-gUFi5GP5QiRBVVZ72hocZJEukJnfmpapxJKBm3areZYcn7tw"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "profile",
+      "item": [
+        {
+          "name": "profile/internal/users",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"phoneNumber\": \"01234567889\",\r\n    \"address\": \"address of test user\",\r\n    \"email\": \"nvh1892kw@gmail.com\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL.PROFILE}}/internal/users",
+              "host": [
+                "{{URL.PROFILE}}"
+              ],
+              "path": [
+                "internal",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "profile/internal/users/{userId}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{URL.PROFILE}}/internal/users/632805e9-8833-4999-967a-6e9398d84f5c",
+              "host": [
+                "{{URL.PROFILE}}"
+              ],
+              "path": [
+                "internal",
+                "users",
+                "632805e9-8833-4999-967a-6e9398d84f5c"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "profile/{id}",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{URL.PROFILE}}/3458faf6-53de-4eef-af89-71fbd7263a13",
+              "host": [
+                "{{URL.PROFILE}}"
+              ],
+              "path": [
+                "3458faf6-53de-4eef-af89-71fbd7263a13"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "profile/my-profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{URL.PROFILE}}/my-profile",
+              "host": [
+                "{{URL.PROFILE}}"
+              ],
+              "path": [
+                "my-profile"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "notification",
+      "item": [
+        {
+          "name": "notification/email/send",
+          "protocolProfileBehavior": {
+            "disabledSystemHeaders": {}
+          },
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "value",
+                  "value": "xxxx",
+                  "type": "string"
+                },
+                {
+                  "key": "key",
+                  "value": "api-key",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"htmlContent\": \"<html><head></head><body><p>Hello,</p>This is my first transactional email sent from Brevo.</p></body></html>\",\n    \"subject\": \"Hello from Brevo!\",\n    \"to\": {\n        \"email\": \"nvh1892k@yopmail.com\",\n        \"name\": \"John Doe\"\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL.NOTICE}}/email/send",
+              "host": [
+                "{{URL.NOTICE}}"
+              ],
+              "path": [
+                "email",
+                "send"
+              ]
+            },
+            "description": "Generated from cURL: curl -X POST https://api.brevo.com/v3/smtp/email \\\n     -H \"api-key: <apiKey>\" \\\n     -H \"Content-Type: application/json\" \\\n     -d '{\n  \"htmlContent\": \"<html><head></head><body><p>Hello,</p>This is my first transactional email sent from Brevo.</p></body></html>\",\n  \"sender\": {\n    \"email\": \"hello@brevo.com\",\n    \"name\": \"Alex from Brevo\"\n  },\n  \"subject\": \"Hello from Brevo!\",\n  \"to\": [\n    {\n      \"email\": \"johndoe@example.com\",\n      \"name\": \"John Doe\"\n    }\n  ]\n}'"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "post",
+      "item": [
+        {
+          "name": "post/create",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"content\": \"Helllllllll0000000\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL.POST}}/create",
+              "host": [
+                "{{URL.POST}}"
+              ],
+              "path": [
+                "create"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "post/my-post",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{URL.POST}}/my-posts?page=0&limit=200",
+              "host": [
+                "{{URL.POST}}"
+              ],
+              "path": [
+                "my-posts"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "limit",
+                  "value": "200"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "file",
+      "item": [
+        {
+          "name": "file/upload",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "uuid": "8d681f6a-b1e2-4d45-97a2-fd1d955c7e39",
+                  "value": null
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{URL.FILE}}/upload",
+              "host": [
+                "{{URL.FILE}}"
+              ],
+              "path": [
+                "upload"
+              ],
+              "query": [
+                {
+                  "key": "file",
+                  "value": null,
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "file/{filename}",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "{{URL.POST}}/filename",
+              "host": [
+                "{{URL.POST}}"
+              ],
+              "path": [
+                "filename"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "https://api.brevo.com/v3/smtp/email",
+      "protocolProfileBehavior": {
+        "disabledSystemHeaders": {}
+      },
+      "request": {
+        "auth": {
+          "type": "apikey",
+          "apikey": [
+            {
+              "key": "value",
+              "value": "xxxx",
+              "type": "string"
+            },
+            {
+              "key": "key",
+              "value": "api-key",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"htmlContent\": \"<html><head></head><body><p>Hello,</p>This is my first transactional email sent from Brevo.</p></body></html>\",\n    \"sender\": {\n        \"email\": \"nvh1892kw@gmail.com\",\n        \"name\": \"Meakar\"\n    },\n    \"subject\": \"Hello from Brevo!\",\n    \"to\": [\n        {\n            \"email\": \"nvh1892k@yopmail.com\",\n            \"name\": \"John Doe\"\n        }\n    ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api.brevo.com/v3/smtp/email",
+          "protocol": "https",
+          "host": [
+            "api",
+            "brevo",
+            "com"
+          ],
+          "path": [
+            "v3",
+            "smtp",
+            "email"
+          ]
+        },
+        "description": "Generated from cURL: curl -X POST https://api.brevo.com/v3/smtp/email \\\n     -H \"api-key: <apiKey>\" \\\n     -H \"Content-Type: application/json\" \\\n     -d '{\n  \"htmlContent\": \"<html><head></head><body><p>Hello,</p>This is my first transactional email sent from Brevo.</p></body></html>\",\n  \"sender\": {\n    \"email\": \"hello@brevo.com\",\n    \"name\": \"Alex from Brevo\"\n  },\n  \"subject\": \"Hello from Brevo!\",\n  \"to\": [\n    {\n      \"email\": \"johndoe@example.com\",\n      \"name\": \"John Doe\"\n    }\n  ]\n}'"
+      },
+      "response": []
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "URL.IDENTITY",
+      "value": "http://localhost:9001/identity",
+      "disabled": true
+    },
+    {
+      "key": "URL.PROFILE",
+      "value": "http://localhost:9000/api/v1/profile",
+      "disabled": true
+    },
+    {
+      "key": "URL.NOTICE",
+      "value": ""
+    },
+    {
+      "key": "URL.IDENTITY",
+      "value": "http://localhost:9000/api/v1/identity",
+      "description": "api gateway"
+    },
+    {
+      "key": "URL.PROFILE",
+      "value": "http://localhost:9000/api/v1/profile",
+      "description": "api gateway"
+    },
+    {
+      "key": "URL.POST",
+      "value": "",
+      "description": "api gateway"
+    },
+    {
+      "key": "URL.FILE",
+      "value": "",
+      "description": "api gateway"
+    },
+    {
+      "key": "URL.NOTICE",
+      "value": "",
+      "disabled": true,
+      "description": "api gateway"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
 }
