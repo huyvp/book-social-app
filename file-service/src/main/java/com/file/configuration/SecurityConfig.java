@@ -24,7 +24,7 @@ public class SecurityConfig {
     private final JwtDecoderCustom jwtDecoderCustom;
 
     private static final String[] PUBLIC_ENDPOINTS = {
-            "/internal/users",
+
     };
 
     @Bean

@@ -7,6 +7,5 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserProfileRepo extends MongoRepository<FileManagement, String> {
-    Optional<FileManagement> findByUserId(String userId);
+public interface FileManagementRepo extends MongoRepository<FileManagement, String> {
 }
