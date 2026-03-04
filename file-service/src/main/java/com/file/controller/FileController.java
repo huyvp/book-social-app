@@ -5,10 +5,11 @@ import com.file.service.IFileService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
@@ -22,5 +23,14 @@ public class FileController {
         return ResponseHandler.execute(
                 fileService.uploadFile(file)
         );
+    }
+
+    @GetMapping(value = "download/{fileName}")
+    public ResponseEntity<Resource> download(@PathVariable("fileName") String fileName) {
+        var fileData = fileService.downloadFile(fileName);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION)
+                .header(HttpHeaders.CONTENT_TYPE, fileData.contentType())
+                .body(fileData.resource());
     }
 }

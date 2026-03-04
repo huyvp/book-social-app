@@ -1,12 +1,15 @@
 package com.file.repo;
 
 import com.file.dto.FileInfo;
+import com.file.entity.FileManagement;
 import com.file.exception.ErrorCode;
 import com.file.exception.ServiceException;
 import com.file.util.FileUtils;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
@@ -55,7 +58,7 @@ public class FileRepo {
             return FileInfo.builder()
                     .name(fileName)
                     .size(file.getSize())
-                    .contentType(fileExtension)
+                    .contentType(file.getContentType())
                     .md5Checksum(DigestUtils.md5DigestAsHex(file.getInputStream()))
                     .path(folder.toString())
                     .url(downloadUrl)
@@ -64,6 +67,16 @@ public class FileRepo {
         } catch (IOException e) {
             log.error("Failed to store file", e);
             throw new ServiceException(ErrorCode.UNCATEGORIZED);
+        }
+    }
+
+    public Resource read(FileManagement fileManagement) {
+        try {
+            Path filePath = Paths.get(fileManagement.getPath(), fileManagement.getId());
+            log.info("file:download:path {}", filePath);
+            return new ByteArrayResource(Files.readAllBytes(filePath));
+        } catch (IOException e) {
+            throw new ServiceException(ErrorCode.FILE_PATH_NOT_FOUND);
         }
     }
 }

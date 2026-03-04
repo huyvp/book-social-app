@@ -39,7 +39,8 @@ public class AuthenticationFilter implements Ordered, GlobalFilter {
     private String[] publicEndpoints = {
             "/identity/auth/.*",
             "/identity/users/registration",
-            "/notification/email/send"
+            "/notification/email/send",
+            "/file/download/.*",
     };
 
     @NonFinal

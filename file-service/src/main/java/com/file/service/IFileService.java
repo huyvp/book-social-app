@@ -1,9 +1,13 @@
 package com.file.service;
 
 
+import com.file.dto.response.FileData;
 import com.file.dto.response.FileInfoResponse;
+import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface IFileService {
     FileInfoResponse uploadFile(MultipartFile file);
+
+    FileData downloadFile(String fileName);
 }

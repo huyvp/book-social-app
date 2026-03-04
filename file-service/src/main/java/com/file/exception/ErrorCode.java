@@ -30,10 +30,11 @@ public enum ErrorCode {
     PERMISSION_3001(3001, HttpStatus.BAD_REQUEST, "Permission existed"),
     PERMISSION_3002(3002, HttpStatus.NOT_FOUND, "Permission not found"),
     // ----------------------------------
-    // Related to PROFILE
+    // Related to FILE
     // ----------------------------------
-    PROFILE_EXISTED(3001, HttpStatus.BAD_REQUEST, "Profile existed"),
-    PROFILE_NOT_FOUND(3002, HttpStatus.NOT_FOUND, "Profile not found");
+    FILE_EXISTED(3001, HttpStatus.BAD_REQUEST, "File existed"),
+    FILE_NOT_FOUND(3002, HttpStatus.NOT_FOUND, "File not found"),
+    FILE_PATH_NOT_FOUND(3002, HttpStatus.NOT_FOUND, "File path not found");
 
     private int code;
     private HttpStatus httpStatus;
