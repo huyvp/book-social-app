@@ -3,6 +3,7 @@ package com.profile.service;
 import com.profile.dto.request.UserProfileReq;
 import com.profile.dto.response.UserProfileResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -17,4 +18,6 @@ public interface IUserProfileService {
     List<UserProfileResponse> getUserProfiles();
 
     UserProfileResponse getMyProfile();
+
+    UserProfileResponse updateAvatar(MultipartFile file);
 }

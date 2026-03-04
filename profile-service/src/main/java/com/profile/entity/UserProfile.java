@@ -28,4 +28,5 @@ public class UserProfile {
     String phoneNumber;
     String address;
     String city;
+    String avatar;
 }

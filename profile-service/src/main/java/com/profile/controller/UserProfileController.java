@@ -9,7 +9,9 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -32,6 +34,14 @@ public class UserProfileController {
                 userProfileService.getMyProfile()
         );
     }
+
+    @GetMapping("/avatar")
+    ResponseEntity<Object> updateAvatar(@RequestParam("file") MultipartFile file) {
+        return ResponseHandler.execute(
+                userProfileService.getMyProfile()
+        );
+    }
+
 
     @GetMapping
     List<UserProfileResponse> getUserProfiles() {

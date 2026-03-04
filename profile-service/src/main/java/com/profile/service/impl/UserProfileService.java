@@ -1,5 +1,6 @@
 package com.profile.service.impl;
 
+import com.profile.client.FileClient;
 import com.profile.dto.request.UserProfileReq;
 import com.profile.dto.response.UserProfileResponse;
 import com.profile.entity.UserProfile;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -28,6 +30,7 @@ public class UserProfileService implements IUserProfileService {
 
     UserProfileRepo userProfileRepo;
     UserProfileMapper userProfileMapper;
+    FileClient fileClient;
 
     public UserProfileResponse createProfile(UserProfileReq request) {
         UserProfile userProfile = userProfileMapper.toUserProfile(request);
@@ -66,6 +69,20 @@ public class UserProfileService implements IUserProfileService {
 
         var profile = userProfileRepo.findByUserId(userId)
                 .orElseThrow(() -> new ServiceException(USER_NOT_FOUND));
+
+        return userProfileMapper.toUserProfileRes(profile);
+    }
+
+    @Override
+    public UserProfileResponse updateAvatar(MultipartFile file) {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userId = authentication.getName();
+
+        var profile = userProfileRepo.findByUserId(userId)
+                .orElseThrow(() -> new ServiceException(USER_NOT_FOUND));
+
+        var fileResponse = fileClient.uploadFile(file);
+        profile.setAvatar(fileResponse.getUrl());
 
         return userProfileMapper.toUserProfileRes(profile);
     }

@@ -17,4 +17,5 @@ public class UserProfileResponse {
     String email;
     String phoneNumber;
     String address;
+    String avatar;
 }
