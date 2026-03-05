@@ -180,7 +180,7 @@ export default function Header() {
             height: "35px",
             borderRadius: 6,
           }}
-          src="/logo/devteria-logo.png"
+          src="/logo/200.png"
         ></Box>
       </IconButton>
       <Search>
