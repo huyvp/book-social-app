@@ -1,11 +1,11 @@
-import { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import { Box, Card, CircularProgress, Typography } from "@mui/material";
-import { isAuthenticated } from "../services/authenticationService";
-import Scene from "./Scene";
-import Post from "../components/Post";
-import { getMyPosts } from "../services/postService";
-import { logOut } from "../services/authenticationService";
+import { useEffect, useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Box, Card, CircularProgress, Typography } from '@mui/material';
+import { isAuthenticated } from '../services/authenticationService';
+import Scene from './Scene';
+import Post from '../components/Post';
+import { getMyPosts } from '../services/postService';
+import { logOut } from '../services/authenticationService';
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
@@ -20,7 +20,7 @@ export default function Home() {
 
   useEffect(() => {
     if (!isAuthenticated()) {
-      navigate("/login");
+      navigate('/login');
     } else {
       loadPosts(page);
     }
@@ -34,12 +34,12 @@ export default function Home() {
         setTotalPages(response.data.result.totalPage);
         setPosts((prevPosts) => [...prevPosts, ...response.data.result.data]);
         setHasMore(response.data.result.data.length > 0);
-        console.log("loaded posts:", response.data.result);
+        console.log('loaded posts:', response.data.result);
       })
       .catch((error) => {
         if (error.response.status === 401) {
           logOut();
-          navigate("/login");
+          navigate('/login');
         }
       })
       .finally(() => {
@@ -73,49 +73,45 @@ export default function Home() {
           maxWidth: 600,
           boxShadow: 3,
           borderRadius: 2,
-          padding: "20px",
+          padding: '20px'
         }}
       >
         <Box
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-start",
-            width: "100%",
-            gap: "10px",
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            width: '100%',
+            gap: '10px'
           }}
         >
           <Typography
             sx={{
               fontSize: 18,
-              mb: "10px",
+              mb: '10px'
             }}
           >
             Your posts,
           </Typography>
           <Box
             sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-              width: "100%", // Ensure content takes full width
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
+              width: '100%' // Ensure content takes full width
             }}
           ></Box>
           {posts.map((post, index) => {
             if (posts.length === index + 1) {
-              return (
-                <Post ref={lastPostElementRef} key={post.id} post={post} />
-              );
+              return <Post ref={lastPostElementRef} key={post.id} post={post} />;
             } else {
               return <Post key={post.id} post={post} />;
             }
           })}
           {loading && (
-            <Box
-              sx={{ display: "flex", justifyContent: "center", width: "100%" }}
-            >
-              <CircularProgress size="24px" />
+            <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+              <CircularProgress size='24px' />
             </Box>
           )}
         </Box>

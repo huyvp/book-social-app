@@ -1,5 +1,5 @@
-import { CssBaseline } from "@mui/material";
-import AppRoutes from "./routes/AppRoutes";
+import { CssBaseline } from '@mui/material';
+import AppRoutes from './routes/AppRoutes';
 
 function App() {
   return (

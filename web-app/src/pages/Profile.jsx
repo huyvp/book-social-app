@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Box, Card, CircularProgress, Typography } from "@mui/material";
-import { getMyInfo } from "../services/userService";
-import { isAuthenticated } from "../services/authenticationService";
-import Scene from "./Scene";
-import { logOut } from "../services/authenticationService";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Box, Card, CircularProgress, Typography } from '@mui/material';
+import { getMyInfo } from '../services/userService';
+import { isAuthenticated } from '../services/authenticationService';
+import Scene from './Scene';
+import { logOut } from '../services/authenticationService';
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -19,14 +19,14 @@ export default function Profile() {
     } catch (error) {
       if (error.response.status === 401) {
         logOut();
-        navigate("/login");
+        navigate('/login');
       }
     }
   };
 
   useEffect(() => {
     if (!isAuthenticated()) {
-      navigate("/login");
+      navigate('/login');
     } else {
       getUserDetails();
     }
@@ -41,46 +41,46 @@ export default function Profile() {
             maxWidth: 500,
             boxShadow: 3,
             borderRadius: 2,
-            padding: 4,
+            padding: 4
           }}
         >
           <Box
             sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-start",
-              width: "100%",
-              gap: "10px",
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              width: '100%',
+              gap: '10px'
             }}
           >
             <Typography
               sx={{
                 fontSize: 18,
-                mb: "40px",
+                mb: '40px'
               }}
             >
               Welcome back to Devteria, {userDetails.username} !
             </Typography>
             <Box
               sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "flex-start",
-                width: "100%", // Ensure content takes full width
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'flex-start',
+                width: '100%' // Ensure content takes full width
               }}
             >
               <Typography
                 sx={{
                   fontSize: 14,
-                  fontWeight: 600,
+                  fontWeight: 600
                 }}
               >
                 User Id
               </Typography>
               <Typography
                 sx={{
-                  fontSize: 14,
+                  fontSize: 14
                 }}
               >
                 {userDetails.id}
@@ -88,24 +88,24 @@ export default function Profile() {
             </Box>
             <Box
               sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "flex-start",
-                width: "100%", // Ensure content takes full width
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'flex-start',
+                width: '100%' // Ensure content takes full width
               }}
             >
               <Typography
                 sx={{
                   fontSize: 14,
-                  fontWeight: 600,
+                  fontWeight: 600
                 }}
               >
                 First Name
               </Typography>
               <Typography
                 sx={{
-                  fontSize: 14,
+                  fontSize: 14
                 }}
               >
                 {userDetails.firstName}
@@ -113,24 +113,24 @@ export default function Profile() {
             </Box>
             <Box
               sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "flex-start",
-                width: "100%", // Ensure content takes full width
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'flex-start',
+                width: '100%' // Ensure content takes full width
               }}
             >
               <Typography
                 sx={{
                   fontSize: 14,
-                  fontWeight: 600,
+                  fontWeight: 600
                 }}
               >
                 Last Name
               </Typography>
               <Typography
                 sx={{
-                  fontSize: 14,
+                  fontSize: 14
                 }}
               >
                 {userDetails.lastName}
@@ -138,24 +138,24 @@ export default function Profile() {
             </Box>
             <Box
               sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "flex-start",
-                width: "100%", // Ensure content takes full width
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'flex-start',
+                width: '100%' // Ensure content takes full width
               }}
             >
               <Typography
                 sx={{
                   fontSize: 14,
-                  fontWeight: 600,
+                  fontWeight: 600
                 }}
               >
                 Date of birth
               </Typography>
               <Typography
                 sx={{
-                  fontSize: 14,
+                  fontSize: 14
                 }}
               >
                 {userDetails.dob}
@@ -166,12 +166,12 @@ export default function Profile() {
       ) : (
         <Box
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "30px",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '30px',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh'
           }}
         >
           <CircularProgress></CircularProgress>
