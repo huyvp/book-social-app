@@ -14,6 +14,8 @@ public class UserProfileResponse {
     String id;
     String userId;
     String username;
+    String givenName;
+    String familyName;
     String email;
     String phoneNumber;
     String address;

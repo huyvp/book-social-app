@@ -65,14 +65,18 @@ function Scene({ children }) {
           flexDirection: 'row'
         }}
       >
-        <Box component='nav' sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }} aria-label='mailbox folders'>
+        <Box
+          component='nav'
+          sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+          aria-label='mailbox folders'
+        >
           <Drawer
             variant='temporary'
             open={mobileOpen}
             onTransitionEnd={handleDrawerTransitionEnd}
             onClose={handleDrawerClose}
             ModalProps={{
-              keepMounted: true // Better open performance on mobile.
+              keepMounted: true
             }}
             sx={{
               display: { xs: 'block', sm: 'none' },

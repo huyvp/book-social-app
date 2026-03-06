@@ -119,7 +119,7 @@ public class UserService implements IUserService {
         SecurityContext context = SecurityContextHolder.getContext();
         String username = context.getAuthentication().getName();
 
-        User user = userRepo.findByUsernameAndActiveTrue(username)
+        User user = userRepo.findByIdAndActiveTrue(username)
                 .orElseThrow(() -> new ServiceException(ErrorCode.USER_3002));
         var userResponse = userMapper.toUserResFromUser(user);
         userResponse.setNoPassword(!StringUtils.hasText(user.getPassword()));

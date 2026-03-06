@@ -1,19 +1,13 @@
 package com.profile.controller;
 
-import com.profile.dto.response.UserProfileResponse;
 import com.profile.handler.ResponseHandler;
 import com.profile.service.IUserProfileService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,16 +29,10 @@ public class UserProfileController {
         );
     }
 
-    @GetMapping("/avatar")
+    @PutMapping("/avatar")
     ResponseEntity<Object> updateAvatar(@RequestParam("file") MultipartFile file) {
         return ResponseHandler.execute(
-                userProfileService.getMyProfile()
+                userProfileService.updateAvatar(file)
         );
-    }
-
-
-    @GetMapping
-    List<UserProfileResponse> getUserProfiles() {
-        return userProfileService.getUserProfiles();
     }
 }

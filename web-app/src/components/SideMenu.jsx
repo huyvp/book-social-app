@@ -20,7 +20,10 @@ function SideMenu() {
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
-            <ListItemText primary={'Home'} primaryTypographyProps={{ style: { fontWeight: 'bold' } }} />
+            <ListItemText
+              primary={'Home'}
+              primaryTypographyProps={{ style: { fontWeight: 'bold' } }}
+            />
           </ListItemButton>
         </ListItem>
         <ListItem key={'friends'} disablePadding>
@@ -28,7 +31,10 @@ function SideMenu() {
             <ListItemIcon>
               <PeopleIcon />
             </ListItemIcon>
-            <ListItemText primary={'Friends'} primaryTypographyProps={{ style: { fontWeight: 'bold' } }} />
+            <ListItemText
+              primary={'Friends'}
+              primaryTypographyProps={{ style: { fontWeight: 'bold' } }}
+            />
           </ListItemButton>
         </ListItem>
         <ListItem key={'groups'} disablePadding>
@@ -36,7 +42,10 @@ function SideMenu() {
             <ListItemIcon>
               <GroupsIcon />
             </ListItemIcon>
-            <ListItemText primary={'Groups'} primaryTypographyProps={{ style: { fontWeight: 'bold' } }} />
+            <ListItemText
+              primary={'Groups'}
+              primaryTypographyProps={{ style: { fontWeight: 'bold' } }}
+            />
           </ListItemButton>
         </ListItem>
       </List>

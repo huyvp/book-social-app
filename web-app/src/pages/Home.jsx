@@ -1,11 +1,10 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Card, CircularProgress, Typography } from '@mui/material';
-import { isAuthenticated } from '../services/authenticationService';
+import { isAuthenticated, logOut } from '../services/authenticationService';
 import Scene from './Scene';
 import Post from '../components/Post';
 import { getMyPosts } from '../services/postService';
-import { logOut } from '../services/authenticationService';
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
@@ -27,14 +26,12 @@ export default function Home() {
   }, [navigate, page]);
 
   const loadPosts = (page) => {
-    console.log(`loading posts for page ${page}`);
     setLoading(true);
     getMyPosts(page)
       .then((response) => {
         setTotalPages(response.data.result.totalPage);
         setPosts((prevPosts) => [...prevPosts, ...response.data.result.data]);
         setHasMore(response.data.result.data.length > 0);
-        console.log('loaded posts:', response.data.result);
       })
       .catch((error) => {
         if (error.response.status === 401) {
@@ -104,13 +101,17 @@ export default function Home() {
           ></Box>
           {posts.map((post, index) => {
             if (posts.length === index + 1) {
-              return <Post ref={lastPostElementRef} key={post.id} post={post} />;
+              return (
+                <Post ref={lastPostElementRef} key={post.id} post={post} />
+              );
             } else {
               return <Post key={post.id} post={post} />;
             }
           })}
           {loading && (
-            <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+            <Box
+              sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
+            >
               <CircularProgress size='24px' />
             </Box>
           )}

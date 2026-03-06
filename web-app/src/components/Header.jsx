@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { styled, alpha } from '@mui/material/styles';
+import { alpha, styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
@@ -73,6 +73,11 @@ export default function Header() {
     handleMobileMenuClose();
   };
 
+  const handleOpenProfile = () => {
+    setAnchorEl(null);
+    window.location.href = '/profile';
+  };
+
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
@@ -100,7 +105,7 @@ export default function Header() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={handleOpenProfile}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>Settings</MenuItem>
       <MenuItem onClick={handleLogout}>Log Out</MenuItem>
     </Menu>
@@ -132,7 +137,11 @@ export default function Header() {
         <p>Messages</p>
       </MenuItem>
       <MenuItem>
-        <IconButton size='large' aria-label='show 4 new notifications' color='inherit'>
+        <IconButton
+          size='large'
+          aria-label='show 4 new notifications'
+          color='inherit'
+        >
           <Badge badgeContent={4} color='error'>
             <NotificationsIcon />
           </Badge>
@@ -156,7 +165,14 @@ export default function Header() {
 
   return (
     <>
-      <IconButton size='large' edge='start' color='inherit' aria-label='open drawer' sx={{ mr: 2 }}>
+      <IconButton
+        size='large'
+        edge='start'
+        color='inherit'
+        aria-label='open drawer'
+        sx={{ mr: 2 }}
+        onClick={() => (window.location.href = '/')}
+      >
         <Box
           component={'img'}
           style={{
@@ -171,7 +187,10 @@ export default function Header() {
         <SearchIconWrapper>
           <SearchIcon />
         </SearchIconWrapper>
-        <StyledInputBase placeholder='Search…' inputProps={{ 'aria-label': 'search' }} />
+        <StyledInputBase
+          placeholder='Search…'
+          inputProps={{ 'aria-label': 'search' }}
+        />
       </Search>
       <Box sx={{ flexGrow: 1 }} />
       <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
@@ -180,7 +199,11 @@ export default function Header() {
             <MailIcon />
           </Badge>
         </IconButton>
-        <IconButton size='large' aria-label='show 17 new notifications' color='inherit'>
+        <IconButton
+          size='large'
+          aria-label='show 17 new notifications'
+          color='inherit'
+        >
           <Badge badgeContent={17} color='error'>
             <NotificationsIcon />
           </Badge>

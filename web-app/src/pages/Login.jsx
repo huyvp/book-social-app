@@ -1,18 +1,23 @@
-import { Box, Button, Card, CardContent, Divider, TextField, Typography, Snackbar, Alert } from '@mui/material';
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Divider,
+  TextField,
+  Typography
+} from '@mui/material';
 
 import GoogleIcon from '@mui/icons-material/Google';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { logIn, isAuthenticated } from '../services/authenticationService';
+import { isAuthenticated, logIn } from '../services/authenticationService';
+import SnackbarUI from '../components/ui/Snackbar';
 
 export default function Login() {
   const navigate = useNavigate();
 
-  const handleCloseSnackBar = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
+  const handleCloseSnackBar = () => {
     setSnackBarOpen(false);
   };
 
@@ -48,16 +53,12 @@ export default function Login() {
 
   return (
     <>
-      <Snackbar
+      <SnackbarUI
         open={snackBarOpen}
+        message={snackBarMessage}
         onClose={handleCloseSnackBar}
-        autoHideDuration={6000}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      >
-        <Alert onClose={handleCloseSnackBar} severity='error' variant='filled' sx={{ width: '100%' }}>
-          {snackBarMessage}
-        </Alert>
-      </Snackbar>
+        severity='success'
+      />
       <Box
         display='flex'
         flexDirection='column'
@@ -77,7 +78,7 @@ export default function Login() {
         >
           <CardContent>
             <Typography variant='h5' component='h1' gutterBottom>
-              Welcome to Devtetia
+              Welcome to _sudo.dan
             </Typography>
             <Box
               component='form'
@@ -135,7 +136,12 @@ export default function Login() {
                 <GoogleIcon />
                 Continue with Google
               </Button>
-              <Button type='submit' variant='contained' color='success' size='large'>
+              <Button
+                type='submit'
+                variant='contained'
+                color='success'
+                size='large'
+              >
                 Create an account
               </Button>
             </Box>
