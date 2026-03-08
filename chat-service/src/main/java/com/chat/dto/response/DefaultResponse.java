@@ -1,20 +1,20 @@
-package com.profile.dto.response;
+package com.chat.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
-import static com.profile.constant.Constants.Pattern.TIME;
+import static com.file.constant.Constants.Pattern.TIME;
 
 
 @Getter
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@AllArgsConstructor
-@NoArgsConstructor
 public class DefaultResponse<T> {
     @JsonFormat(pattern = TIME, timezone = "Asia/Bangkok")
     private LocalDateTime timestamp;

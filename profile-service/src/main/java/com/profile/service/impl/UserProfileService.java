@@ -54,12 +54,13 @@ public class UserProfileService implements IUserProfileService {
     }
 
     @Override
-    public List<UserProfileResponse> getUserProfiles() {
-        List<UserProfile> userProfiles = userProfileRepo.findAll();
-        if (!CollectionUtils.isEmpty(userProfiles)) {
-            return userProfiles.stream().map(userProfileMapper::toUserProfileRes).toList();
-        }
-        return List.of();
+    public List<UserProfileResponse> getUserProfiles(String search) {
+        var userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<UserProfile> userProfiles = userProfileRepo.findAllByUsernameLike(search);
+        return userProfiles.stream()
+                .filter(userProfile -> !userId.equals(userProfile.getUserId()))
+                .map(userProfileMapper::toUserProfileRes)
+                .toList();
     }
 
     @Override
@@ -82,7 +83,7 @@ public class UserProfileService implements IUserProfileService {
                 .orElseThrow(() -> new ServiceException(USER_NOT_FOUND));
 
         var fileResponse = fileClient.uploadFile(file);
-        profile.setAvatar(fileResponse.getUrl());
+        profile.setAvatar(fileResponse.getResult().getUrl());
 
         return userProfileMapper.toUserProfileRes(profile);
     }

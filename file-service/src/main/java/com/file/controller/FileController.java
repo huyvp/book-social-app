@@ -5,12 +5,14 @@ import com.file.service.IFileService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -19,6 +21,7 @@ public class FileController {
 
     @PostMapping("/upload")
     public ResponseEntity<Object> upload(@RequestParam("file") MultipartFile file) {
+        log.info("file:upload - received request ");
         return ResponseHandler.execute(
                 fileService.uploadFile(file)
         );

@@ -31,13 +31,14 @@ public class FileService implements IFileService {
 
     @Override
     public FileInfoResponse uploadFile(MultipartFile file) {
+        log.info("file:upload - start");
         var fileStoredInfo = fileRepo.store(file);
         FileManagement fileManagement = mapper.toFileManagement(fileStoredInfo);
 
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         fileManagement.setOwnerId(userId);
         fileManagementRepo.save(fileManagement);
-
+        log.info("file:upload - success");
         return FileInfoResponse.builder()
                 .originalName(file.getOriginalFilename())
                 .url(fileStoredInfo.getUrl())

@@ -35,4 +35,11 @@ public class UserProfileController {
                 userProfileService.updateAvatar(file)
         );
     }
+
+    @GetMapping(value = "/search")
+    ResponseEntity<Object> searchUserProfile(@RequestParam("keyword") String keyword) {
+        return ResponseHandler.execute(
+                userProfileService.getUserProfiles(keyword)
+        );
+    }
 }
