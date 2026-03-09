@@ -1,5 +1,14 @@
+server:
+  port: 8085
+  servlet:
+    context-path: /chat
 spring:
   application:
     name: chat-service
-server:
-  port: 8085
+  data:
+    mongodb:
+      uri: mongodb://admin:admin@localhost:27017/chat-service?authSource=admin
+
+services:
+  profile:
+    url: http://localhost:9002/profile
