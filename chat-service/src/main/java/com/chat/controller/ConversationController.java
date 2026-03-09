@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class ConversationController {
     IConversationService conversationService;
 
-    @PostMapping(value = "/create")
+    @PostMapping
     ResponseEntity<Object> create(@RequestBody CreateConversationRequest request) {
         return ResponseHandler.execute(
                 conversationService.create(request)

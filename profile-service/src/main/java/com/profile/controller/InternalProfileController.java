@@ -1,7 +1,7 @@
 package com.profile.controller;
 
 
-import com.profile.dto.request.UserProfileReq;
+import com.profile.dto.request.UserProfileRequest;
 import com.profile.handler.ResponseHandler;
 import com.profile.service.IUserProfileService;
 import lombok.AccessLevel;
@@ -20,10 +20,10 @@ public class InternalProfileController {
     IUserProfileService profileService;
 
     @PostMapping("/users")
-    ResponseEntity<Object> createUserProfile(@RequestBody UserProfileReq userProfileReq) {
+    ResponseEntity<Object> createUserProfile(@RequestBody UserProfileRequest userProfileRequest) {
         log.info("profile:internal:createUserProfile - started");
         return ResponseHandler.execute(
-                profileService.createProfile(userProfileReq)
+                profileService.createProfile(userProfileRequest)
         );
     }
 

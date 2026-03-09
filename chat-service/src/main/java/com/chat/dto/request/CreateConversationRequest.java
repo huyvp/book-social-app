@@ -14,7 +14,6 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CreateConversationRequest {
     String type;
-
     @Size(min = 1)
     @NotNull
     List<String> participantIds;

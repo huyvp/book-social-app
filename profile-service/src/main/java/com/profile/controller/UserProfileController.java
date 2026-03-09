@@ -1,5 +1,6 @@
 package com.profile.controller;
 
+import com.profile.dto.request.UpdateProfileRequest;
 import com.profile.handler.ResponseHandler;
 import com.profile.service.IUserProfileService;
 import lombok.AccessLevel;
@@ -26,6 +27,13 @@ public class UserProfileController {
     ResponseEntity<Object> getMyProfile() {
         return ResponseHandler.execute(
                 userProfileService.getMyProfile()
+        );
+    }
+
+    @PutMapping("/my-profile")
+    ResponseEntity<Object> updateMyProfile(@RequestBody UpdateProfileRequest request) {
+        return ResponseHandler.execute(
+                userProfileService.updateMyProfile(request)
         );
     }
 
