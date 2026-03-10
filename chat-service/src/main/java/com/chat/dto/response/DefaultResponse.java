@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
-import static com.file.constant.Constants.Pattern.TIME;
+import static com.chat.constant.Constants.Pattern.TIME;
 
 
 @Getter

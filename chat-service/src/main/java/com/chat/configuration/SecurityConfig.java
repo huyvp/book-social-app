@@ -1,8 +1,8 @@
 package com.chat.configuration;
 
-import com.file.security.JwtAccessDeniedHandler;
-import com.file.security.JwtAuthenticationEntrypoint;
-import com.file.security.JwtDecoderCustom;
+import com.chat.security.JwtAccessDeniedHandler;
+import com.chat.security.JwtAuthenticationEntrypoint;
+import com.chat.security.JwtDecoderCustom;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;

@@ -23,7 +23,6 @@ public enum ErrorCode {
     // ----------------------------------
     USER_EXISTED(3001, HttpStatus.BAD_REQUEST, "User existed"),
     USER_NOT_FOUND(3002, HttpStatus.NOT_FOUND, "User not found"),
-    USER_3003(3002, HttpStatus.NOT_FOUND, "Password existed. Can't create new."),
     // ----------------------------------
     // Related to PERMISSION
     // ----------------------------------
