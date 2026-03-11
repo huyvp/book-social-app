@@ -23,9 +23,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     private final JwtDecoderCustom jwtDecoderCustom;
 
-    private static final String[] PUBLIC_ENDPOINTS = {
-            "/download/**",
-    };
+    private static final String[] PUBLIC_ENDPOINTS = {};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {

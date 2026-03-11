@@ -99,8 +99,8 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
     <build>
-        <!--Plugin to build spring app - Exclude lombok to reduce build file size-->
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

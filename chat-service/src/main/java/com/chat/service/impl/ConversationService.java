@@ -26,8 +26,10 @@ import java.util.StringJoiner;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ConversationService implements IConversationService {
+
     ConversationMapper mapper;
     ProfileClient profileClient;
     ConversationRepo conversationRepo;
