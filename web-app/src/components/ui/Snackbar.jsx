@@ -6,14 +6,17 @@ export default function SnackbarUI({
   message,
   severity = 'success',
   autoHideDuration = 3000,
-  onClose
+  onClose,
+  anchorOrigin = { vertical: 'top', horizontal: 'right' },
+  sx
 }) {
   return (
     <Snackbar
       open={open}
       autoHideDuration={autoHideDuration}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      anchorOrigin={anchorOrigin}
       onClose={onClose}
+      sx={sx}
     >
       <Alert
         onClose={onClose}
