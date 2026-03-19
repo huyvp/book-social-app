@@ -1,6 +1,5 @@
 package com.file.service.impl;
 
-import com.file.dto.FileInfo;
 import com.file.dto.response.FileData;
 import com.file.dto.response.FileInfoResponse;
 import com.file.entity.FileManagement;
@@ -10,11 +9,12 @@ import com.file.mapper.FileManagementMapper;
 import com.file.repo.FileManagementRepo;
 import com.file.repo.FileRepo;
 import com.file.service.IFileService;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.Resource;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

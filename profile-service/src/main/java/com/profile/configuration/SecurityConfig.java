@@ -3,8 +3,10 @@ package com.profile.configuration;
 import com.profile.security.JwtAccessDeniedHandler;
 import com.profile.security.JwtAuthenticationEntrypoint;
 import com.profile.security.JwtDecoderCustom;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;

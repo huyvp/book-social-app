@@ -1,10 +1,12 @@
 package com.identity.configuration;
 
-import feign.RequestInterceptor;
-import feign.RequestTemplate;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
+import feign.RequestInterceptor;
+import feign.RequestTemplate;
 
 @Slf4j
 public class AuthenticationInterceptor implements RequestInterceptor {

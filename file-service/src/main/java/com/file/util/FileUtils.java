@@ -13,15 +13,15 @@ import java.util.regex.Pattern;
 
 /**
  * Utility class for file operations and management.
- * 
+ *
  * This class provides comprehensive file handling utilities including:
  * - File name generation
  * - File validation
  * - File type checking
  * - Safe file operations
- * 
+ *
  * All methods include proper exception handling and logging.
- * 
+ *
  * @author Book Social App Team
  * @version 1.0
  * @since 1.0
@@ -48,10 +48,10 @@ public class FileUtils {
 
     /**
      * Generates a unique file name with UUID and specified extension.
-     * 
+     *
      * Creates a unique file name using UUID to avoid collisions.
      * Format: {uuid}.{extension}
-     * 
+     *
      * @param extension the file extension without dot (e.g., "jpg", "pdf")
      * @return a unique file name with extension
      * @throws IllegalArgumentException if extension is invalid
@@ -90,7 +90,7 @@ public class FileUtils {
 
     /**
      * Generates a unique file name without extension using UUID.
-     * 
+     *
      * @return a unique file name without extension
      */
     public static String generateUniqueFileName() {
@@ -109,9 +109,9 @@ public class FileUtils {
 
     /**
      * Validates if a file exists and is readable.
-     * 
+     *
      * Checks if the file path exists and has read permissions.
-     * 
+     *
      * @param filePath the path to the file to validate
      * @return true if file exists and is readable, false otherwise
      */
@@ -146,7 +146,7 @@ public class FileUtils {
 
     /**
      * Validates if a file size is within acceptable limits (default: 10 MB).
-     * 
+     *
      * @param filePath the path to the file to validate
      * @return true if file size is valid, false otherwise
      */
@@ -162,7 +162,7 @@ public class FileUtils {
 
     /**
      * Validates if a file size is within specified limit.
-     * 
+     *
      * @param filePath the path to the file to validate
      * @param maxSizeInBytes the maximum allowed file size in bytes
      * @return true if file size is valid and within limit, false otherwise
@@ -214,9 +214,9 @@ public class FileUtils {
 
     /**
      * Checks if a file has an allowed extension.
-     * 
+     *
      * Validates if file extension matches one of the allowed extensions (case-insensitive).
-     * 
+     *
      * @param fileName the name of the file to check
      * @param allowedExtensions array of allowed extensions (without leading dot)
      * @return true if file extension is in allowed list, false otherwise
@@ -256,10 +256,10 @@ public class FileUtils {
 
     /**
      * Extracts the file extension from a file name.
-     * 
+     *
      * Returns the extension without the leading dot. If no extension is found,
      * returns an empty string.
-     * 
+     *
      * @param fileName the name of the file
      * @return the file extension without dot, or empty string if no extension
      * @throws IllegalArgumentException if fileName is null or empty
@@ -295,9 +295,9 @@ public class FileUtils {
 
     /**
      * Safely creates a directory and all parent directories if they don't exist.
-     * 
+     *
      * Creates the specified directory path recursively, similar to mkdir -p.
-     * 
+     *
      * @param directoryPath the path to the directory to create
      * @return true if directory was created or already exists, false otherwise
      * @throws IllegalArgumentException if directoryPath is null or empty
@@ -340,10 +340,10 @@ public class FileUtils {
 
     /**
      * Safely deletes a file if it exists.
-     * 
+     *
      * Attempts to delete the specified file. Does not throw exception if file
      * doesn't exist, but returns false.
-     * 
+     *
      * @param filePath the path to the file to delete
      * @return true if file was deleted successfully, false otherwise
      * @throws IllegalArgumentException if filePath is null or empty
@@ -383,10 +383,10 @@ public class FileUtils {
 
     /**
      * Validates the entire file name for security and format compliance.
-     * 
+     *
      * Checks: file name is not null/empty, contains only allowed characters,
      * and has a valid extension.
-     * 
+     *
      * @param fileName the file name to validate
      * @return true if file name is valid, false otherwise
      * @throws IllegalArgumentException if fileName is null or empty
@@ -422,7 +422,7 @@ public class FileUtils {
 
     /**
      * Gets the file size in bytes.
-     * 
+     *
      * @param filePath the path to the file
      * @return the file size in bytes, or -1 if file doesn't exist or error occurs
      * @throws IllegalArgumentException if filePath is null or empty

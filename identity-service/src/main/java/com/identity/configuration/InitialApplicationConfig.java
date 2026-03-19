@@ -1,10 +1,17 @@
 package com.identity.configuration;
 
+import static com.identity.constant.Constants.ADMIN_ACCOUNT.ADMIN_PASSWORD;
+import static com.identity.constant.Constants.ADMIN_ACCOUNT.ADMIN_USERNAME;
+import static com.identity.constant.Constants.PreDefineRole.ROLE_ADMIN;
+import static com.identity.constant.Constants.PreDefineRole.ROLE_USER;
+
 import com.identity.entity.Role;
 import com.identity.entity.User;
 import com.identity.repo.RoleRepo;
 import com.identity.repo.UserRepo;
+
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -13,11 +20,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.HashSet;
-
-import static com.identity.constant.Constants.PreDefineRole.ROLE_ADMIN;
-import static com.identity.constant.Constants.PreDefineRole.ROLE_USER;
-import static com.identity.constant.Constants.ADMIN_ACCOUNT.ADMIN_PASSWORD;
-import static com.identity.constant.Constants.ADMIN_ACCOUNT.ADMIN_USERNAME;
 
 @Slf4j
 @Configuration

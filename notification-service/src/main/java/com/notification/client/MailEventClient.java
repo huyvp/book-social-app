@@ -2,6 +2,7 @@ package com.notification.client;
 
 import com.notification.dto.request.EmailRequest;
 import com.notification.dto.response.EmailResponse;
+
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -2,6 +2,7 @@ package com.post.mapper;
 
 import com.post.dto.response.PostResponse;
 import com.post.entity.Post;
+
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

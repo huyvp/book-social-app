@@ -3,6 +3,7 @@ package com.chat.mapper;
 
 import com.chat.dto.response.ConversationResponse;
 import com.chat.entity.Conversation;
+
 import org.mapstruct.Mapper;
 
 import java.util.List;

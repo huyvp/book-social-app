@@ -4,6 +4,7 @@ import com.identity.configuration.AuthenticationInterceptor;
 import com.identity.dto.request.ProfileReq;
 import com.identity.dto.response.DefaultResponse;
 import com.identity.dto.response.UserProfileResponse;
+
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -1,6 +1,7 @@
 package com.post.handler;
 
 import com.post.dto.response.DefaultResponse;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 

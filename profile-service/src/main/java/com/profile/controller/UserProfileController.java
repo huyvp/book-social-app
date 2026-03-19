@@ -3,9 +3,11 @@ package com.profile.controller;
 import com.profile.dto.request.UpdateProfileRequest;
 import com.profile.handler.ResponseHandler;
 import com.profile.service.IUserProfileService;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

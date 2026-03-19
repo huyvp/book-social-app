@@ -1,5 +1,8 @@
 package com.profile.service.impl;
 
+import static com.profile.exception.ErrorCode.PROFILE_NOT_FOUND;
+import static com.profile.exception.ErrorCode.USER_NOT_FOUND;
+
 import com.profile.client.FileClient;
 import com.profile.dto.request.UpdateProfileRequest;
 import com.profile.dto.request.UserProfileRequest;
@@ -9,18 +12,17 @@ import com.profile.exception.ServiceException;
 import com.profile.mapper.UserProfileMapper;
 import com.profile.repo.UserProfileRepo;
 import com.profile.service.IUserProfileService;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-
-import static com.profile.exception.ErrorCode.PROFILE_NOT_FOUND;
-import static com.profile.exception.ErrorCode.USER_NOT_FOUND;
 
 @Slf4j
 @Service

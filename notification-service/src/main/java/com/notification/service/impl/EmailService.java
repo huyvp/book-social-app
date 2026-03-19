@@ -8,16 +8,19 @@ import com.notification.dto.response.EmailResponse;
 import com.notification.exception.ErrorCode;
 import com.notification.exception.ServiceException;
 import com.notification.service.IEmailService;
-import feign.FeignException;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import feign.FeignException;
 
 @Service
 @Slf4j

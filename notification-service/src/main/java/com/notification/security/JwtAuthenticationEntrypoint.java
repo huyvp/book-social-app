@@ -1,17 +1,17 @@
 package com.notification.security;
 
-import java.io.IOException;
+import com.notification.exception.ErrorCode;
+import com.notification.handler.SecurityExceptionHandler;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
-import com.notification.exception.ErrorCode;
-import com.notification.handler.SecurityExceptionHandler;
-
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
 
 @Slf4j
 public class JwtAuthenticationEntrypoint implements AuthenticationEntryPoint {

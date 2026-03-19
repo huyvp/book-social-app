@@ -1,0 +1,38 @@
+<!--
+    Spotless Maven Plugin - Shared Configuration Fragment
+    ======================================================
+    This file documents the common Spotless rules used across all services.
+    Copy the <plugin> block below into each service's pom.xml <build><plugins> section.
+
+    Rules (designed to minimize code changes):
+    1. removeUnusedImports  - Removes unused import statements
+    2. trimTrailingWhitespace - Strips trailing whitespace from lines
+    3. endWithNewline - Ensures every file ends with a newline
+    4. importOrder - Sorts imports: com, jakarta, lombok, org, then java/javax
+
+    NOTE: No code formatter (palantirJavaFormat/googleJavaFormat) is applied
+    to avoid mass reformatting of existing code.
+-->
+<plugin>
+    <groupId>com.diffplug.spotless</groupId>
+    <artifactId>spotless-maven-plugin</artifactId>
+    <version>2.43.0</version>
+    <configuration>
+        <java>
+            <removeUnusedImports/>
+            <trimTrailingWhitespace/>
+            <endWithNewline/>
+            <importOrder>
+                <order>com,jakarta,lombok,org,java,javax</order>
+            </importOrder>
+        </java>
+    </configuration>
+    <executions>
+        <execution>
+            <phase>compile</phase>
+            <goals>
+                <goal>check</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>

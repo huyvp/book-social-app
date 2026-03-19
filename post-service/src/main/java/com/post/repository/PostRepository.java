@@ -1,6 +1,7 @@
 package com.post.repository;
 
 import com.post.entity.Post;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.repository.MongoRepository;

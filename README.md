@@ -192,6 +192,63 @@ README.md             # This technical document
 
 ---
 
+## 🧹 **Code Formatting (Spotless)**
+
+Dự án sử dụng **[Spotless Maven Plugin](https://github.com/diffplug/spotless/tree/main/plugin-maven)** `v2.43.0` để đảm bảo code format nhất quán trên tất cả services.
+
+### **Rules áp dụng**
+
+| Rule | Mô tả |
+|------|--------|
+| `removeUnusedImports` | Tự động xóa các import không sử dụng |
+| `trimTrailingWhitespace` | Xóa khoảng trắng thừa cuối dòng |
+| `endWithNewline` | Đảm bảo mỗi file kết thúc bằng newline |
+| `importOrder` | Sắp xếp imports theo thứ tự: `com → jakarta → lombok → org → java → javax` |
+
+### **Sử dụng**
+
+```bash
+# Kiểm tra lỗi format (tự động chạy khi compile)
+mvn spotless:check
+
+# Tự động fix tất cả lỗi format
+mvn spotless:apply
+```
+
+### **Thêm Spotless cho service mới**
+
+Copy đoạn plugin sau vào `<build><plugins>` trong `pom.xml`:
+
+```xml
+<plugin>
+    <groupId>com.diffplug.spotless</groupId>
+    <artifactId>spotless-maven-plugin</artifactId>
+    <version>2.43.0</version>
+    <configuration>
+        <java>
+            <removeUnusedImports/>
+            <trimTrailingWhitespace/>
+            <endWithNewline/>
+            <importOrder>
+                <order>com,jakarta,lombok,org,java,javax</order>
+            </importOrder>
+        </java>
+    </configuration>
+    <executions>
+        <execution>
+            <phase>compile</phase>
+            <goals>
+                <goal>check</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+```
+
+> **Lưu ý:** File tham khảo cấu hình đầy đủ tại `spotless-config.xml` ở thư mục gốc dự án.
+
+---
+
 ## 📌 **Future Improvements**
 
 * Add service discovery (Eureka/Consul)

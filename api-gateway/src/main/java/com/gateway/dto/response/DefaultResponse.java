@@ -2,9 +2,11 @@ package com.gateway.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+
 import org.springframework.http.HttpStatus;
 
 @Getter

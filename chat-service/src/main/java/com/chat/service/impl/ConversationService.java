@@ -10,10 +10,12 @@ import com.chat.exception.ServiceException;
 import com.chat.mapper.ConversationMapper;
 import com.chat.repo.ConversationRepo;
 import com.chat.service.IConversationService;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -48,23 +50,6 @@ public class ConversationService implements IConversationService {
         var userInfo = userInfoResponse.getResult();
         var participantInfo = participantInfoResponse.getResult();
 
-        List<ParticipantInfo> participantInfoList = List.of(
-                ParticipantInfo.builder()
-                        .userId(userId)
-                        .username(userInfo.getUsername())
-                        .firstName(userInfo.getGivenName())
-                        .lastName(userInfo.getFamilyName())
-                        .avatar(userInfo.getAvatar())
-                        .build(),
-                ParticipantInfo.builder()
-                        .userId(participantInfo.getUserId())
-                        .username(participantInfo.getUsername())
-                        .firstName(participantInfo.getGivenName())
-                        .lastName(participantInfo.getFamilyName())
-                        .avatar(participantInfo.getAvatar())
-                        .build()
-        );
-
         List<String> userIds = new ArrayList<>();
         userIds.add(userId);
         userIds.add(participantInfo.getUserId());
@@ -72,15 +57,35 @@ public class ConversationService implements IConversationService {
         var sortedIds = userIds.stream().sorted().toList();
         String userIdsHash = generateParticipantHash(sortedIds);
 
-        Conversation conversation = Conversation.builder()
-                .type(request.getType())
-                .participants(participantInfoList)
-                .participantsHash(userIdsHash)
-                .createdDate(Instant.now())
-                .modifiedDate(Instant.now())
-                .build();
 
-        conversation = conversationRepo.save(conversation);
+        var conversation = conversationRepo.findByParticipantsHash(userIdsHash)
+                .orElseGet(() -> {
+                    List<ParticipantInfo> participantInfoList = List.of(
+                            ParticipantInfo.builder()
+                                    .userId(userId)
+                                    .username(userInfo.getUsername())
+                                    .firstName(userInfo.getGivenName())
+                                    .lastName(userInfo.getFamilyName())
+                                    .avatar(userInfo.getAvatar())
+                                    .build(),
+                            ParticipantInfo.builder()
+                                    .userId(participantInfo.getUserId())
+                                    .username(participantInfo.getUsername())
+                                    .firstName(participantInfo.getGivenName())
+                                    .lastName(participantInfo.getFamilyName())
+                                    .avatar(participantInfo.getAvatar())
+                                    .build()
+                    );
+
+                    Conversation newConversation = Conversation.builder()
+                            .type(request.getType())
+                            .participants(participantInfoList)
+                            .participantsHash(userIdsHash)
+                            .createdDate(Instant.now())
+                            .modifiedDate(Instant.now())
+                            .build();
+                    return conversationRepo.save(newConversation);
+                });
 
         return toConversationResponse(conversation);
     }

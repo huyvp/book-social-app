@@ -1,6 +1,10 @@
 package com.notification.handler;
 
-import java.time.LocalDateTime;
+import com.notification.dto.response.DefaultResponse;
+import com.notification.exception.ErrorCode;
+import com.notification.exception.ServiceException;
+
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,11 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.notification.dto.response.DefaultResponse;
-import com.notification.exception.ErrorCode;
-import com.notification.exception.ServiceException;
-
-import lombok.extern.slf4j.Slf4j;
+import java.time.LocalDateTime;
 
 @Slf4j
 @RestControllerAdvice

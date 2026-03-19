@@ -5,6 +5,7 @@ import com.profile.dto.request.UpdateProfileRequest;
 import com.profile.dto.request.UserProfileRequest;
 import com.profile.dto.response.UserProfileResponse;
 import com.profile.entity.UserProfile;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 

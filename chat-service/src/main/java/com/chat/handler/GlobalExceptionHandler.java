@@ -4,7 +4,9 @@ package com.chat.handler;
 import com.chat.dto.response.DefaultResponse;
 import com.chat.exception.ErrorCode;
 import com.chat.exception.ServiceException;
+
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;

@@ -1,6 +1,7 @@
 package com.chat.dto.response;
 
 import com.chat.entity.ParticipantInfo;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

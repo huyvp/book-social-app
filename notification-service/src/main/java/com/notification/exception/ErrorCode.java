@@ -1,10 +1,10 @@
 package com.notification.exception;
 
-import org.springframework.http.HttpStatus;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import org.springframework.http.HttpStatus;
 
 @NoArgsConstructor
 @AllArgsConstructor

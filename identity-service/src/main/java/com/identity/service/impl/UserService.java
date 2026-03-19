@@ -1,5 +1,7 @@
 package com.identity.service.impl;
 
+import static com.identity.constant.Constants.PreDefineRole.ROLE_USER;
+
 import com.event.dto.NotificationEvent;
 import com.identity.client.ProfileClient;
 import com.identity.dto.request.PasswordCreateReq;
@@ -15,11 +17,14 @@ import com.identity.mapper.UserMapper;
 import com.identity.repo.RoleRepo;
 import com.identity.repo.UserRepo;
 import com.identity.service.IUserService;
+
 import jakarta.transaction.Transactional;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.core.context.SecurityContext;
@@ -30,8 +35,6 @@ import org.springframework.util.StringUtils;
 
 import java.util.HashSet;
 import java.util.List;
-
-import static com.identity.constant.Constants.PreDefineRole.ROLE_USER;
 
 @Service
 @RequiredArgsConstructor

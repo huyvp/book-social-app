@@ -1,6 +1,7 @@
 package com.chat.repo;
 
 import com.chat.entity.Conversation;
+
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 

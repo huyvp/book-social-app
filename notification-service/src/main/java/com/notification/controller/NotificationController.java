@@ -5,10 +5,12 @@ import com.event.dto.NotificationEvent;
 import com.notification.dto.request.Recipient;
 import com.notification.dto.request.SendEmailRequest;
 import com.notification.service.IEmailService;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 

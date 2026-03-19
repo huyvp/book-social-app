@@ -1,6 +1,7 @@
 package com.notification.security;
 
-import java.io.IOException;
+import com.notification.exception.ErrorCode;
+import com.notification.handler.SecurityExceptionHandler;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -8,8 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
-import com.notification.exception.ErrorCode;
-import com.notification.handler.SecurityExceptionHandler;
+import java.io.IOException;
 
 public class JwtAccessDeniedHandler implements AccessDeniedHandler {
     @Override
