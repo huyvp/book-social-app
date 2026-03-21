@@ -9,9 +9,10 @@ export const API = {
   MY_POST: '/post/my-posts',
   CREATE_POST: '/post/create',
 
-  UPDATE_PROFILE: '/profile/users/my-profile',
+  // Profile path
+  UPDATE_PROFILE: '/profile/my-profile',
   UPDATE_AVATAR: '/profile/avatar',
-  SEARCH_USER: '/profile/users/search',
+  SEARCH_USER: '/profile/search',
 
   MY_CONVERSATIONS: '/chat/conversations/my-conversations',
   CREATE_CONVERSATION: '/chat/conversations'

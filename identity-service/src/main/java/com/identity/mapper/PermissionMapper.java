@@ -6,7 +6,7 @@ import com.identity.entity.Permission;
 
 import org.mapstruct.Mapper;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface PermissionMapper {
     Permission toPermissionFromPermissionReq(PermissionReq permissionReq);
 

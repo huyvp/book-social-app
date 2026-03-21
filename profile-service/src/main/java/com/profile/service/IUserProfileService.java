@@ -16,13 +16,13 @@ public interface IUserProfileService {
     UserProfileResponse getProfileByUserId(String userId);
 
     // PUBLIC
-    UserProfileResponse getProfile(String profileId);
-
-    List<UserProfileResponse> getUserProfiles(String search);
-
     UserProfileResponse getMyProfile();
+
+    UserProfileResponse getProfile(String profileId);
 
     UserProfileResponse updateMyProfile(UpdateProfileRequest request);
 
     UserProfileResponse updateAvatar(MultipartFile file);
+
+    List<UserProfileResponse> getUserProfiles(String search);
 }

@@ -29,14 +29,10 @@ export const uploadAvatar = async (formData) => {
 };
 
 export const search = async (keyword) => {
-  return await httpClient.post(
-    API.SEARCH_USER,
-    { keyword: keyword },
-    {
-      headers: {
-        Authorization: `Bearer ${getToken()}`,
-        'Content-Type': 'application/json'
-      }
+  return await httpClient.get(API.SEARCH_USER, {
+    params: { keyword: keyword },
+    headers: {
+      Authorization: `Bearer ${getToken()}`
     }
-  );
+  });
 };

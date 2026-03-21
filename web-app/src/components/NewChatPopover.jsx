@@ -170,7 +170,7 @@ const NewChatPopover = ({ anchorEl, open, onClose, onSelectUser }) => {
                 </ListItemAvatar>
                 <ListItemText
                   primary={user.username}
-                  secondary={user.firstName + ' ' + user.lastName}
+                  secondary={`${user.givenName || ''} ${user.familyName || ''}`.trim()}
                   primaryTypographyProps={{
                     fontWeight: 'medium',
                     variant: 'body1'

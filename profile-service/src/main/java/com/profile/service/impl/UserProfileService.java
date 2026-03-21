@@ -49,23 +49,6 @@ public class UserProfileService implements IUserProfileService {
     }
 
     @Override
-    public UserProfileResponse getProfile(String id) {
-        UserProfile userProfile = userProfileRepo.findById(id)
-                .orElseThrow(() -> new ServiceException(PROFILE_NOT_FOUND));
-        return userProfileMapper.toUserProfileResponse(userProfile);
-    }
-
-    @Override
-    public List<UserProfileResponse> getUserProfiles(String search) {
-        var userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        List<UserProfile> userProfiles = userProfileRepo.findAllByUsernameLike(search);
-        return userProfiles.stream()
-                .filter(userProfile -> !userId.equals(userProfile.getUserId()))
-                .map(userProfileMapper::toUserProfileResponse)
-                .toList();
-    }
-
-    @Override
     public UserProfileResponse getMyProfile() {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName();
@@ -74,6 +57,13 @@ public class UserProfileService implements IUserProfileService {
                 .orElseThrow(() -> new ServiceException(USER_NOT_FOUND));
 
         return userProfileMapper.toUserProfileResponse(profile);
+    }
+
+    @Override
+    public UserProfileResponse getProfile(String id) {
+        UserProfile userProfile = userProfileRepo.findById(id)
+                .orElseThrow(() -> new ServiceException(PROFILE_NOT_FOUND));
+        return userProfileMapper.toUserProfileResponse(userProfile);
     }
 
     @Override
@@ -102,7 +92,19 @@ public class UserProfileService implements IUserProfileService {
         var fileResponse = fileClient.uploadFile(file);
         profile.setAvatar(fileResponse.getResult().getUrl());
 
-        return userProfileMapper.toUserProfileResponse(profile);
+        var profileSaved = userProfileRepo.save(profile);
+
+        return userProfileMapper.toUserProfileResponse(profileSaved);
     }
 
+    @Override
+    public List<UserProfileResponse> getUserProfiles(String search) {
+        var userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<UserProfile> userProfiles = userProfileRepo.findAllByUsernameLike(search);
+
+        return userProfiles.stream()
+                .filter(userProfile -> !userId.equals(userProfile.getUserId()))
+                .map(userProfileMapper::toUserProfileResponse)
+                .toList();
+    }
 }

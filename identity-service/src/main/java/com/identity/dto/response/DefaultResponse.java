@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
-@Getter
+@Data
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @NoArgsConstructor

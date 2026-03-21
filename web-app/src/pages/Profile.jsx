@@ -28,8 +28,8 @@ import SnackbarUI from '../components/ui/Snackbar';
 export default function Profile() {
   const navigate = useNavigate();
   const [userDetails, setUserDetails] = useState({});
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [givenName, setGivenName] = useState('');
+  const [familyName, setFamilyName] = useState('');
   const [email, setEmail] = useState('');
   const [city, setCity] = useState('');
   const [dob, setDob] = useState(null);
@@ -42,13 +42,13 @@ export default function Profile() {
   const getUserDetails = async () => {
     try {
       const response = await getMyInfo();
-      const data = response.data;
-      setUserDetails(data.result);
-      setFirstName(data.result.familyName || '');
-      setLastName(data.result.givenName || '');
-      setEmail(data.result.email || '');
-      setCity(data.result.city || '');
-      setDob(data.result.dob ? dayjs(data.result.dob) : null);
+      const { result } = response.data;
+      setUserDetails(result);
+      setGivenName(result.givenName || '');
+      setFamilyName(result.familyName || '');
+      setEmail(result.email || '');
+      setCity(result.city || '');
+      setDob(result.dob ? dayjs(result.dob) : null);
     } catch (error) {
       if (error.response?.status === 401) {
         logOut();
@@ -60,8 +60,8 @@ export default function Profile() {
   const handleUpdate = async () => {
     try {
       const profileData = {
-        firstName,
-        lastName,
+        givenName,
+        familyName,
         email,
         city,
         dob: dob ? dob.format('YYYY-MM-DD') : null
@@ -190,8 +190,8 @@ export default function Profile() {
                     }}
                     onClick={handleAvatarClick}
                   >
-                    {userDetails.firstName?.[0]}
-                    {userDetails.lastName?.[0]}
+                    {userDetails.givenName?.[0]}
+                    {userDetails.familyName?.[0]}
                   </Avatar>
                   <Box
                     sx={{
@@ -305,8 +305,8 @@ export default function Profile() {
               </Typography>
               <TextField
                 size='small'
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
+                value={givenName}
+                onChange={(e) => setGivenName(e.target.value)}
                 sx={{ width: '60%' }}
               />
             </Box>
@@ -329,8 +329,8 @@ export default function Profile() {
               </Typography>
               <TextField
                 size='small'
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
+                value={familyName}
+                onChange={(e) => setFamilyName(e.target.value)}
                 sx={{ width: '60%' }}
               />
             </Box>

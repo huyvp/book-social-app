@@ -11,6 +11,8 @@ import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Property;
 import org.springframework.data.neo4j.core.support.UUIDStringGenerator;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @Builder
@@ -30,4 +32,5 @@ public class UserProfile {
     String address;
     String city;
     String avatar;
+    LocalDate dob;
 }
