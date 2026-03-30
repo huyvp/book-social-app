@@ -69,7 +69,7 @@ export default function Login() {
       >
         <Card
           sx={{
-            minWidth: 300,
+            minWidth: 500,
             maxWidth: 400,
             boxShadow: 3,
             borderRadius: 3,

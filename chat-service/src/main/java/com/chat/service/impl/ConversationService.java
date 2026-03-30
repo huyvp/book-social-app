@@ -10,12 +10,10 @@ import com.chat.exception.ServiceException;
 import com.chat.mapper.ConversationMapper;
 import com.chat.repo.ConversationRepo;
 import com.chat.service.IConversationService;
-
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +26,6 @@ import java.util.StringJoiner;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ConversationService implements IConversationService {
 
@@ -40,8 +37,10 @@ public class ConversationService implements IConversationService {
     public ConversationResponse create(CreateConversationRequest request) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         var userInfoResponse = profileClient.getProfile(userId);
+        log.info("conversation:create:profile - {}", userInfoResponse);
 
         var participantInfoResponse = profileClient.getProfile(request.getParticipantIds().get(0));
+        log.info("conversation:create:participant - {}", request.getParticipantIds());
 
         if (Objects.isNull(participantInfoResponse) || Objects.isNull(userInfoResponse)) {
             throw new ServiceException(ErrorCode.USER_NOT_FOUND);

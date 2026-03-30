@@ -3,14 +3,14 @@ package com.chat.controller;
 import com.chat.dto.request.CreateConversationRequest;
 import com.chat.handler.ResponseHandler;
 import com.chat.service.IConversationService;
-
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "conversations")
@@ -20,6 +20,8 @@ public class ConversationController {
 
     @PostMapping
     ResponseEntity<Object> create(@RequestBody CreateConversationRequest request) {
+        log.info("conversation:create - started");
+        log.info("conversation:create:type - {}", request.getType());
         return ResponseHandler.execute(
                 conversationService.create(request)
         );
