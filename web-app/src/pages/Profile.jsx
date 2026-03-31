@@ -28,8 +28,8 @@ import SnackbarUI from '../components/ui/Snackbar';
 export default function Profile() {
   const navigate = useNavigate();
   const [userDetails, setUserDetails] = useState({});
-  const [givenName, setGivenName] = useState('');
-  const [familyName, setFamilyName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [city, setCity] = useState('');
   const [dob, setDob] = useState(null);
@@ -44,8 +44,8 @@ export default function Profile() {
       const response = await getMyInfo();
       const { result } = response.data;
       setUserDetails(result);
-      setGivenName(result.givenName || '');
-      setFamilyName(result.familyName || '');
+      setFirstName(result.firstName || '');
+      setLastName(result.lastName || '');
       setEmail(result.email || '');
       setCity(result.city || '');
       setDob(result.dob ? dayjs(result.dob) : null);
@@ -60,8 +60,8 @@ export default function Profile() {
   const handleUpdate = async () => {
     try {
       const profileData = {
-        givenName,
-        familyName,
+        firstName,
+        lastName,
         email,
         city,
         dob: dob ? dob.format('YYYY-MM-DD') : null
@@ -190,8 +190,8 @@ export default function Profile() {
                     }}
                     onClick={handleAvatarClick}
                   >
-                    {userDetails.givenName?.[0]}
-                    {userDetails.familyName?.[0]}
+                    {userDetails.firstName?.[0]}
+                    {userDetails.lastName?.[0]}
                   </Avatar>
                   <Box
                     sx={{
@@ -305,8 +305,8 @@ export default function Profile() {
               </Typography>
               <TextField
                 size='small'
-                value={givenName}
-                onChange={(e) => setGivenName(e.target.value)}
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
                 sx={{ width: '60%' }}
               />
             </Box>
@@ -329,8 +329,8 @@ export default function Profile() {
               </Typography>
               <TextField
                 size='small'
-                value={familyName}
-                onChange={(e) => setFamilyName(e.target.value)}
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
                 sx={{ width: '60%' }}
               />
             </Box>

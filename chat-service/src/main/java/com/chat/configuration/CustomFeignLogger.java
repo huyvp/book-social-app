@@ -1,7 +1,8 @@
 package com.chat.configuration;
 
-import feign.Logger;
 import lombok.extern.slf4j.Slf4j;
+
+import feign.Logger;
 
 @Slf4j
 public class CustomFeignLogger extends Logger {

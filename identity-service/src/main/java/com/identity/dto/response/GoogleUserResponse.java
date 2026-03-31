@@ -19,7 +19,7 @@ public class GoogleUserResponse {
     String email;
     boolean verifiedEmail;
     String name;
-    String givenName;
-    String familyName;
+    String firstName;
+    String lastName;
     String picture;
 }

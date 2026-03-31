@@ -25,8 +25,8 @@ public class UserProfile {
     @Property(name = "userId")
     String userId;
     String username;
-    String givenName;
-    String familyName;
+    String firstName;
+    String lastName;
     String email;
     String phoneNumber;
     String address;

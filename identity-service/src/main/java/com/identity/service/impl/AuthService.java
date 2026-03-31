@@ -148,8 +148,8 @@ public class AuthService implements IAuthService {
         var user = userRepo.findByUsernameAndActiveTrue(userInfo.getEmail()).orElseGet(
                 () -> userRepo.save(User.builder()
                         .username(userInfo.getEmail())
-                        .givenName(userInfo.getGivenName())
-                        .familyName(userInfo.getFamilyName())
+                        .firstName(userInfo.getFirstName())
+                        .lastName(userInfo.getLastName())
                         .email(userInfo.getEmail())
                         .avatar(userInfo.getPicture())
                         .active(true)

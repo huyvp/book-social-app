@@ -20,10 +20,10 @@ public class User {
     String id;
     @Column(name = "username", length = 50, nullable = false, unique = true)
     String username;
-    @Column(name = "given_name", length = 200)
-    String givenName;
-    @Column(name = "family_name", length = 200)
-    String familyName;
+    @Column(name = "first_name", length = 200)
+    String firstName;
+    @Column(name = "last_name", length = 200)
+    String lastName;
     @Column(name = "password", length = 200)
     String password;
     @Column(name = "email", length = 200, nullable = false)

@@ -11,8 +11,8 @@ import lombok.experimental.FieldDefaults;
 public class ProfileReq {
     String userId;
     String username;
-    String givenName;
-    String familyName;
+    String firstName;
+    String lastName;
     String email;
     String address;
     String phoneNumber;

@@ -10,10 +10,12 @@ import com.chat.exception.ServiceException;
 import com.chat.mapper.ConversationMapper;
 import com.chat.repo.ConversationRepo;
 import com.chat.service.IConversationService;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -63,15 +65,15 @@ public class ConversationService implements IConversationService {
                             ParticipantInfo.builder()
                                     .userId(userId)
                                     .username(userInfo.getUsername())
-                                    .firstName(userInfo.getGivenName())
-                                    .lastName(userInfo.getFamilyName())
+                                    .firstName(userInfo.getFirstName())
+                                    .lastName(userInfo.getLastName())
                                     .avatar(userInfo.getAvatar())
                                     .build(),
                             ParticipantInfo.builder()
                                     .userId(participantInfo.getUserId())
                                     .username(participantInfo.getUsername())
-                                    .firstName(participantInfo.getGivenName())
-                                    .lastName(participantInfo.getFamilyName())
+                                    .firstName(participantInfo.getFirstName())
+                                    .lastName(participantInfo.getLastName())
                                     .avatar(participantInfo.getAvatar())
                                     .build()
                     );

@@ -1,7 +1,8 @@
 package com.chat.configuration;
 
-import feign.Logger;
 import org.springframework.context.annotation.Bean;
+
+import feign.Logger;
 
 public class FeignLoggingConfig {
 
