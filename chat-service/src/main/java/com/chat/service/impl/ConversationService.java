@@ -1,7 +1,7 @@
 package com.chat.service.impl;
 
 import com.chat.client.ProfileClient;
-import com.chat.dto.request.CreateConversationRequest;
+import com.chat.dto.request.ConversationRequest;
 import com.chat.dto.response.ConversationResponse;
 import com.chat.entity.Conversation;
 import com.chat.entity.ParticipantInfo;
@@ -34,7 +34,7 @@ public class ConversationService implements IConversationService {
     ConversationRepo conversationRepo;
 
     @Override
-    public ConversationResponse create(CreateConversationRequest request) {
+    public ConversationResponse create(ConversationRequest request) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         var userInfoResponse = profileClient.getProfile(userId);
         log.info("conversation:create:profile - {}", userInfoResponse);

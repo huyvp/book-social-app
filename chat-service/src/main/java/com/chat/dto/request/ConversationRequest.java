@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CreateConversationRequest {
+public class ConversationRequest {
     @Pattern(regexp = "GROUP|DIRECT", message = "type must be specific values")
     String type;
     @Size(min = 1)

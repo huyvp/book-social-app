@@ -34,7 +34,11 @@ public enum ErrorCode {
     // ----------------------------------
     FILE_EXISTED(3001, HttpStatus.BAD_REQUEST, "File existed"),
     FILE_NOT_FOUND(3002, HttpStatus.NOT_FOUND, "File not found"),
-    FILE_PATH_NOT_FOUND(3002, HttpStatus.NOT_FOUND, "File path not found");
+    FILE_PATH_NOT_FOUND(3002, HttpStatus.NOT_FOUND, "File path not found"),
+    // ----------------------------------
+    // Related to Conversation
+    // ----------------------------------
+    CONVERSATION_NOT_FOUND(1009, HttpStatus.NOT_FOUND, "Chat conversation not found");
 
     private int code;
     private HttpStatus httpStatus;

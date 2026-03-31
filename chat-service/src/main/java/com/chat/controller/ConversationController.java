@@ -1,6 +1,6 @@
 package com.chat.controller;
 
-import com.chat.dto.request.CreateConversationRequest;
+import com.chat.dto.request.ConversationRequest;
 import com.chat.handler.ResponseHandler;
 import com.chat.service.IConversationService;
 import lombok.AccessLevel;
@@ -19,9 +19,8 @@ public class ConversationController {
     IConversationService conversationService;
 
     @PostMapping
-    ResponseEntity<Object> create(@RequestBody CreateConversationRequest request) {
+    ResponseEntity<Object> create(@RequestBody ConversationRequest request) {
         log.info("conversation:create - started");
-        log.info("conversation:create:type - {}", request.getType());
         return ResponseHandler.execute(
                 conversationService.create(request)
         );
