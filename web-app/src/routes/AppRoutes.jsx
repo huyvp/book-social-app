@@ -3,12 +3,14 @@ import Login from '../pages/Login';
 import Home from '../pages/Home';
 import Profile from '../pages/Profile';
 import Chat from '../pages/Chat';
+import Registration from '../pages/Registration';
 
 const AppRoutes = () => {
   return (
     <Router>
       <Routes>
         <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Registration />} />
         <Route path='/' element={<Home />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='/chat' element={<Chat />} />

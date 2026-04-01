@@ -15,12 +15,11 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "conversations")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ConversationController {
     IConversationService conversationService;
 
-    @PostMapping
+    @PostMapping(value = "conversations")
     ResponseEntity<Object> create(@RequestBody ConversationRequest request) {
         log.info("conversation:create - started");
         return ResponseHandler.execute(

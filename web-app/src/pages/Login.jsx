@@ -23,7 +23,7 @@ export default function Login() {
 
   const handleClick = () => {
     alert(
-      'Please refer to Oauth2 series for this implemetation guidelines. https://www.youtube.com/playlist?list=PL2xsxmVse9IbweCh6QKqZhousfEWabSeq'
+      'Please refer to Oauth2 series for this implementation guidelines. https://www.youtube.com/playlist?list=PL2xsxmVse9IbweCh6QKqZhousfEWabSeq'
     );
   };
 
@@ -49,6 +49,9 @@ export default function Login() {
       setSnackBarMessage(errorResponse.message);
       setSnackBarOpen(true);
     }
+  };
+  const goToRegister = () => {
+    navigate('/register');
   };
 
   return (
@@ -141,6 +144,7 @@ export default function Login() {
                 variant='contained'
                 color='success'
                 size='large'
+                onClick={goToRegister}
               >
                 Create an account
               </Button>

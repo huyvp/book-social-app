@@ -3,6 +3,7 @@ export const CONFIG = {
 };
 
 export const API = {
+  SIGN_UP: '/identity/users/registration',
   LOGIN: '/identity/auth/login',
   MY_INFO: '/profile/my-profile',
 
@@ -14,6 +15,6 @@ export const API = {
   UPDATE_AVATAR: '/profile/avatar',
   SEARCH_USER: '/profile/search',
 
-  MY_CONVERSATIONS: '/chat/conversations/my-conversations',
+  MY_CONVERSATIONS: '/chat/my-conversations',
   CREATE_CONVERSATION: '/chat/conversations'
 };
