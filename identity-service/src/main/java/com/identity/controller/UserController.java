@@ -12,6 +12,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
@@ -28,6 +30,7 @@ public class UserController {
 
     @PostMapping("/registration")
     public ResponseEntity<Object> createUser(@RequestBody UserReq userReq) {
+        log.info("user:create - started");
         return ResponseHandler.execute(
                 userService.createUser(userReq)
         );

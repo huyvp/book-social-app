@@ -8,7 +8,8 @@ export const getMyPosts = async (page) => {
       Authorization: `Bearer ${getToken()}`
     },
     params: {
-      page: page,
+      // Backend (Spring) uses 0-based pagination, while our React UI uses 1-based pages
+      page: page > 0 ? page - 1 : 0,
       size: 10
     }
   });

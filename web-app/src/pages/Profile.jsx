@@ -1,43 +1,50 @@
-import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import {
   Avatar,
   Box,
   Button,
-  Card,
   CircularProgress,
   Divider,
+  Grid,
   TextField,
   Tooltip,
   Typography
 } from '@mui/material';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import dayjs from 'dayjs';
-import {
-  getMyInfo,
-  updateProfile,
-  uploadAvatar
-} from '../services/userService';
-import { isAuthenticated, logOut } from '../services/authenticationService';
-import Scene from './Scene';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import SnackbarUI from '../components/ui/Snackbar';
+import { isAuthenticated, logOut } from '../services/authenticationService';
+import { getMyInfo, updateProfile, uploadAvatar } from '../services/userService';
+
+const ACCENT = '#1e293b';
+const ACCENT_HOVER = '#0f172a';
 
 export default function Profile() {
   const navigate = useNavigate();
-  const [userDetails, setUserDetails] = useState({});
+  const fileInputRef = useRef(null);
+
+  const [userDetails, setUserDetails] = useState(null);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [city, setCity] = useState('');
   const [dob, setDob] = useState(null);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
   const [uploading, setUploading] = useState(false);
-  const fileInputRef = useRef(null);
+  const [isUpdating, setIsUpdating] = useState(false);
+
+  const showSnackbar = (message, severity = 'success') =>
+    setSnackbar({ open: true, message, severity });
+
+  const handleCloseSnackbar = () =>
+    setSnackbar((prev) => ({ ...prev, open: false }));
 
   const getUserDetails = async () => {
     try {
@@ -57,7 +64,17 @@ export default function Profile() {
     }
   };
 
+  useEffect(() => {
+    document.title = 'Update Profile';
+    if (!isAuthenticated()) {
+      navigate('/login');
+    } else {
+      getUserDetails();
+    }
+  }, [navigate]);
+
   const handleUpdate = async () => {
+    setIsUpdating(true);
     try {
       const profileData = {
         firstName,
@@ -68,25 +85,17 @@ export default function Profile() {
       };
 
       await updateProfile(profileData);
-
-      const updatedDetails = {
-        ...userDetails,
-        ...profileData
-      };
-
-      setUserDetails(updatedDetails);
-      setSnackbarMessage('Profile updated successfully!');
-      setSnackbarSeverity('success');
-      setSnackbarOpen(true);
+      setUserDetails((prev) => ({ ...prev, ...profileData }));
+      showSnackbar('Profile updated successfully!');
     } catch {
-      setSnackbarMessage('Failed to update profile. Please try again.');
-      setSnackbarSeverity('error');
-      setSnackbarOpen(true);
+      showSnackbar('Failed to update profile. Please try again.', 'error');
+    } finally {
+      setIsUpdating(false);
     }
   };
 
   const handleAvatarClick = () => {
-    fileInputRef.current.click();
+    if (!uploading) fileInputRef.current.click();
   };
 
   const handleFileSelect = async (event) => {
@@ -94,9 +103,7 @@ export default function Profile() {
     if (!file) return;
 
     if (!file.type.match('image.*')) {
-      setSnackbarMessage('Please select an image file');
-      setSnackbarSeverity('error');
-      setSnackbarOpen(true);
+      showSnackbar('Please select an image file', 'error');
       return;
     }
 
@@ -107,117 +114,97 @@ export default function Profile() {
       const response = await uploadAvatar(formData);
       const imageUrl = response.data.result.avatar;
 
-      setUserDetails({
-        ...userDetails,
-        avatar: imageUrl
-      });
-      setSnackbarMessage('Avatar updated successfully!');
-      setSnackbarSeverity('success');
-      setSnackbarOpen(true);
+      setUserDetails((prev) => ({ ...prev, avatar: imageUrl }));
+      showSnackbar('Avatar updated successfully!');
     } catch {
-      setSnackbarMessage('Failed to upload avatar. Please try again.');
-      setSnackbarSeverity('error');
-      setSnackbarOpen(true);
+      showSnackbar('Failed to upload avatar. Please try again.', 'error');
     } finally {
       setUploading(false);
+      event.target.value = ''; // Reset input to allow re-uploading same file
     }
   };
-
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
-  };
-
-  useEffect(() => {
-    if (!isAuthenticated()) {
-      navigate('/login');
-    } else {
-      getUserDetails().then();
-    }
-  }, [navigate]);
 
   return (
-    <Scene>
+    <Box sx={{ minHeight: '100vh', bgcolor: '#f0f2f5', display: 'flex', flexDirection: 'column' }}>
       <SnackbarUI
-        open={snackbarOpen}
-        onClose={handleSnackbarClose}
-        message={snackbarMessage}
-        severity={snackbarSeverity}
+        open={snackbar.open}
+        onClose={handleCloseSnackbar}
+        message={snackbar.message}
+        severity={snackbar.severity}
       />
 
-      {userDetails ? (
-        <Card
+      {/* Simplified Top Navigation */}
+      <Box
+        sx={{
+          height: 64,
+          bgcolor: '#fff',
+          borderBottom: '1px solid rgba(0,0,0,0.07)',
+          display: 'flex',
+          alignItems: 'center',
+          px: { xs: 2, sm: 3 },
+          position: 'sticky',
+          top: 0,
+          zIndex: 10
+        }}
+      >
+        <Button
+          startIcon={<ArrowBackIcon />}
+          onClick={() => navigate('/')}
           sx={{
-            minWidth: 350,
-            maxWidth: 500,
-            boxShadow: 3,
-            borderRadius: 2,
-            padding: 4
+            color: '#4b5563',
+            textTransform: 'none',
+            fontWeight: 600,
+            fontSize: '0.9rem',
+            borderRadius: '8px',
+            '&:hover': { bgcolor: 'rgba(0,0,0,0.04)', color: '#111827' }
           }}
         >
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-start',
-              width: '100%',
-              gap: '10px'
-            }}
-          >
+          Back
+        </Button>
+        <Box sx={{ flexGrow: 1 }} />
+        <Typography fontWeight={800} fontSize='1.1rem' color={ACCENT} sx={{ userSelect: 'none' }}>
+          _sudo.dan
+        </Typography>
+      </Box>
+
+      {/* Main Content */}
+      <Box sx={{ flexGrow: 1, py: { xs: 3, sm: 5 }, px: 2, display: 'flex', justifyContent: 'center' }}>
+        <Box sx={{ width: '100%', maxWidth: 560 }}>
+          {userDetails ? (
             <Box
               sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                width: '100%',
-                gap: '20px',
-                mb: '30px'
+                bgcolor: '#fff',
+                borderRadius: '20px',
+                boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
+                p: { xs: 3, sm: 5 },
+                border: '1px solid rgba(0,0,0,0.06)'
               }}
             >
-              <Tooltip title='Click to upload a profile picture'>
-                <Box sx={{ position: 'relative' }}>
-                  <Avatar
-                    src={userDetails.avatar}
-                    sx={{
-                      width: 120,
-                      height: 120,
-                      fontSize: 48,
-                      backgroundColor: '#1976d2',
-                      cursor: 'pointer',
-                      transition: 'opacity 0.3s',
-                      '&:hover': {
-                        opacity: 0.8
-                      }
-                    }}
-                    onClick={handleAvatarClick}
-                  >
-                    {userDetails.firstName?.[0]}
-                    {userDetails.lastName?.[0]}
-                  </Avatar>
-                  <Box
-                    sx={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      opacity: 0,
-                      transition: 'opacity 0.3s',
-                      borderRadius: '50%',
-                      backgroundColor: 'rgba(0, 0, 0, 0.4)',
-                      '&:hover': {
-                        opacity: 1
-                      },
-                      cursor: 'pointer'
-                    }}
-                    onClick={handleAvatarClick}
-                  >
-                    <PhotoCameraIcon sx={{ color: 'white', fontSize: 36 }} />
-                  </Box>
-                  {uploading && (
+              {/* Header section: Avatar + Welcome */}
+              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 4 }}>
+                <Tooltip title='Click to update avatar' placement='right'>
+                  <Box sx={{ position: 'relative', display: 'inline-block', mb: 2 }}>
+                    <Avatar
+                      src={userDetails.avatar}
+                      onClick={handleAvatarClick}
+                      sx={{
+                        width: 100,
+                        height: 100,
+                        fontSize: '2.5rem',
+                        bgcolor: ACCENT,
+                        cursor: 'pointer',
+                        transition: 'all 0.2s',
+                        boxShadow: '0 4px 14px rgba(0,0,0,0.1)',
+                        '&:hover': { opacity: 0.9, transform: 'scale(1.02)' }
+                      }}
+                    >
+                      {userDetails.firstName?.[0]}
+                      {userDetails.lastName?.[0]}
+                    </Avatar>
+
+                    {/* Hover overlay for camera icon */}
                     <Box
+                      onClick={handleAvatarClick}
                       sx={{
                         position: 'absolute',
                         top: 0,
@@ -227,222 +214,184 @@ export default function Profile() {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
+                        bgcolor: 'rgba(0, 0, 0, 0.4)',
                         borderRadius: '50%',
-                        backgroundColor: 'rgba(0, 0, 0, 0.4)'
+                        opacity: 0,
+                        transition: 'opacity 0.2s',
+                        cursor: 'pointer',
+                        '&:hover': { opacity: 1 }
                       }}
                     >
-                      <CircularProgress size={36} sx={{ color: 'white' }} />
+                      <PhotoCameraIcon sx={{ color: '#fff', fontSize: 32 }} />
                     </Box>
-                  )}
-                </Box>
-              </Tooltip>
-              <input
-                type='file'
-                accept='image/*'
-                ref={fileInputRef}
-                style={{ display: 'none' }}
-                onChange={handleFileSelect}
-              />
-              <Typography
-                sx={{
-                  fontSize: 22,
-                  fontWeight: 600
-                }}
-              >
-                {userDetails.username}
-              </Typography>
-              <Divider sx={{ width: '100%', mb: '10px' }} />
-            </Box>
-            <Typography
-              sx={{
-                fontSize: 18,
-                mb: '20px'
-              }}
-            >
-              Welcome back to _sudo.dan, {userDetails.username} !
-            </Typography>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'flex-start',
-                width: '100%'
-              }}
-            >
-              <Typography
-                sx={{
-                  fontSize: 14,
-                  fontWeight: 600
-                }}
-              >
-                User Id
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: 14
-                }}
-              >
-                {userDetails.id}
-              </Typography>
-            </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                width: '100%'
-              }}
-            >
-              <Typography
-                sx={{
-                  fontSize: 14,
-                  fontWeight: 600
-                }}
-              >
-                First Name
-              </Typography>
-              <TextField
-                size='small'
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                sx={{ width: '60%' }}
-              />
-            </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                width: '100%'
-              }}
-            >
-              <Typography
-                sx={{
-                  fontSize: 14,
-                  fontWeight: 600
-                }}
-              >
-                Last Name
-              </Typography>
-              <TextField
-                size='small'
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                sx={{ width: '60%' }}
-              />
-            </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                width: '100%'
-              }}
-            >
-              <Typography
-                sx={{
-                  fontSize: 14,
-                  fontWeight: 600
-                }}
-              >
-                Email
-              </Typography>
-              <TextField
-                size='small'
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                sx={{ width: '60%' }}
-                type='email'
-              />
-            </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                width: '100%'
-              }}
-            >
-              <Typography
-                sx={{
-                  fontSize: 14,
-                  fontWeight: 600
-                }}
-              >
-                City
-              </Typography>
-              <TextField
-                size='small'
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-                sx={{ width: '60%' }}
-              />
-            </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                width: '100%'
-              }}
-            >
-              <Typography
-                sx={{
-                  fontSize: 14,
-                  fontWeight: 600
-                }}
-              >
-                Date of birth
-              </Typography>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                  value={dob}
-                  onChange={(newValue) => setDob(newValue)}
-                  slotProps={{ textField: { size: 'small' } }}
-                  sx={{ width: '60%' }}
+
+                    {/* Upload spinner */}
+                    {uploading && (
+                      <Box
+                        sx={{
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          bottom: 0,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          bgcolor: 'rgba(0,0,0,0.5)',
+                          borderRadius: '50%',
+                          zIndex: 2
+                        }}
+                      >
+                        <CircularProgress size={30} sx={{ color: '#fff' }} />
+                      </Box>
+                    )}
+                  </Box>
+                </Tooltip>
+
+                <input
+                  type='file'
+                  accept='image/*'
+                  ref={fileInputRef}
+                  style={{ display: 'none' }}
+                  onChange={handleFileSelect}
                 />
-              </LocalizationProvider>
+
+                <Typography sx={{ fontSize: '1.4rem', fontWeight: 700, color: '#111827' }}>
+                  {userDetails.firstName} {userDetails.lastName}
+                </Typography>
+                <Typography sx={{ fontSize: '0.9rem', color: '#6b7280' }}>
+                  @{userDetails.username}
+                </Typography>
+              </Box>
+
+              <Divider sx={{ mb: 3 }} />
+
+              <Typography sx={{ fontWeight: 600, color: '#374151', mb: 2, fontSize: '1.1rem' }}>
+                Personal Information
+              </Typography>
+
+              {/* Form Grid */}
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    label='First Name'
+                    fullWidth
+                    size='small'
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    sx={inputStyles}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    label='Last Name'
+                    fullWidth
+                    size='small'
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    sx={inputStyles}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    label='Email Address'
+                    type='email'
+                    fullWidth
+                    size='small'
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    sx={inputStyles}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    label='City'
+                    fullWidth
+                    size='small'
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                    sx={inputStyles}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      label='Date of Birth'
+                      value={dob}
+                      onChange={(newValue) => setDob(newValue)}
+                      slotProps={{
+                        textField: {
+                          size: 'small',
+                          fullWidth: true,
+                          sx: inputStyles
+                        }
+                      }}
+                    />
+                  </LocalizationProvider>
+                </Grid>
+              </Grid>
+
+              {/* Save Button */}
+              <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 4 }}>
+                <Button
+                  variant='contained'
+                  onClick={handleUpdate}
+                  disabled={isUpdating}
+                  sx={{
+                    px: 4,
+                    py: 1.2,
+                    borderRadius: '10px',
+                    bgcolor: ACCENT,
+                    color: '#fff',
+                    fontWeight: 600,
+                    textTransform: 'none',
+                    boxShadow: '0 4px 14px rgba(30,41,59,0.3)',
+                    '&:hover': {
+                      bgcolor: ACCENT_HOVER,
+                      boxShadow: '0 6px 20px rgba(30,41,59,0.4)',
+                    },
+                    '&:disabled': {
+                      bgcolor: '#e5e7eb',
+                      color: '#9ca3af'
+                    }
+                  }}
+                >
+                  {isUpdating ? <CircularProgress size={22} sx={{ color: '#fff' }} /> : 'Save Changes'}
+                </Button>
+              </Box>
             </Box>
+          ) : (
             <Box
               sx={{
                 display: 'flex',
+                flexDirection: 'column',
+                gap: 2,
                 justifyContent: 'center',
-                width: '100%',
-                mt: 3
+                alignItems: 'center',
+                height: 300,
+                bgcolor: '#fff',
+                borderRadius: '20px',
+                border: '1px solid rgba(0,0,0,0.06)'
               }}
             >
-              <Button
-                variant='contained'
-                color='primary'
-                onClick={handleUpdate}
-                sx={{ px: 4 }}
-              >
-                Update Profile
-              </Button>
+              <CircularProgress size={30} sx={{ color: ACCENT }} />
+              <Typography color='text.secondary'>Loading your profile…</Typography>
             </Box>
-          </Box>
-        </Card>
-      ) : (
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '30px',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '100vh'
-          }}
-        >
-          <CircularProgress></CircularProgress>
-          <Typography>Loading ...</Typography>
+          )}
         </Box>
-      )}
-    </Scene>
+      </Box>
+    </Box>
   );
 }
+
+const inputStyles = {
+  '& .MuiOutlinedInput-root': {
+    borderRadius: '10px',
+    '& fieldset': { borderColor: '#e5e7eb' },
+    '&:hover fieldset': { borderColor: '#d1d5db' },
+    '&.Mui-focused fieldset': { borderColor: ACCENT, borderWidth: '1.5px' }
+  },
+  '& .MuiInputLabel-root.Mui-focused': {
+    color: ACCENT
+  }
+};

@@ -1,79 +1,50 @@
-import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import AddIcon from '@mui/icons-material/Add';
 import {
   Box,
   Button,
-  Card,
   CircularProgress,
+  Dialog,
+  DialogContent,
+  DialogTitle,
   Fab,
-  Popover,
   TextField,
+  Tooltip,
   Typography
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import { isAuthenticated, logOut } from '../services/authenticationService';
-import Scene from './Scene';
-import Post from '../components/Post';
-import { createPost, getMyPosts } from '../services/postService';
-import SnackbarUI from '../components/ui/Snackbar';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-export default function Home() {
+import Post from '../components/Post';
+import SnackbarUI from '../components/ui/Snackbar';
+import { isAuthenticated, logOut } from '../services/authenticationService';
+import { createPost, getMyPosts } from '../services/postService';
+import Scene from './Scene';
+
+const ACCENT = '#1e293b';
+
+export default function HomePage() {
+  const navigate = useNavigate();
+
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(false);
-  const observer = useRef();
-  const lastPostElementRef = useRef();
-  const [anchorEl, setAnchorEl] = useState(null);
   const [newPostContent, setNewPostContent] = useState('');
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [isPosting, setIsPosting] = useState(false);
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
-  const navigate = useNavigate();
+  const observer = useRef();
+  const lastPostRef = useRef();
 
-  // Handle opening the popover
-  const handleCreatePostClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const showSnackbar = (message, severity = 'success') =>
+    setSnackbar({ open: true, message, severity });
 
-  const handleClosePopover = () => {
-    setAnchorEl(null);
-    setNewPostContent('');
-  };
+  const handleCloseSnackbar = () =>
+    setSnackbar((prev) => ({ ...prev, open: false }));
 
-  // Handle Snackbar close
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setSnackbarOpen(false);
-  };
-
-  // Handle posting new content
-  const handlePostContent = () => {
-    console.log('New post content:', newPostContent);
-    handleClosePopover();
-
-    createPost(newPostContent)
-      .then((response) => {
-        setPosts((prevPosts) => [response.data.result, ...prevPosts]);
-        setNewPostContent('');
-        setSnackbarMessage('Post created successfully!');
-        setSnackbarSeverity('success');
-        setSnackbarOpen(true);
-      })
-      .catch((error) => {
-        setSnackbarMessage('Failed to create post. Please try again.');
-        setSnackbarSeverity('error');
-        setSnackbarOpen(true);
-      });
-  };
-
-  const open = Boolean(anchorEl);
-  const popoverId = open ? 'post-popover' : undefined;
-
+  // ─── Auth guard & load posts ────────────────────────────────────────────────
   useEffect(() => {
     if (!isAuthenticated()) {
       navigate('/login');
@@ -82,29 +53,32 @@ export default function Home() {
     }
   }, [navigate, page]);
 
-  const loadPosts = (page) => {
+  const loadPosts = (pageNum) => {
     setLoading(true);
-    getMyPosts(page)
+    getMyPosts(pageNum)
       .then((response) => {
         setTotalPages(response.data.result.totalPage);
-        setPosts((prevPosts) => [...prevPosts, ...response.data.result.data]);
+        setPosts((prevPosts) => {
+          if (pageNum === 1) return response.data.result.data;
+          return [...prevPosts, ...response.data.result.data];
+        });
         setHasMore(response.data.result.data.length > 0);
       })
       .catch((error) => {
-        if (error.response.status === 401) {
+        if (error?.response?.status === 401) {
           logOut();
           navigate('/login');
         }
       })
-      .finally(() => {
-        setLoading(false);
-      });
+      .finally(() => setLoading(false));
   };
 
+  // ─── Infinite scroll (restoring exact original observer pattern) ────────────
   useEffect(() => {
     if (!hasMore) return;
 
     if (observer.current) observer.current.disconnect();
+
     observer.current = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
         if (page < totalPages) {
@@ -112,138 +86,212 @@ export default function Home() {
         }
       }
     });
-    if (lastPostElementRef.current) {
-      observer.current.observe(lastPostElementRef.current);
+
+    if (lastPostRef.current) {
+      observer.current.observe(lastPostRef.current);
     }
 
+    // Unset hasMore just like original code
     setHasMore(false);
-  }, [hasMore]);
+  }, [hasMore, page, totalPages]);
+
+
+  // ─── Create post ─────────────────────────────────────────────────────────────
+  const handleCreatePost = async () => {
+    if (!newPostContent.trim()) return;
+    setIsPosting(true);
+    try {
+      const response = await createPost(newPostContent);
+      setPosts((prevPosts) => [response.data.result, ...prevPosts]);
+      setNewPostContent('');
+      setIsCreateDialogOpen(false);
+      showSnackbar('Post created successfully!');
+    } catch {
+      showSnackbar('Failed to create post. Please try again.', 'error');
+    } finally {
+      setIsPosting(false);
+    }
+  };
 
   return (
     <Scene>
       <SnackbarUI
-        open={snackbarOpen}
-        onClose={handleSnackbarClose}
-        message={snackbarMessage}
-        severity={snackbarSeverity}
-        autoHideDuration={6000}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{ marginTop: '64px' }}
+        open={snackbar.open}
+        onClose={handleCloseSnackbar}
+        message={snackbar.message}
+        severity={snackbar.severity}
       />
-      <Card
+
+      {/* Feed */}
+      <Box
         sx={{
-          minWidth: 500,
-          maxWidth: 600,
-          boxShadow: 3,
-          borderRadius: 2,
-          mt: '20px',
-          padding: '20px'
+          maxWidth: 620,
+          width: '100%',
+          mx: 'auto',
+          px: { xs: 1.5, sm: 2 },
+          py: 3,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2
         }}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            width: '100%',
-            gap: '10px'
-          }}
-        >
+        {/* Section title */}
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Typography
-            sx={{
-              fontSize: 18,
-              mb: '10px'
-            }}
+            sx={{ fontWeight: 700, fontSize: '1.1rem', color: '#111827' }}
           >
-            Your posts,
+            Your Posts
           </Typography>
+          <Typography sx={{ fontSize: '0.8rem', color: '#9ca3af' }}>
+            {posts.length} post{posts.length !== 1 ? 's' : ''}
+          </Typography>
+        </Box>
+
+        {/* Posts */}
+        {posts.map((post, index) => {
+          const isLast = posts.length === index + 1;
+
+          if (isLast) {
+            return (
+              <Box
+                key={post.id}
+                ref={lastPostRef}
+                sx={postBoxStyles}
+              >
+                <Post post={post} />
+              </Box>
+            );
+          } else {
+            return (
+              <Box
+                key={post.id}
+                sx={postBoxStyles}
+              >
+                <Post post={post} />
+              </Box>
+            );
+          }
+        })}
+
+        {/* Loading */}
+        {loading && (
+          <Box sx={{ display: 'flex', justifyContent: 'center', py: 3 }}>
+            <CircularProgress size={26} sx={{ color: ACCENT }} />
+          </Box>
+        )}
+
+        {/* Empty state */}
+        {!loading && posts.length === 0 && (
           <Box
             sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'flex-start',
-              width: '100%' // Ensure content takes full width
+              bgcolor: '#fff',
+              borderRadius: '16px',
+              border: '1px solid rgba(0,0,0,0.06)',
+              p: 5,
+              textAlign: 'center'
             }}
-          ></Box>
-          {posts.map((post, index) => {
-            if (posts.length === index + 1) {
-              return (
-                <Post ref={lastPostElementRef} key={post.id} post={post} />
-              );
-            } else {
-              return <Post key={post.id} post={post} />;
-            }
-          })}
-          {loading && (
-            <Box
-              sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}
-            >
-              <CircularProgress size='24px' />
-            </Box>
-          )}
-        </Box>
-      </Card>
-      <Fab
-        color='primary'
-        aria-label='add'
-        onClick={handleCreatePostClick}
-        sx={{
-          position: 'fixed',
-          bottom: 30,
-          right: 30
-        }}
-      >
-        <AddIcon />
-      </Fab>
-      {/* Popover for creating new post */}{' '}
-      <Popover
-        id={popoverId}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClosePopover}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'center'
-        }}
-        transformOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center'
-        }}
-        slotProps={{
-          paper: {
-            sx: {
-              borderRadius: 5,
-              p: 3,
-              width: 500
-            }
+          >
+            <Typography fontSize='2.5rem' mb={1}>📝</Typography>
+            <Typography fontWeight={600} color='#374151' mb={0.5}>
+              No posts yet
+            </Typography>
+            <Typography fontSize='0.875rem' color='text.secondary'>
+              Click the + button to share something!
+            </Typography>
+          </Box>
+        )}
+      </Box>
+
+      {/* FAB */}
+      <Tooltip title='New post' placement='left'>
+        <Fab
+          onClick={() => setIsCreateDialogOpen(true)}
+          sx={{
+            position: 'fixed',
+            bottom: 28,
+            right: 28,
+            bgcolor: ACCENT,
+            color: '#fff',
+            boxShadow: '0 6px 20px rgba(30,41,59,0.45)',
+            '&:hover': { bgcolor: '#0f172a' }
+          }}
+        >
+          <AddIcon />
+        </Fab>
+      </Tooltip>
+
+      {/* Create post dialog */}
+      <Dialog
+        open={isCreateDialogOpen}
+        onClose={() => setIsCreateDialogOpen(false)}
+        maxWidth='sm'
+        fullWidth
+        PaperProps={{
+          sx: {
+            borderRadius: '20px',
+            p: 1
           }
         }}
       >
-        <Typography variant='h6' sx={{ mb: 2 }}>
-          Create new Post
-        </Typography>
-        <TextField
-          fullWidth
-          multiline
-          rows={4}
-          placeholder="What's on your mind?"
-          value={newPostContent}
-          onChange={(e) => setNewPostContent(e.target.value)}
-          variant='outlined'
-          sx={{ mb: 2 }}
-        />
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <Button
-            variant='contained'
-            color='primary'
-            onClick={handlePostContent}
-            disabled={!newPostContent.trim()}
-          >
-            Post
-          </Button>
-        </Box>
-      </Popover>
+        <DialogTitle sx={{ fontWeight: 700, pb: 1 }}>Create Post</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            fullWidth
+            multiline
+            rows={4}
+            placeholder="What's on your mind?"
+            value={newPostContent}
+            onChange={(e) => setNewPostContent(e.target.value)}
+            variant='outlined'
+            sx={{
+              mt: 1,
+              '& .MuiOutlinedInput-root': {
+                borderRadius: '12px',
+                '&.Mui-focused fieldset': { borderColor: ACCENT }
+              }
+            }}
+          />
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1, mt: 2 }}>
+            <Button
+              variant='outlined'
+              onClick={() => setIsCreateDialogOpen(false)}
+              sx={{
+                borderRadius: '10px',
+                textTransform: 'none',
+                borderColor: '#e5e7eb',
+                color: '#374151'
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant='contained'
+              onClick={handleCreatePost}
+              disabled={!newPostContent.trim() || isPosting}
+              sx={{
+                borderRadius: '10px',
+                textTransform: 'none',
+                bgcolor: ACCENT,
+                boxShadow: 'none',
+                '&:hover': { bgcolor: '#0f172a', boxShadow: 'none' },
+                '&:disabled': { bgcolor: '#e5e7eb', color: '#9ca3af' }
+              }}
+            >
+              {isPosting ? <CircularProgress size={18} sx={{ color: '#fff' }} /> : 'Post'}
+            </Button>
+          </Box>
+        </DialogContent>
+      </Dialog>
     </Scene>
   );
 }
+
+const postBoxStyles = {
+  bgcolor: '#fff',
+  borderRadius: '16px',
+  border: '1px solid rgba(0,0,0,0.06)',
+  boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
+  overflow: 'hidden',
+  p: { xs: 2.5, sm: 3 }
+};
