@@ -27,6 +27,7 @@ import {
   getMessages,
   getMyConversations
 } from '../services/chatService';
+import { getMyInfo } from '../services/userService';
 import Scene from './Scene';
 
 const ACCENT = '#1e293b'; // Slate 800
@@ -40,6 +41,7 @@ export default function ChatPage() {
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [messagesMap, setMessagesMap] = useState({});
   const [showConversationList, setShowConversationList] = useState(true);
+  const [myUserId, setMyUserId] = useState(null);
 
   const messageContainerRef = useRef(null);
 
@@ -64,7 +66,13 @@ export default function ChatPage() {
     }
   };
 
-  useEffect(() => { fetchConversations(); }, []);
+  useEffect(() => { 
+    fetchConversations(); 
+    getMyInfo().then(res => {
+      const user = res?.data?.result;
+      if (user) setMyUserId(user.userId || user.id);
+    }).catch(() => {});
+  }, []);
 
   useEffect(() => {
     if (conversations.length > 0 && !selectedConversation) {
@@ -99,7 +107,12 @@ export default function ChatPage() {
   }, [selectedConversation, messagesMap]);
 
   const currentMessages = selectedConversation
-    ? messagesMap[selectedConversation.id] || []
+    ? (messagesMap[selectedConversation.id] || []).map((m) => {
+        if (m.pending || m.me !== undefined) return m;
+        // Determine if message is mine
+        const senderId = m.sender?.userId || m.sender?.id || m.senderId;
+        return { ...m, me: senderId === myUserId };
+      })
     : [];
 
   useEffect(() => { scrollToBottom(); }, [currentMessages, scrollToBottom]);

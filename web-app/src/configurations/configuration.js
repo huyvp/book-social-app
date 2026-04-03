@@ -16,5 +16,6 @@ export const API = {
   SEARCH_USER: '/profile/search',
 
   MY_CONVERSATIONS: '/chat/my-conversations',
-  CREATE_CONVERSATION: '/chat/conversations'
+  CHAT_CONVERSATION: '/chat/conversations',
+  CHAT_MESSAGE: '/chat/messages'
 };
