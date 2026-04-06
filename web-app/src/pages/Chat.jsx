@@ -147,8 +147,8 @@ export default function ChatPage() {
     const tempId = `temp-${Date.now()}`;
     const optimistic = {
       id: tempId,
-      content: message,
-      timestamp: new Date().toISOString(),
+      message: message,
+      createdDate: new Date().toISOString(),
       me: true,
       pending: true
     };
@@ -176,7 +176,7 @@ export default function ChatPage() {
           const updated = prev[selectedConversation.id].filter((m) => m.id !== tempId);
           return {
             ...prev,
-            [selectedConversation.id]: [...updated, response.data.result].sort(
+            [selectedConversation.id]: [...updated, { ...response.data.result, me: true }].sort(
               (a, b) => new Date(a.createdDate) - new Date(b.createdDate)
             )
           };
