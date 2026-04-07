@@ -18,18 +18,14 @@ import {
   Tooltip,
   Typography
 } from '@mui/material';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 
 import NewChatPopover from '../components/NewChatPopover';
-import {
-  createConversation,
-  createMessage,
-  getMessages,
-  getMyConversations
-} from '../services/chatService';
-import { getMyInfo } from '../services/userService';
+import {createConversation, createMessage, getMessages, getMyConversations} from '../services/chatService';
+import {getMyInfo} from '../services/userService';
 import Scene from './Scene';
-import { io } from 'socket.io-client';
+import {io} from 'socket.io-client';
+import {getToken} from '../services/localStorageService';
 
 const ACCENT = '#1e293b'; // Slate 800
 
@@ -75,7 +71,7 @@ export default function ChatPage() {
         const user = res?.data?.result;
         if (user) setMyUserId(user.userId || user.id);
       })
-      .catch(() => { });
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -111,11 +107,11 @@ export default function ChatPage() {
 
   const currentMessages = selectedConversation
     ? (messagesMap[selectedConversation.id] || []).map((m) => {
-      if (m.pending || m.me !== undefined) return m;
-      // Determine if message is mine
-      const senderId = m.sender?.userId || m.sender?.id || m.senderId;
-      return { ...m, me: senderId === myUserId };
-    })
+        if (m.pending || m.me !== undefined) return m;
+        // Determine if message is mine
+        const senderId = m.sender?.userId || m.sender?.id || m.senderId;
+        return { ...m, me: senderId === myUserId };
+      })
     : [];
 
   useEffect(() => {
@@ -128,7 +124,8 @@ export default function ChatPage() {
 
   useEffect(() => {
     console.log('Initializing socket  ...');
-    const socket = new io('http://localhost:8099');
+    const connectionString = 'http://localhost:8099?token=' + getToken();
+    const socket = new io(connectionString);
 
     socket.on('connect', () => {
       console.log('socket connected');
@@ -192,10 +189,10 @@ export default function ChatPage() {
       prev.map((conversation) =>
         conversation.id === selectedConversation.id
           ? {
-            ...conversation,
-            lastMessage: message,
-            lastTimestamp: new Date().toLocaleString()
-          }
+              ...conversation,
+              lastMessage: message,
+              lastTimestamp: new Date().toLocaleString()
+            }
           : conversation
       )
     );

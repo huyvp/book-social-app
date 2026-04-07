@@ -1,6 +1,7 @@
 package com.chat.controller;
 
 
+import com.chat.service.IIdentityService;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.annotation.OnConnect;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Component;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SocketHandler {
     SocketIOServer server;
+    IIdentityService identityService;
 
     @PostConstruct
     public void init() {
@@ -29,6 +31,12 @@ public class SocketHandler {
 
     @OnConnect
     public void clientConnected(SocketIOClient client) {
+        // Get token form request param
+        String token = client.getHandshakeData().getSingleUrlParam("token");
+        log.info("client token: {}", token);
+        // Verify token
+        var response = identityService.checkToken(token);
+        if (!response) client.disconnect();
         log.info("Client connected: {}", client.getSessionId());
     }
 

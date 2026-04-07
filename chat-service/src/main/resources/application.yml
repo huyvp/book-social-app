@@ -13,3 +13,5 @@ spring:
 services:
   profile:
     url: http://localhost:9002/profile
+  identity:
+    url: http://localhost:9001/identity
