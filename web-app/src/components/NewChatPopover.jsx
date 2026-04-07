@@ -161,7 +161,7 @@ const NewChatPopover = ({ anchorEl, open, onClose, onSelectUser }) => {
                   borderRadius: 1,
                   cursor: 'pointer',
                   '&:hover': {
-                    bgcolor: 'rgba(0, 0, 0, 0.04)'
+                    backgroundColor: 'rgba(0, 0, 0, 0.04)'
                   }
                 }}
               >

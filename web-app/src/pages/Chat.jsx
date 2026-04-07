@@ -29,6 +29,7 @@ import {
 } from '../services/chatService';
 import { getMyInfo } from '../services/userService';
 import Scene from './Scene';
+import { io } from 'socket.io-client';
 
 const ACCENT = '#1e293b'; // Slate 800
 
@@ -49,10 +50,11 @@ export default function ChatPage() {
     if (!messageContainerRef.current) return;
     const el = messageContainerRef.current;
     el.scrollTop = el.scrollHeight;
-    setTimeout(() => { el.scrollTop = el.scrollHeight; }, 150);
+    setTimeout(() => {
+      el.scrollTop = el.scrollHeight;
+    }, 150);
   }, []);
 
-  // ─── Conversations ──────────────────────────────────────────────────────────
   const fetchConversations = async () => {
     setIsLoadingConversations(true);
     setConversationsError(null);
@@ -66,12 +68,14 @@ export default function ChatPage() {
     }
   };
 
-  useEffect(() => { 
-    fetchConversations(); 
-    getMyInfo().then(res => {
-      const user = res?.data?.result;
-      if (user) setMyUserId(user.userId || user.id);
-    }).catch(() => {});
+  useEffect(() => {
+    fetchConversations();
+    getMyInfo()
+      .then((res) => {
+        const user = res?.data?.result;
+        if (user) setMyUserId(user.userId || user.id);
+      })
+      .catch(() => { });
   }, []);
 
   useEffect(() => {
@@ -80,7 +84,6 @@ export default function ChatPage() {
     }
   }, [conversations, selectedConversation]);
 
-  // ─── Messages ───────────────────────────────────────────────────────────────
   useEffect(() => {
     if (!selectedConversation?.id) return;
 
@@ -108,20 +111,45 @@ export default function ChatPage() {
 
   const currentMessages = selectedConversation
     ? (messagesMap[selectedConversation.id] || []).map((m) => {
-        if (m.pending || m.me !== undefined) return m;
-        // Determine if message is mine
-        const senderId = m.sender?.userId || m.sender?.id || m.senderId;
-        return { ...m, me: senderId === myUserId };
-      })
+      if (m.pending || m.me !== undefined) return m;
+      // Determine if message is mine
+      const senderId = m.sender?.userId || m.sender?.id || m.senderId;
+      return { ...m, me: senderId === myUserId };
+    })
     : [];
 
-  useEffect(() => { scrollToBottom(); }, [currentMessages, scrollToBottom]);
-  useEffect(() => { scrollToBottom(); }, [selectedConversation, scrollToBottom]);
+  useEffect(() => {
+    scrollToBottom();
+  }, [currentMessages, scrollToBottom]);
 
-  // ─── Handlers ───────────────────────────────────────────────────────────────
+  useEffect(() => {
+    scrollToBottom();
+  }, [selectedConversation, scrollToBottom]);
+
+  useEffect(() => {
+    console.log('Initializing socket  ...');
+    const socket = new io('http://localhost:8099');
+
+    socket.on('connect', () => {
+      console.log('socket connected');
+    });
+
+    socket.on('disconnect', () => {
+      console.log('socket disconnected');
+    });
+
+    socket.on('message', (msg) => {
+      console.log('message', msg);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
   const handleSelectConversation = (conversation) => {
     setSelectedConversation(conversation);
-    setShowConversationList(false); // on mobile, hide list when chat opens
+    setShowConversationList(false);
   };
 
   const handleSelectNewChatUser = async (user) => {
@@ -155,13 +183,20 @@ export default function ChatPage() {
 
     setMessagesMap((prev) => ({
       ...prev,
-      [selectedConversation.id]: [...(prev[selectedConversation.id] || []), optimistic]
+      [selectedConversation.id]: [
+        ...(prev[selectedConversation.id] || []),
+        optimistic
+      ]
     }));
     setConversations((prev) =>
-      prev.map((c) =>
-        c.id === selectedConversation.id
-          ? { ...c, lastMessage: message, lastTimestamp: new Date().toLocaleString() }
-          : c
+      prev.map((conversation) =>
+        conversation.id === selectedConversation.id
+          ? {
+            ...conversation,
+            lastMessage: message,
+            lastTimestamp: new Date().toLocaleString()
+          }
+          : conversation
       )
     );
     setMessage('');
@@ -173,12 +208,15 @@ export default function ChatPage() {
       });
       if (response?.data?.result) {
         setMessagesMap((prev) => {
-          const updated = prev[selectedConversation.id].filter((m) => m.id !== tempId);
+          const updated = prev[selectedConversation.id].filter(
+            (msg) => msg.id !== tempId
+          );
           return {
             ...prev,
-            [selectedConversation.id]: [...updated, { ...response.data.result, me: true }].sort(
-              (a, b) => new Date(a.createdDate) - new Date(b.createdDate)
-            )
+            [selectedConversation.id]: [
+              ...updated,
+              { ...response.data.result, me: true }
+            ].sort((a, b) => new Date(a.createdDate) - new Date(b.createdDate))
           };
         });
       }
@@ -209,7 +247,6 @@ export default function ChatPage() {
     });
   };
 
-  // ─── Render ─────────────────────────────────────────────────────────────────
   return (
     <Scene>
       <Box
@@ -217,7 +254,7 @@ export default function ChatPage() {
           display: 'flex',
           height: 'calc(100vh - 64px)',
           overflow: 'hidden',
-          bgcolor: '#f0f2f5'
+          backgroundColor: '#f0f2f5'
         }}
       >
         {/* ── Conversation List ── */}
@@ -230,17 +267,16 @@ export default function ChatPage() {
               sm: 'flex'
             },
             flexDirection: 'column',
-            bgcolor: '#fff',
+            backgroundColor: '#fff',
             borderRight: '1px solid rgba(0,0,0,0.07)',
             height: '100%'
           }}
         >
-          {/* List header */}
           <Box
             sx={{
               px: 2,
-              height: 64, // strictly identical header height
-              minHeight: 64, // avoid vertical shift
+              height: 64,
+              minHeight: 64,
               boxSizing: 'border-box',
               display: 'flex',
               justifyContent: 'space-between',
@@ -248,7 +284,9 @@ export default function ChatPage() {
               borderBottom: '1px solid rgba(0,0,0,0.07)'
             }}
           >
-            <Typography sx={{ fontWeight: 700, fontSize: '1.05rem', color: '#111827' }}>
+            <Typography
+              sx={{ fontWeight: 700, fontSize: '1.05rem', color: '#111827' }}
+            >
               Messages
             </Typography>
             <Tooltip title='New conversation'>
@@ -256,11 +294,11 @@ export default function ChatPage() {
                 size='small'
                 onClick={(e) => setNewChatAnchorEl(e.currentTarget)}
                 sx={{
-                  bgcolor: ACCENT,
+                  backgroundColor: ACCENT,
                   color: '#fff',
                   width: 32,
                   height: 32,
-                  '&:hover': { bgcolor: '#0f172a' }
+                  '&:hover': { backgroundColor: '#0f172a' }
                 }}
               >
                 <AddIcon fontSize='small' />
@@ -286,7 +324,11 @@ export default function ChatPage() {
                 <Alert
                   severity='error'
                   action={
-                    <IconButton size='small' color='inherit' onClick={fetchConversations}>
+                    <IconButton
+                      size='small'
+                      color='inherit'
+                      onClick={fetchConversations}
+                    >
                       <RefreshIcon fontSize='small' />
                     </IconButton>
                   }
@@ -295,15 +337,17 @@ export default function ChatPage() {
                 </Alert>
               </Box>
             )}
-            {!isLoadingConversations && !conversationsError && conversations.length === 0 && (
-              <Box sx={{ p: 3, textAlign: 'center' }}>
-                <Typography color='text.secondary' fontSize='0.875rem'>
-                  No conversations yet.
-                  <br />
-                  Start a new chat!
-                </Typography>
-              </Box>
-            )}
+            {!isLoadingConversations &&
+              !conversationsError &&
+              conversations.length === 0 && (
+                <Box sx={{ p: 3, textAlign: 'center' }}>
+                  <Typography color='text.secondary' fontSize='0.875rem'>
+                    No conversations yet.
+                    <br />
+                    Start a new chat!
+                  </Typography>
+                </Box>
+              )}
             {!isLoadingConversations && conversations.length > 0 && (
               <List disablePadding>
                 {conversations.map((conv) => {
@@ -317,10 +361,14 @@ export default function ChatPage() {
                           cursor: 'pointer',
                           px: 2,
                           py: 1.2,
-                          bgcolor: isSelected ? 'rgba(30,41,59,0.08)' : 'transparent',
-                          borderLeft: isSelected ? `3px solid ${ACCENT}` : '3px solid transparent',
+                          backgroundColor: isSelected
+                            ? 'rgba(30,41,59,0.08)'
+                            : 'transparent',
+                          borderLeft: isSelected
+                            ? `3px solid ${ACCENT}`
+                            : '3px solid transparent',
                           transition: 'all 0.15s ease',
-                          '&:hover': { bgcolor: 'rgba(0,0,0,0.04)' }
+                          '&:hover': { backgroundColor: 'rgba(0,0,0,0.04)' }
                         }}
                       >
                         <ListItemAvatar>
@@ -330,12 +378,19 @@ export default function ChatPage() {
                             invisible={!conv.unread}
                             overlap='circular'
                           >
-                            <Avatar src={conv.conversationAvatar || ''} sx={{ width: 42, height: 42 }} />
+                            <Avatar
+                              src={conv.conversationAvatar || ''}
+                              sx={{ width: 42, height: 42 }}
+                            />
                           </Badge>
                         </ListItemAvatar>
                         <ListItemText
                           primary={
-                            <Stack direction='row' justifyContent='space-between' alignItems='center'>
+                            <Stack
+                              direction='row'
+                              justifyContent='space-between'
+                              alignItems='center'
+                            >
                               <Typography
                                 variant='body2'
                                 fontWeight={conv.unread > 0 ? 700 : 500}
@@ -345,13 +400,22 @@ export default function ChatPage() {
                               >
                                 {conv.conversationName}
                               </Typography>
-                              <Typography variant='caption' color='text.secondary' sx={{ fontSize: '0.7rem', flexShrink: 0 }}>
+                              <Typography
+                                variant='caption'
+                                color='text.secondary'
+                                sx={{ fontSize: '0.7rem', flexShrink: 0 }}
+                              >
                                 {formatDate(conv.modifiedDate)}
                               </Typography>
                             </Stack>
                           }
                           secondary={
-                            <Typography variant='body2' color='text.secondary' noWrap fontSize='0.8rem'>
+                            <Typography
+                              variant='body2'
+                              color='text.secondary'
+                              noWrap
+                              fontSize='0.8rem'
+                            >
                               {conv.lastMessage || 'Start a conversation'}
                             </Typography>
                           }
@@ -376,7 +440,7 @@ export default function ChatPage() {
             },
             flexDirection: 'column',
             height: '100%',
-            bgcolor: '#fff'
+            backgroundColor: '#fff'
           }}
         >
           {selectedConversation ? (
@@ -402,9 +466,16 @@ export default function ChatPage() {
                 >
                   ←
                 </IconButton>
-                <Avatar src={selectedConversation.conversationAvatar} sx={{ width: 38, height: 38 }} />
+                <Avatar
+                  src={selectedConversation.conversationAvatar}
+                  sx={{ width: 38, height: 38 }}
+                />
                 <Box>
-                  <Typography fontWeight={700} fontSize='0.95rem' color='#111827'>
+                  <Typography
+                    fontWeight={700}
+                    fontSize='0.95rem'
+                    color='#111827'
+                  >
                     {selectedConversation.conversationName}
                   </Typography>
                   <Typography fontSize='0.75rem' color='text.secondary'>
@@ -423,7 +494,7 @@ export default function ChatPage() {
                   display: 'flex',
                   flexDirection: 'column',
                   gap: 1,
-                  bgcolor: '#f8f9fb'
+                  backgroundColor: '#f8f9fb'
                 }}
               >
                 {currentMessages.map((msg) => (
@@ -448,8 +519,10 @@ export default function ChatPage() {
                         sx={{
                           px: 1.8,
                           py: 1,
-                          borderRadius: msg.me ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
-                          bgcolor: msg.me
+                          borderRadius: msg.me
+                            ? '18px 18px 4px 18px'
+                            : '18px 18px 18px 4px',
+                          backgroundColor: msg.me
                             ? msg.failed
                               ? '#fee2e2'
                               : ACCENT
@@ -459,7 +532,10 @@ export default function ChatPage() {
                           boxShadow: '0 1px 4px rgba(0,0,0,0.08)'
                         }}
                       >
-                        <Typography variant='body2' sx={{ wordBreak: 'break-word', lineHeight: 1.5 }}>
+                        <Typography
+                          variant='body2'
+                          sx={{ wordBreak: 'break-word', lineHeight: 1.5 }}
+                        >
                           {msg.message}
                         </Typography>
                       </Box>
@@ -471,12 +547,20 @@ export default function ChatPage() {
                         sx={{ mt: 0.4, px: 0.5 }}
                       >
                         {msg.failed && (
-                          <Typography variant='caption' color='error'>Failed</Typography>
+                          <Typography variant='caption' color='error'>
+                            Failed
+                          </Typography>
                         )}
                         {msg.pending && (
-                          <Typography variant='caption' color='text.secondary'>Sending…</Typography>
+                          <Typography variant='caption' color='text.secondary'>
+                            Sending…
+                          </Typography>
                         )}
-                        <Typography variant='caption' color='text.secondary' sx={{ fontSize: '0.68rem' }}>
+                        <Typography
+                          variant='caption'
+                          color='text.secondary'
+                          sx={{ fontSize: '0.68rem' }}
+                        >
                           {formatTime(msg.createdDate)}
                         </Typography>
                       </Stack>
@@ -488,7 +572,7 @@ export default function ChatPage() {
                           width: 28,
                           height: 28,
                           flexShrink: 0,
-                          bgcolor: ACCENT,
+                          backgroundColor: ACCENT,
                           fontSize: '0.65rem',
                           fontWeight: 700
                         }}
@@ -503,7 +587,10 @@ export default function ChatPage() {
               {/* Input */}
               <Box
                 component='form'
-                onSubmit={(e) => { e.preventDefault(); handleSendMessage(); }}
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleSendMessage();
+                }}
                 sx={{
                   px: 2,
                   py: 1.5,
@@ -511,7 +598,7 @@ export default function ChatPage() {
                   display: 'flex',
                   gap: 1,
                   alignItems: 'center',
-                  bgcolor: '#fff'
+                  backgroundColor: '#fff'
                 }}
               >
                 <TextField
@@ -529,9 +616,9 @@ export default function ChatPage() {
                   sx={{
                     '& .MuiOutlinedInput-root': {
                       borderRadius: '20px',
-                      bgcolor: '#f3f4f6',
+                      backgroundColor: '#f3f4f6',
                       '& fieldset': { border: 'none' },
-                      '&.Mui-focused': { bgcolor: '#ececf1' }
+                      '&.Mui-focused': { backgroundColor: '#ececf1' }
                     }
                   }}
                 />
@@ -541,12 +628,16 @@ export default function ChatPage() {
                       type='submit'
                       disabled={!message.trim()}
                       sx={{
-                        bgcolor: message.trim() ? ACCENT : '#e5e7eb',
+                        backgroundColor: message.trim() ? ACCENT : '#e5e7eb',
                         color: message.trim() ? '#fff' : '#9ca3af',
                         width: 38,
                         height: 38,
                         transition: 'all 0.2s',
-                        '&:hover': { bgcolor: message.trim() ? '#0f172a' : '#e5e7eb' }
+                        '&:hover': {
+                          backgroundColor: message.trim()
+                            ? '#0f172a'
+                            : '#e5e7eb'
+                        }
                       }}
                     >
                       <SendIcon fontSize='small' />

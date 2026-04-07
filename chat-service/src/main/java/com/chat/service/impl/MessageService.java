@@ -12,6 +12,7 @@ import com.chat.repo.ConversationRepo;
 import com.chat.repo.MessageRepo;
 import com.chat.service.IMessageService;
 
+import com.corundumstudio.socketio.SocketIOServer;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -30,7 +31,8 @@ public class MessageService implements IMessageService {
     ConversationRepo conversationRepo;
     MessageRepo messageRepo;
     MessageMapper mapper;
-    private final ProfileClient profileClient;
+    ProfileClient profileClient;
+    SocketIOServer socketIOServer;
 
     @Override
     public MessageResponse create(MessageRequest messageRequest) {
@@ -62,6 +64,12 @@ public class MessageService implements IMessageService {
         );
         message.setCreatedDate(Instant.now());
         message = messageRepo.save(message);
+
+        String msgString = message.getMessage();
+
+        socketIOServer.getAllClients().forEach(client -> {
+            client.sendEvent("message", msgString);
+        });
 
         return mapper.toMessageResponse(message);
     }
