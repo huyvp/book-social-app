@@ -18,14 +18,19 @@ import {
   Tooltip,
   Typography
 } from '@mui/material';
-import {useCallback, useEffect, useRef, useState} from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import NewChatPopover from '../components/NewChatPopover';
-import {createConversation, createMessage, getMessages, getMyConversations} from '../services/chatService';
-import {getMyInfo} from '../services/userService';
+import {
+  createConversation,
+  createMessage,
+  getMessages,
+  getMyConversations
+} from '../services/chatService';
+import { getMyInfo } from '../services/userService';
 import Scene from './Scene';
-import {io} from 'socket.io-client';
-import {getToken} from '../services/localStorageService';
+import { io } from 'socket.io-client';
+import { getToken } from '../services/localStorageService';
 
 const ACCENT = '#1e293b'; // Slate 800
 
@@ -41,6 +46,7 @@ export default function ChatPage() {
   const [myUserId, setMyUserId] = useState(null);
 
   const messageContainerRef = useRef(null);
+  const socketRef = useRef(null);
 
   const scrollToBottom = useCallback(() => {
     if (!messageContainerRef.current) return;
@@ -123,24 +129,33 @@ export default function ChatPage() {
   }, [selectedConversation, scrollToBottom]);
 
   useEffect(() => {
-    console.log('Initializing socket  ...');
-    const connectionString = 'http://localhost:8099?token=' + getToken();
-    const socket = new io(connectionString);
+    if (!socketRef.current) {
+      console.log('Initializing socket  ...');
+      const connectionString = 'http://localhost:8099?token=' + getToken();
+      socketRef.current = new io(connectionString);
 
-    socket.on('connect', () => {
-      console.log('socket connected');
-    });
+      socketRef.current.on('connect', () => {
+        console.log('socket connected');
+      });
 
-    socket.on('disconnect', () => {
-      console.log('socket disconnected');
-    });
+      socketRef.current.on('disconnect', () => {
+        console.log('socket disconnected');
+      });
 
-    socket.on('message', (msg) => {
-      console.log('message', msg);
-    });
+      socketRef.current.on('message', (msg) => {
+        console.log('message', msg);
+        const msgObject = JSON.parse(msg);
+        if (msgObject?.conversationId) {
+          handleIncomingMessage(msgObject);
+        }
+      });
+    }
 
     return () => {
-      socket.disconnect();
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+        socketRef.current = null;
+      }
     };
   }, []);
 
@@ -235,6 +250,60 @@ export default function ChatPage() {
       year: 'numeric'
     });
   };
+
+  const handleIncomingMessage = useCallback(
+    (message) => {
+      // Add the new message to the appropriate conversation
+      setMessagesMap((prev) => {
+        const existingMessages = prev[message.conversationId] || [];
+
+        // Check if message already exists to avoid duplicates
+        const messageExists = existingMessages.some((msg) => {
+          // Primary: Compare by ID if both messages have IDs
+          if (msg.id && message.id) {
+            return msg.id === message.id;
+          }
+
+          return false;
+        });
+
+        if (!messageExists) {
+          const updatedMessages = [...existingMessages, message].sort(
+            (a, b) => new Date(a.createdDate) - new Date(b.createdDate)
+          );
+
+          return {
+            ...prev,
+            [message.conversationId]: updatedMessages
+          };
+        }
+
+        console.log('Message already exists, not adding');
+        return prev;
+      });
+
+      // Update the conversation list with the new last message
+      setConversations((prevConversations) => {
+        const updatedConversations = prevConversations.map((conv) =>
+          conv.id === message.conversationId
+            ? {
+                ...conv,
+                lastMessage: message.message,
+                lastTimestamp: new Date(message.createdDate).toLocaleString(),
+                unread:
+                  selectedConversation?.id === message.conversationId
+                    ? 0
+                    : (conv.unread || 0) + 1,
+                modifiedDate: message.createdDate
+              }
+            : conv
+        );
+
+        return updatedConversations;
+      });
+    },
+    [selectedConversation]
+  );
 
   const formatTime = (dateStr) => {
     if (!dateStr) return '';

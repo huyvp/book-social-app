@@ -1,6 +1,7 @@
 package com.chat.service.impl;
 
 import com.chat.client.IdentityClient;
+import com.chat.dto.response.IntrospectResponse;
 import com.chat.service.IIdentityService;
 import feign.FeignException;
 import lombok.AccessLevel;
@@ -17,12 +18,12 @@ public class IdentityService implements IIdentityService {
     IdentityClient identityClient;
 
     @Override
-    public boolean checkToken(String token) {
+    public IntrospectResponse checkToken(String token) {
         try {
             return identityClient.introspect(token).getResult();
         } catch (FeignException e) {
             log.error("introspect error: {}", e.getMessage());
-            return false;
+            return IntrospectResponse.builder().valid(false).build();
         }
     }
 }

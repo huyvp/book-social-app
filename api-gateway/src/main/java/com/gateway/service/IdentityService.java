@@ -3,6 +3,7 @@ package com.gateway.service;
 import com.gateway.client.IdentityClient;
 import com.gateway.dto.response.DefaultResponse;
 
+import com.gateway.dto.response.IntrospectResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -18,7 +19,7 @@ public class IdentityService {
 
     IdentityClient identityClient;
 
-    public Mono<DefaultResponse<Boolean>> introspect(String token) {
+    public Mono<DefaultResponse<IntrospectResponse>> introspect(String token) {
         return identityClient.introspect(token);
     }
 }

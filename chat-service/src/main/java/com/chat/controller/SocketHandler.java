@@ -1,7 +1,9 @@
 package com.chat.controller;
 
 
+import com.chat.entity.SocketSession;
 import com.chat.service.IIdentityService;
+import com.chat.service.ISocketSessionService;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.annotation.OnConnect;
@@ -14,6 +16,8 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -21,6 +25,7 @@ import org.springframework.stereotype.Component;
 public class SocketHandler {
     SocketIOServer server;
     IIdentityService identityService;
+    ISocketSessionService socketSessionService;
 
     @PostConstruct
     public void init() {
@@ -36,13 +41,20 @@ public class SocketHandler {
         log.info("client token: {}", token);
         // Verify token
         var response = identityService.checkToken(token);
-        if (!response) client.disconnect();
+        if (!response.isValid()) client.disconnect();
+        SocketSession session = SocketSession.builder()
+                .sessionId(client.getSessionId().toString())
+                .createdAt(Instant.now())
+                .userId(response.getUserId())
+                .build();
+        socketSessionService.create(session);
         log.info("Client connected: {}", client.getSessionId());
     }
 
     @OnDisconnect
     public void clientDisconnected(SocketIOClient client) {
         log.info("Client disconnected: {}", client.getSessionId());
+        socketSessionService.delete(client);
     }
 
     @PreDestroy

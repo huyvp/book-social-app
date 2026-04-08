@@ -1,6 +1,7 @@
 package com.identity.service;
 
 import com.identity.dto.request.UserLogin;
+import com.identity.dto.response.IntrospectResponse;
 
 public interface IAuthService {
     String login(UserLogin userLogin);
@@ -9,7 +10,7 @@ public interface IAuthService {
 
     String refreshToken(String token);
 
-    boolean introspect(String token);
+    IntrospectResponse introspect(String token);
 
     String outboundAuth(String code);
 }

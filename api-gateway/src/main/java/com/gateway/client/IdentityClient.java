@@ -2,6 +2,7 @@ package com.gateway.client;
 
 import com.gateway.dto.response.DefaultResponse;
 
+import com.gateway.dto.response.IntrospectResponse;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -12,5 +13,5 @@ import reactor.core.publisher.Mono;
 @Repository
 public interface IdentityClient {
     @PostExchange(url = "/auth/introspect", contentType = MediaType.MULTIPART_FORM_DATA_VALUE)
-    Mono<DefaultResponse<Boolean>> introspect(@RequestPart("token") String token);
+    Mono<DefaultResponse<IntrospectResponse>> introspect(@RequestPart("token") String token);
 }

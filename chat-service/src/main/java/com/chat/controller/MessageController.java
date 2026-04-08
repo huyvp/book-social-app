@@ -4,6 +4,7 @@ import com.chat.dto.request.MessageRequest;
 import com.chat.handler.ResponseHandler;
 import com.chat.service.IMessageService;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -21,7 +22,7 @@ public class MessageController {
     IMessageService messageService;
 
     @PostMapping
-    ResponseEntity<?> create(@RequestBody MessageRequest messageRequest) {
+    ResponseEntity<?> create(@RequestBody MessageRequest messageRequest) throws JsonProcessingException {
         log.info("message:create - started");
         return ResponseHandler.execute(
                 messageService.create(messageRequest)

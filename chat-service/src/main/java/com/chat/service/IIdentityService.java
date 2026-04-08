@@ -1,7 +1,7 @@
 package com.chat.service;
 
-import org.springframework.web.bind.annotation.RequestParam;
+import com.chat.dto.response.IntrospectResponse;
 
 public interface IIdentityService {
-    boolean checkToken(String token);
+    IntrospectResponse checkToken(String token);
 }

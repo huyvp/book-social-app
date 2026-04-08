@@ -2,6 +2,7 @@ package com.chat.client;
 
 import com.chat.configuration.FeignLoggingConfig;
 import com.chat.dto.response.DefaultResponse;
+import com.chat.dto.response.IntrospectResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,5 +14,5 @@ import org.springframework.web.bind.annotation.RequestParam;
 )
 public interface IdentityClient {
     @PostMapping(value = "auth/introspect")
-    DefaultResponse<Boolean> introspect(@RequestParam("token") String token);
+    DefaultResponse<IntrospectResponse> introspect(@RequestParam("token") String token);
 }

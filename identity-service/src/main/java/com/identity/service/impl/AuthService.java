@@ -5,6 +5,7 @@ import com.identity.client.GoogleUserInfoClient;
 import com.identity.constant.Constants;
 import com.identity.dto.request.ExchangeTokenReq;
 import com.identity.dto.request.UserLogin;
+import com.identity.dto.response.IntrospectResponse;
 import com.identity.entity.InvalidatedToken;
 import com.identity.entity.Role;
 import com.identity.entity.User;
@@ -121,9 +122,22 @@ public class AuthService implements IAuthService {
     }
 
     @Override
-    public boolean introspect(String token) {
-        verifyToken(token, false);
-        return true;
+    public IntrospectResponse introspect(String token) {
+        boolean isValid = true;
+        SignedJWT signedJWT;
+        String userId;
+
+        try {
+            signedJWT = verifyToken(token, false);
+            userId = signedJWT.getJWTClaimsSet().getSubject();
+        } catch (Exception e) {
+            isValid = false;
+            userId = null;
+        }
+        return IntrospectResponse.builder()
+                .valid(isValid)
+                .userId(userId)
+                .build();
     }
 
     @Override

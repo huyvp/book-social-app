@@ -76,7 +76,7 @@ public class AuthenticationFilter implements Ordered, GlobalFilter {
 
         // Verify token - Delegate identity service
         return identityService.introspect(token).flatMap(res -> {
-                    if (res.getResult()) return chain.filter(exchange);
+                    if (res.getResult().isValid()) return chain.filter(exchange);
                     else return unAuthentication(exchange.getResponse());
                 }
         ).onErrorResume(
