@@ -18,21 +18,14 @@ import {
   Tooltip,
   Typography
 } from '@mui/material';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 
 import NewChatPopover from '../components/NewChatPopover';
-import {
-  createConversation,
-  createMessage,
-  getMessages,
-  getMyConversations
-} from '../services/chatService';
-import { getMyInfo } from '../services/userService';
+import {createConversation, createMessage, getMessages, getMyConversations} from '../services/chatService';
+import {getMyInfo} from '../services/userService';
 import Scene from './Scene';
-import { io } from 'socket.io-client';
-import { getToken } from '../services/localStorageService';
-
-const ACCENT = '#1e293b'; // Slate 800
+import {io} from 'socket.io-client';
+import {getToken} from '../services/localStorageService';
 
 export default function ChatPage() {
   const [message, setMessage] = useState('');
@@ -70,14 +63,39 @@ export default function ChatPage() {
     }
   };
 
-  useEffect(() => {
-    fetchConversations();
+  const fetchMessages = async (conversationId) => {
+    try {
+      if (!messagesMap[conversationId]) {
+        const response = await getMessages(conversationId);
+        if (response?.data?.result) {
+          const sorted = [...response.data.result].sort(
+            (a, b) => new Date(a.createdDate) - new Date(b.createdDate)
+          );
+          setMessagesMap((prev) => ({ ...prev, [conversationId]: sorted }));
+        }
+      }
+      setConversations((prev) =>
+        prev.map((conv) =>
+          conv.id === conversationId ? { ...conv, unread: 0 } : conv
+        )
+      );
+    } catch {
+      /* silent */
+    }
+  };
+
+  const fetchMyInfo = async () => {
     getMyInfo()
-      .then((res) => {
-        const user = res?.data?.result;
-        if (user) setMyUserId(user.userId || user.id);
+      .then((response) => {
+        const user = response?.data?.result;
+        if (user) setMyUserId(user.userId);
       })
       .catch(() => {});
+  };
+
+  useEffect(() => {
+    void fetchConversations();
+    void fetchMyInfo();
   }, []);
 
   useEffect(() => {
@@ -88,27 +106,7 @@ export default function ChatPage() {
 
   useEffect(() => {
     if (!selectedConversation?.id) return;
-
-    const fetchMessages = async (conversationId) => {
-      try {
-        if (!messagesMap[conversationId]) {
-          const response = await getMessages(conversationId);
-          if (response?.data?.result) {
-            const sorted = [...response.data.result].sort(
-              (a, b) => new Date(a.createdDate) - new Date(b.createdDate)
-            );
-            setMessagesMap((prev) => ({ ...prev, [conversationId]: sorted }));
-          }
-        }
-        setConversations((prev) =>
-          prev.map((c) => (c.id === conversationId ? { ...c, unread: 0 } : c))
-        );
-      } catch {
-        /* silent */
-      }
-    };
-
-    fetchMessages(selectedConversation.id);
+    void fetchMessages(selectedConversation.id);
   }, [selectedConversation, messagesMap]);
 
   const currentMessages = selectedConversation
@@ -360,7 +358,7 @@ export default function ChatPage() {
                 size='small'
                 onClick={(e) => setNewChatAnchorEl(e.currentTarget)}
                 sx={{
-                  backgroundColor: ACCENT,
+                  backgroundColor: '#1e293b',
                   color: '#fff',
                   width: 32,
                   height: 32,
@@ -382,7 +380,7 @@ export default function ChatPage() {
           <Box sx={{ flexGrow: 1, overflowY: 'auto' }}>
             {isLoadingConversations && (
               <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
-                <CircularProgress size={26} sx={{ color: ACCENT }} />
+                <CircularProgress size={26} sx={{ color: '#1e293b' }} />
               </Box>
             )}
             {conversationsError && (
@@ -431,7 +429,7 @@ export default function ChatPage() {
                             ? 'rgba(30,41,59,0.08)'
                             : 'transparent',
                           borderLeft: isSelected
-                            ? `3px solid ${ACCENT}`
+                            ? `3px solid ${'#1e293b'}`
                             : '3px solid transparent',
                           transition: 'all 0.15s ease',
                           '&:hover': { backgroundColor: 'rgba(0,0,0,0.04)' }
@@ -528,7 +526,7 @@ export default function ChatPage() {
                 <IconButton
                   size='small'
                   onClick={() => setShowConversationList(true)}
-                  sx={{ display: { sm: 'none' }, mr: 0.5, color: ACCENT }}
+                  sx={{ display: { sm: 'none' }, mr: 0.5, color: '#1e293b' }}
                 >
                   ←
                 </IconButton>
@@ -591,7 +589,7 @@ export default function ChatPage() {
                           backgroundColor: msg.me
                             ? msg.failed
                               ? '#fee2e2'
-                              : ACCENT
+                              : '#1e293b'
                             : '#f3f4f6',
                           color: msg.me && !msg.failed ? '#fff' : '#111827',
                           opacity: msg.pending ? 0.65 : 1,
@@ -638,7 +636,7 @@ export default function ChatPage() {
                           width: 28,
                           height: 28,
                           flexShrink: 0,
-                          backgroundColor: ACCENT,
+                          backgroundColor: '#1e293b',
                           fontSize: '0.65rem',
                           fontWeight: 700
                         }}
@@ -694,7 +692,7 @@ export default function ChatPage() {
                       type='submit'
                       disabled={!message.trim()}
                       sx={{
-                        backgroundColor: message.trim() ? ACCENT : '#e5e7eb',
+                        backgroundColor: message.trim() ? '#1e293b' : '#e5e7eb',
                         color: message.trim() ? '#fff' : '#9ca3af',
                         width: 38,
                         height: 38,
